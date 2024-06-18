@@ -1,0 +1,144 @@
+<style>
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<table style="background-color:#F5F7F9; font-family: 'Nunito', sans-serif; padding: 40px 10px" height="100%"
+    width="100%">
+    <tr>
+        <td>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
+                style="border-collapse:collapse;margin:0 auto; padding:0 20px; max-width:600px;">
+                <tbody>
+                    <tr>
+                        <td align="center" valign="center"
+                            style="text-align: center; padding: 0 0 20px; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+                            <a href="{{ base_url }}" style="width: 145.694px; height: auto; display: block;"
+                                rel="noopener" target="_blank">
+                                <img src="{{ base_url }}assets/media/logo.png" alt="AppLabs" title="AppLabs"
+                                    style="display:block" width="146" height="25">
+                            </a>
+
+                            <span
+                                style="color:#898989; font-size: 13px; font-weight: 400; line-height: 130%;">{{todayDate}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="center">
+                            <div style="text-align:left; padding:30px; background-color:#ffffff;">
+                                <h1
+                                    style=" color: #3B3B3B; font-size: 15px; font-weight: 400; line-height: 140%; padding-bottom: 20px; margin: 0;">
+                                    Hey Admin,
+                                </h1>
+                                <p
+                                    style="color:#3B3B3B; font-size: 15px; font-weight: 400; line-height: 140%; margin: 0; padding: 0 0 20px;">
+                                    The Below offers have spent > 80% of their allocated budget.</p>
+
+                                <div style="border-radius: 4px; overflow:hidden;">
+
+                                    <table cellspacing="0" cellpadding="0"
+                                        style="width: 100%; margin-bottom: 20px;  padding: 0;  border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    style="border-right: 1px solid #dddddd; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Offer ID</th>
+                                                <th
+                                                    style="border-right: 1px solid #dddddd; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Offer Name</th>
+                                                <th
+                                                    style="border-right: 1px solid #dddddd; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Advertiser ID</th>
+                                                <th
+                                                    style="border-right: 1px solid #dddddd; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Advertiser Name</th>
+                                                <th
+                                                    style="border: 1px solid #E9EDF5; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Total Budget </th>
+
+                                                <th
+                                                    style="border: 1px solid #E9EDF5; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Spent </th>
+
+                                                <th
+                                                    style="border: 1px solid #E9EDF5; white-space: nowrap; border-collapse: collapse; background-color: #E9EDF5; text-align: left; padding: 10px 20px; overflow: hidden; color:#3B3B3B; font-size: 13px; font-weight: 500; line-height: normal; text-transform: uppercase;">
+                                                    Available Balance </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            {{#each data}}
+
+
+                                            <tr>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    <a style="color:#3373F3; text-decoration: none;"
+                                                        href="#">{{offerId}}</a>
+                                                </td>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    <a style="color:#3373F3; text-decoration: none;"
+                                                        href="#">{{offerName}}</a>
+                                                </td>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    <a style="color:#3373F3; text-decoration: none;"
+                                                        href="#">{{advertiserId}}</a>
+                                                </td>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    <a style="color:#3373F3; text-decoration: none;"
+                                                        href="#">{{advertiserName}}</a>
+                                                </td>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    ${{totalBudget}}
+                                                </td>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    ${{totalSpent}}
+                                                </td>
+                                                <td
+                                                    style="white-space: nowrap; vertical-align: baseline; border: 1px solid #E9EDF5; border-collapse: collapse; padding: 10px 20px; word-break: break-word; font-size: 11px; font-weight: 400; line-height: 140%;">
+                                                    ${{availableBalace}}
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
+                                <hr style="margin: 0 0 20px; opacity: 1; border: 1px solid #CFD6E6;" />
+
+                                <h3
+                                    style="color: #3B3B3B; font-size: 15px; font-weight: 700; line-height: 140%; margin: 0;">
+                                    Thanks &
+                                    Regards,</h3>
+                                <span
+                                    style="color: #3B3B3B; font-size: 15px; font-weight: 400; line-height: 140%; margin: 0;">Applabs
+                                    Team</span>
+                            </div>
+                            <span
+                                style="display: block; text-align: center; color: var(--Gray-gray-400, #898989); text-align: center; font-size: 13px; font-weight: 400; line-height: 130%; margin: 0 auto; width: 75%; padding: 20px 0;">This
+                                is a system-generated mail, please do not reply to this email.
+                                For further queries please mail us at <a href="#"
+                                    style="color: #3373F3; text-decoration: none;">reach@applabs.ai</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
