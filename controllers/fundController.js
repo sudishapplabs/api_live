@@ -302,31 +302,31 @@ exports.successPage = async (req, res) => {
                 // res.render('success');
 				
 				
-				res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+				res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
               } else {
                 const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
                 //res.status(200).send(resMsg);
                 //return;
-				res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+				res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
               }
             }).catch((error) => {
               const resMsg = { "status": false, "message": error.message };
               /*res.status(400).send(resMsg);
               return;*/
-			  res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+			  res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
             });
           } else {
             const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
             /*res.status(200).send(resMsg);
             return;*/
-			res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+			res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
           }
 
         }).catch((error) => {
           const resMsg = { "status": false, "message": error.message };
           /*res.status(400).send(resMsg);
           return;*/
-		  res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+		  res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
         });
       }
     });
@@ -353,18 +353,18 @@ exports.cancelPage = async (req, res) => {
         const resMsg = { 'success': true, 'message': 'Payment failed' };
         //res.status(200).send(resMsg);
         //return;
-		res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+		res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
       } else {
         const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
         //res.status(200).send(resMsg);
         //return;
-		res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+		res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
       }
     }).catch((error) => {
       const resMsg = { "status": false, "message": error.message };
       //res.status(400).send(resMsg);
       //return;
-	  res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+	  res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
     });
     // res.render('cancel');
   } catch (error) {
@@ -372,7 +372,7 @@ exports.cancelPage = async (req, res) => {
     const resMsg = { "status": false, "message": error.message };
     //res.status(400).send(resMsg);
     //return;
-	res.status(200).redirect("http://43.204.202.161:3000/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+	res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
   }
 }
 
