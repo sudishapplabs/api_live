@@ -810,7 +810,7 @@ exports.addOffer = async (req, res) => {
             previewUrl: preview_url,
             url: finalCtaLink,
             currency: "USD",
-			commModel: "cpi",
+            commModel: "cpi",
             status: "pending",
             device: "mobile",
             defaultGoalName: "install",
@@ -912,8 +912,8 @@ exports.addOffer = async (req, res) => {
                                 console.log("impression-tracking");
                                 console.log(err);
                                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                res.status(200).send(resMsg);
+                                return;
                             });
                         }
 
@@ -2812,14 +2812,14 @@ exports.changeOfferStatus = async (req, res) => {
     for (let j = 0; j < trackier_camp_id.length; j++) {
         integerIDs.push(trackier_camp_id[j]);
     }
-	
-	 const allOfferStatus = await Offer.find({ trackier_camp_id: { '$in': integerIDs } }).exec();
-	  var offerIdStatus = {};
-	  if (Array.isArray(allOfferStatus) && allOfferStatus.length > 0) {
-		for (let k = 0; k < allOfferStatus.length; k++) {
-		  offerIdStatus[allOfferStatus[k].trackier_camp_id] = ucfirst(allOfferStatus[k].status);
-		}
-	  }
+
+    const allOfferStatus = await Offer.find({ trackier_camp_id: { '$in': integerIDs } }).exec();
+    var offerIdStatus = {};
+    if (Array.isArray(allOfferStatus) && allOfferStatus.length > 0) {
+        for (let k = 0; k < allOfferStatus.length; k++) {
+            offerIdStatus[allOfferStatus[k].trackier_camp_id] = ucfirst(allOfferStatus[k].status);
+        }
+    }
 
     // create offer on trackier
     const axios_header = {
@@ -2843,20 +2843,20 @@ exports.changeOfferStatus = async (req, res) => {
                             const resStatus = await Offer.findOne({ _id }).exec();
                             if (resStatus) {
                                 const advDetails = await getAdvertiserBasicDetailsByAdvId(resStatus.trackier_adv_id);
-								
-								// INSERT DATA INTO Tileline
-								const timelineData = {
-								  advertiser_id: parseInt(resStatus.trackier_adv_id),
-								  advertiser_name: ucfirst(advDetails.advertiserName),
-								  offer_id: resStatus.trackier_camp_id,
-								  offer_name: ucfirst(resStatus.offer_name),
-								  type: "Campaign Status",
-								  old_value: offerIdStatus[resStatus.trackier_camp_id],
-								  new_value: offerStatus,
-								  edited_by: approved_by
-								}
-								// END INSERT DATA INTO Tileline
-								await addTimelineData(timelineData);
+
+                                // INSERT DATA INTO Tileline
+                                const timelineData = {
+                                    advertiser_id: parseInt(resStatus.trackier_adv_id),
+                                    advertiser_name: ucfirst(advDetails.advertiserName),
+                                    offer_id: resStatus.trackier_camp_id,
+                                    offer_name: ucfirst(resStatus.offer_name),
+                                    type: "Campaign Status",
+                                    old_value: offerIdStatus[resStatus.trackier_camp_id],
+                                    new_value: offerStatus,
+                                    edited_by: approved_by
+                                }
+                                // END INSERT DATA INTO Tileline
+                                await addTimelineData(timelineData);
 
                                 if (offerStatus == 'active') {
                                     // INSERT DATA INTO NOTIFICATIONS
@@ -3057,14 +3057,14 @@ exports.changeOfferStatus = async (req, res) => {
         }).catch(err => {
             console.log(err);
             const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-			res.status(200).send(resMsg);
-			return;
+            res.status(200).send(resMsg);
+            return;
         });
     } catch (error) {
         console.log(error);
         const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-		res.status(200).send(resMsg);
-		return;
+        res.status(200).send(resMsg);
+        return;
     }
 }
 
@@ -5258,10 +5258,10 @@ exports.updateOffer = async (req, res) => {
         "offer_name": offData.offer_name,
         "source_type": offData.source_type,
         "pubs": pubObj,
-		"audience_id": offData.audience_id,
-		"premium_apps": offData.premium_apps,
-		"campaign_schedule": offData.campaign_schedule,
-		"include_state_city": offData.include_state_city,
+        "audience_id": offData.audience_id,
+        "premium_apps": offData.premium_apps,
+        "campaign_schedule": offData.campaign_schedule,
+        "include_state_city": offData.include_state_city,
         "publisher_status": pubStatusObj,
         "MMP": offData.MMP,
         "icon": offData.icon,
@@ -5295,46 +5295,46 @@ exports.updateOffer = async (req, res) => {
 
 
 
-     /*
-	console.log("============================Request Start=========================================");
+    /*
+   console.log("============================Request Start=========================================");
 	
-	console.log(req.body); 
-	console.log("============================================================================");
-	console.log("=============================Request End=====================================");
-	
-	
-	console.log("============================Request offerDataObj=========================================");
-		
-	*/
+   console.log(req.body); 
+   console.log("============================================================================");
+   console.log("=============================Request End=====================================");
 	
 	
-	
-	console.log("=========================Request offerDataObj START=========================================");
-	console.log(offerDataObj); 
-	console.log("=============================Request offerDataObj END=====================================");
+   console.log("============================Request offerDataObj=========================================");
+   	
+   */
+
+
+
+    console.log("=========================Request offerDataObj START=========================================");
+    console.log(offerDataObj);
+    console.log("=============================Request offerDataObj END=====================================");
 
 
     const diff = require("deep-object-diff").diff;
     let differencesReq = diff(offerDataObj, req.body);
     let differencesOld = diff(req.body, offerDataObj);
-	
-	
-	
 
-	 console.log("=========================differencesOld= START===========================");
-	 console.log(differencesOld);
-	 console.log("=========================differencesOld= END===========================");
-	 
-	 
 
-	console.log("============================differencesReq START======================================");
-	 console.log(differencesReq);
-	console.log("=========================differencesReq END============================");
-    
-  
 
-	 
-	 //process.exit();
+
+    console.log("=========================differencesOld= START===========================");
+    console.log(differencesOld);
+    console.log("=========================differencesOld= END===========================");
+
+
+
+    console.log("============================differencesReq START======================================");
+    console.log(differencesReq);
+    console.log("=========================differencesReq END============================");
+
+
+
+
+    //process.exit();
 
     var currentArrNonPayableEventName = [];
     var existArrNonPayableEventName = [];
@@ -5352,206 +5352,206 @@ exports.updateOffer = async (req, res) => {
         existArrNonPayableEventName = offData.non_payable_event_name.split(",");
 
     }
-    
-	 // AUDIENCE UPDATE
-  if (typeof differencesReq.audience_id !== 'undefined' && differencesReq.audience_id !== "" || differencesReq.audience_id == "") {
 
-    var oldAudienceName = "";
-    var newAudienceName = "";
-    if (differencesReq.audience_id == "") {
-      const offAudId = await Offer.findOne({ _id }).exec();
-      const audOldName = await Audience.findOne({ _id: offAudId.audience_id }).exec();
-      oldAudienceName = audOldName.audience_name;
+    // AUDIENCE UPDATE
+    if (typeof differencesReq.audience_id !== 'undefined' && differencesReq.audience_id !== "" || differencesReq.audience_id == "") {
 
-      newAudienceName = "";
-    } else {
-      const offAudId = await Offer.findOne({ _id }).exec();
-      if (offAudId.audience_id == "") {
-        oldAudienceName = "";
-      } else {
-        const audOldName = await Audience.findOne({ _id: offAudId.audience_id }).exec();
-        oldAudienceName = audOldName.audience_name;
-      }
-      const audNewName = await Audience.findOne({ _id: audience_id }).exec();
-      newAudienceName = audNewName.audience_name;
-    }
-    // Audience updated
-    Offer.findOneAndUpdate({ _id }, { audience_id: audience_id }, { new: true }).exec().then(async (resOffer) => {
-      console.log('audience_id Update Request');
-      if (resOffer) {
-        console.log('audience_id Update Response');
-        // Send Mail to User
-        const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-		
-		// INSERT DATA INTO Tileline
-        const timelineData = {
-          advertiser_id: parseInt(trackier_adv_id),
-          advertiser_name: ucfirst(advName.advertiserName),
-          offer_id: trackier_camp_id,
-          offer_name: ucfirst(offer_name),
-          type: "Audience",
-          old_value: oldAudienceName,
-          new_value: newAudienceName,
-          edited_by: user_name
-        }
-        // END INSERT DATA INTO Tileline
-        await addTimelineData(timelineData);
+        var oldAudienceName = "";
+        var newAudienceName = "";
+        if (differencesReq.audience_id == "") {
+            const offAudId = await Offer.findOne({ _id }).exec();
+            const audOldName = await Audience.findOne({ _id: offAudId.audience_id }).exec();
+            oldAudienceName = audOldName.audience_name;
 
-        // INSERT DATA INTO NOTIFICATIONS
-        const notificationData = {
-          advertiser_id: parseInt(trackier_adv_id),
-          advertiser_name: ucfirst(advName.advertiserName),
-          company_name: ucfirst(advName.advName),
-          offer_id: trackier_camp_id,
-          offer_name: ucfirst(offer_name),
-          category: "Campaign",
-
-          subject_adv: 'Offer ' + offer_name + ' has been edited',
-          message_adv: "<span class='text_primary'>Audience</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
-
-          subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-          message_sa: "<span class='text_primary'>Audience</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
-
-          read: 0,
-        }
-        // END INSERT DATA INTO NOTIFICATIONS
-        await addNotificationsData(notificationData);
-
-        if (advName.email_preferences == true) {
-          // Send Mail to Admin if status inactive/suspended
-          const bcc_mail = process.env.BCC_EMAILS.split(",");
-          var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
-
-          const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-          const messageBodyAdvetiser = (templateAdvertiser({
-            todayDate: dateprint(),
-            adv_id: trackier_adv_id,
-            offer_id: trackier_camp_id,
-            offer_name: offer_name,
-            adv_name: ucwords(advName.advName),
-            advertiserName: ucwords(advName.advertiserName),
-            edit_filed: "Audience",
-            old_value: oldAudienceName,
-            new_value: newAudienceName,
-            edited_by: user_name,
-            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-            base_url: process.env.APPLABS_URL
-          }))
-          sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-          const msgAdvertiser = {
-             to: advName.email,
-            //to: 'sudish@applabs.ai',
-            from: {
-              name: process.env.MAIL_FROM_NAME,
-              email: process.env.MAIL_FROM_EMAIL,
-            },
-            bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
-            html: messageBodyAdvetiser
-          };
-          //ES6
-          sgMail.send(msgAdvertiser).then(() => { }, error => {
-            console.error(error);
-            if (error.response) {
-              console.error(error.response.body)
+            newAudienceName = "";
+        } else {
+            const offAudId = await Offer.findOne({ _id }).exec();
+            if (offAudId.audience_id == "") {
+                oldAudienceName = "";
+            } else {
+                const audOldName = await Audience.findOne({ _id: offAudId.audience_id }).exec();
+                oldAudienceName = audOldName.audience_name;
             }
-          }).catch((error) => {
-            const response = { 'success': false, 'message': error };
-            res.status(200).send(response);
-            return;
-          });
+            const audNewName = await Audience.findOne({ _id: audience_id }).exec();
+            newAudienceName = audNewName.audience_name;
         }
+        // Audience updated
+        Offer.findOneAndUpdate({ _id }, { audience_id: audience_id }, { new: true }).exec().then(async (resOffer) => {
+            console.log('audience_id Update Request');
+            if (resOffer) {
+                console.log('audience_id Update Response');
+                // Send Mail to User
+                const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
 
-        // Send Mail to Admin
-        const admin_mail = process.env.ADMIN_EMAILS.split(",");
-        const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
-        const templateAdmin = handlebars.compile(emailTemplateAdmin);
-        const messageBodyAdmin = (templateAdmin({
-          todayDate: dateprint(),
-          adv_id: trackier_adv_id,
-          offer_id: trackier_camp_id,
-          offer_name: offer_name,
-          adv_name: ucwords(advName.advName),
-          advertiserName: ucwords(advName.advertiserName),
-          edit_filed: "Audience",
-          old_value: oldAudienceName,
-          new_value: newAudienceName,
-          edited_by: user_name,
-          url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-          base_url: process.env.APPLABS_URL
-        }))
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msgAdmin = {
-          to: admin_mail,
-          from: {
-            name: process.env.MAIL_FROM_NAME,
-            email: process.env.MAIL_FROM_EMAIL,
-          },
-          //bcc: bcc_mail,
-          subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
-          html: messageBodyAdmin
-        };
-        //ES6
-        sgMail.send(msgAdmin).then(() => { }, error => {
-          console.error(error);
-          if (error.response) {
-            console.error(error.response.body)
-          }
+                // INSERT DATA INTO Tileline
+                const timelineData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    type: "Audience",
+                    old_value: oldAudienceName,
+                    new_value: newAudienceName,
+                    edited_by: user_name
+                }
+                // END INSERT DATA INTO Tileline
+                await addTimelineData(timelineData);
+
+                // INSERT DATA INTO NOTIFICATIONS
+                const notificationData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    company_name: ucfirst(advName.advName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    category: "Campaign",
+
+                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Audience</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Audience</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                    read: 0,
+                }
+                // END INSERT DATA INTO NOTIFICATIONS
+                await addNotificationsData(notificationData);
+
+                if (advName.email_preferences == true) {
+                    // Send Mail to Admin if status inactive/suspended
+                    const bcc_mail = process.env.BCC_EMAILS.split(",");
+                    var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
+
+                    const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+                    const messageBodyAdvetiser = (templateAdvertiser({
+                        todayDate: dateprint(),
+                        adv_id: trackier_adv_id,
+                        offer_id: trackier_camp_id,
+                        offer_name: offer_name,
+                        adv_name: ucwords(advName.advName),
+                        advertiserName: ucwords(advName.advertiserName),
+                        edit_filed: "Audience",
+                        old_value: oldAudienceName,
+                        new_value: newAudienceName,
+                        edited_by: user_name,
+                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        base_url: process.env.APPLABS_URL
+                    }))
+                    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                    const msgAdvertiser = {
+                        to: advName.email,
+                        //to: 'sudish@applabs.ai',
+                        from: {
+                            name: process.env.MAIL_FROM_NAME,
+                            email: process.env.MAIL_FROM_EMAIL,
+                        },
+                        bcc: bcc_mail,
+                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        html: messageBodyAdvetiser
+                    };
+                    //ES6
+                    sgMail.send(msgAdvertiser).then(() => { }, error => {
+                        console.error(error);
+                        if (error.response) {
+                            console.error(error.response.body)
+                        }
+                    }).catch((error) => {
+                        const response = { 'success': false, 'message': error };
+                        res.status(200).send(response);
+                        return;
+                    });
+                }
+
+                // Send Mail to Admin
+                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+                const templateAdmin = handlebars.compile(emailTemplateAdmin);
+                const messageBodyAdmin = (templateAdmin({
+                    todayDate: dateprint(),
+                    adv_id: trackier_adv_id,
+                    offer_id: trackier_camp_id,
+                    offer_name: offer_name,
+                    adv_name: ucwords(advName.advName),
+                    advertiserName: ucwords(advName.advertiserName),
+                    edit_filed: "Audience",
+                    old_value: oldAudienceName,
+                    new_value: newAudienceName,
+                    edited_by: user_name,
+                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    base_url: process.env.APPLABS_URL
+                }))
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                const msgAdmin = {
+                    to: admin_mail,
+                    from: {
+                        name: process.env.MAIL_FROM_NAME,
+                        email: process.env.MAIL_FROM_EMAIL,
+                    },
+                    //bcc: bcc_mail,
+                    subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+                    html: messageBodyAdmin
+                };
+                //ES6
+                sgMail.send(msgAdmin).then(() => { }, error => {
+                    console.error(error);
+                    if (error.response) {
+                        console.error(error.response.body)
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    const response = { 'success': false, 'message': error };
+                    console.error(response);
+                });
+                // End Send Mail to Admin
+
+            } else {
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
+            }
         }).catch((error) => {
-          console.log(error);
-          const response = { 'success': false, 'message': error };
-          console.error(response);
+            const reMsg = { "status": false, "message": error.message };
+            res.status(400).send(reMsg);
         });
-        // End Send Mail to Admin
+    }
 
-      } else {
-        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-        res.status(200).send(resMsg);
-        return;
-      }
-    }).catch((error) => {
-      const reMsg = { "status": false, "message": error.message };
-      res.status(400).send(reMsg);
-    });
-  }
+    // Campaign Schedule UPDATE
+    if (typeof differencesReq.campaign_schedule !== 'undefined' && differencesReq.campaign_schedule !== "") {
 
-  // Campaign Schedule UPDATE
-  if (typeof differencesReq.campaign_schedule !== 'undefined' && differencesReq.campaign_schedule !== "") {
+        // CMAPIGN campaign schedule Yes or No update
+        Offer.findOneAndUpdate({ _id }, { campaign_schedule: campaign_schedule }, { new: true }).exec().then(async (resOffer) => {
+            console.log('Campaign schedule Update Request');
+            if (resOffer) {
+                console.log('Campaign schedule Update Response');
+            } else {
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
+            }
+        }).catch((error) => {
+            const reMsg = { "status": false, "message": error.message };
+            res.status(400).send(reMsg);
+        });
+    }
 
-    // CMAPIGN campaign schedule Yes or No update
-    Offer.findOneAndUpdate({ _id }, { campaign_schedule: campaign_schedule }, { new: true }).exec().then(async (resOffer) => {
-      console.log('Campaign schedule Update Request');
-      if (resOffer) {
-        console.log('Campaign schedule Update Response');
-      } else {
-        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-        res.status(200).send(resMsg);
-        return;
-      }
-    }).catch((error) => {
-      const reMsg = { "status": false, "message": error.message };
-      res.status(400).send(reMsg);
-    });
-  }
-  
-   // Campaign include state scity status UPDATE
-  if (typeof differencesReq.include_state_city !== 'undefined' && differencesReq.include_state_city !== "") {
+    // Campaign include state scity status UPDATE
+    if (typeof differencesReq.include_state_city !== 'undefined' && differencesReq.include_state_city !== "") {
 
-    // INCLUDE STATE CITY
-    Offer.findOneAndUpdate({ _id }, { include_state_city: include_state_city }, { new: true }).exec().then(async (resOffer) => {
-      console.log('campaign schedule Update Request');
-      if (resOffer) {
-        console.log('campaign schedule Update Response');
-      } else {
-        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-        res.status(200).send(resMsg);
-        return;
-      }
-    }).catch((error) => {
-      const reMsg = { "status": false, "message": error.message };
-      res.status(400).send(reMsg);
-    });
-  }
+        // INCLUDE STATE CITY
+        Offer.findOneAndUpdate({ _id }, { include_state_city: include_state_city }, { new: true }).exec().then(async (resOffer) => {
+            console.log('campaign schedule Update Request');
+            if (resOffer) {
+                console.log('campaign schedule Update Response');
+            } else {
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
+            }
+        }).catch((error) => {
+            const reMsg = { "status": false, "message": error.message };
+            res.status(400).send(reMsg);
+        });
+    }
 
     // CITY UPDATE
     if (typeof differencesReq.city !== 'undefined' && differencesReq.city !== "" || typeof differencesReq.city_inc_and_exc !== 'undefined' && differencesReq.city_inc_and_exc !== "") {
@@ -5561,10 +5561,10 @@ exports.updateOffer = async (req, res) => {
         const cityOldString = offData.city;
         if (typeof city_inc_and_exc !== 'undefined' && city_inc_and_exc == "on") {
             var city_inc_and_exc_str = "allow";
-			var city_inc_and_exc_db = "on";
+            var city_inc_and_exc_db = "on";
         } else {
             var city_inc_and_exc_str = "deny";
-			var city_inc_and_exc_db = "off";
+            var city_inc_and_exc_db = "off";
         }
 
         // CITY and EXLUDE UPDATE
@@ -5602,9 +5602,9 @@ exports.updateOffer = async (req, res) => {
                                                         }
                                                     }).catch(err => {
                                                         console.log(err);
-														const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-														res.status(200).send(resMsg);
-														return;
+                                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                        res.status(200).send(resMsg);
+                                                        return;
                                                     });
                                                 } else {
                                                     //console.log(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/targetings/" + rb._id + "/rules/" + rbr._id);
@@ -5620,9 +5620,9 @@ exports.updateOffer = async (req, res) => {
                                                         }
                                                     }).catch(err => {
                                                         console.log(err);
-														const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-														res.status(200).send(resMsg);
-														return;
+                                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                        res.status(200).send(resMsg);
+                                                        return;
                                                     });
                                                 }
                                             }
@@ -5634,9 +5634,9 @@ exports.updateOffer = async (req, res) => {
                                     }
                                 }).catch(err => {
                                     console.log(err);
-									const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-									res.status(200).send(resMsg);
-									return;
+                                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
                             }
 
@@ -5660,9 +5660,9 @@ exports.updateOffer = async (req, res) => {
                                         }
                                     }).catch(err => {
                                         console.log(err);
-										const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-										res.status(200).send(resMsg);
-										return;
+                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                        res.status(200).send(resMsg);
+                                        return;
                                     });
                                 }
 
@@ -5675,48 +5675,48 @@ exports.updateOffer = async (req, res) => {
                     }
                 }).catch(err => {
                     console.log(err);
-					const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-					res.status(200).send(resMsg);
-					return;
+                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                    res.status(200).send(resMsg);
+                    return;
                 });
 
 
                 // Send Mail to User
                 const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-				
-				// INSERT DATA INTO NOTIFICATIONS
-				const notificationData = {
-				  advertiser_id: parseInt(trackier_adv_id),
-				  advertiser_name: ucfirst(advName.advertiserName),
-				  company_name: ucfirst(advName.advName),
-				  offer_id: trackier_camp_id,
-				  offer_name: ucfirst(offer_name),
-				  category: "Campaign",
 
-				  subject_adv: 'Offer ' + offer_name + ' has been edited',
-				  message_adv: "<span class='text_primary'>City</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                // INSERT DATA INTO NOTIFICATIONS
+                const notificationData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    company_name: ucfirst(advName.advName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    category: "Campaign",
 
-				  subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-				  message_sa: "<span class='text_primary'>City</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>City</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-				  read: 0,
-				}
-				// END INSERT DATA INTO NOTIFICATIONS
-				await addNotificationsData(notificationData);
-				
-				 // INSERT DATA INTO Tileline
-				const timelineData = {
-				  advertiser_id: parseInt(trackier_adv_id),
-				  advertiser_name: ucfirst(advName.advertiserName),
-				  offer_id: trackier_camp_id,
-				  offer_name: ucfirst(offer_name),
-				  type: "City",
-				  old_value: cityOldString,
-				  new_value: cityString,
-				  edited_by: user_name
-				}
-				// END INSERT DATA INTO Tileline
-				await addTimelineData(timelineData);
+                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>City</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                    read: 0,
+                }
+                // END INSERT DATA INTO NOTIFICATIONS
+                await addNotificationsData(notificationData);
+
+                // INSERT DATA INTO Tileline
+                const timelineData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    type: "City",
+                    old_value: cityOldString,
+                    new_value: cityString,
+                    edited_by: user_name
+                }
+                // END INSERT DATA INTO Tileline
+                await addTimelineData(timelineData);
 
                 if (advName.email_preferences == true) {
                     // Send Mail to Admin if status inactive/suspended
@@ -5818,17 +5818,17 @@ exports.updateOffer = async (req, res) => {
 
     // STATE UPDATE
     if (typeof country !== 'undefined' && country.length == 1) {
-        if (typeof differencesReq.state !== 'undefined' && differencesReq.state !== ""  || typeof differencesReq.state_inc_and_exc !== 'undefined' && differencesReq.state_inc_and_exc !== "") {
+        if (typeof differencesReq.state !== 'undefined' && differencesReq.state !== "" || typeof differencesReq.state_inc_and_exc !== 'undefined' && differencesReq.state_inc_and_exc !== "") {
 
             // STATE UPDATE
             var stateString = state.join(',');
             var stateOldString = offData.state;
             if (typeof state_inc_and_exc !== 'undefined' && state_inc_and_exc == "on") {
                 var state_inc_and_exc_str = "allow";
-				var state_inc_and_exc_DB = "on";
+                var state_inc_and_exc_DB = "on";
             } else {
                 var state_inc_and_exc_str = "deny";
-				var state_inc_and_exc_DB = "off";
+                var state_inc_and_exc_DB = "off";
             }
 
             // STATE and EXLUDE UPDATE
@@ -5869,9 +5869,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
                                                     } else {
                                                         // Delete Existing Targeting rules
@@ -5886,9 +5886,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
                                                     }
                                                 }
@@ -5900,9 +5900,9 @@ exports.updateOffer = async (req, res) => {
                                         }
                                     }).catch(err => {
                                         console.log(err);
-										const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-										res.status(200).send(resMsg);
-										return;
+                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                        res.status(200).send(resMsg);
+                                        return;
                                     });
                                 }
 
@@ -5928,9 +5928,9 @@ exports.updateOffer = async (req, res) => {
                                             }
                                         }).catch(err => {
                                             console.log(err);
-											const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-											res.status(200).send(resMsg);
-											return;
+                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                            res.status(200).send(resMsg);
+                                            return;
                                         });
                                     }
 
@@ -5943,48 +5943,48 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch(err => {
                         console.log(err);
-						const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                        res.status(200).send(resMsg);
+                        return;
                     });
 
 
                     // Send Mail to User
                     const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-					
-					// INSERT DATA INTO NOTIFICATIONS
-					  const notificationData = {
-						advertiser_id: parseInt(trackier_adv_id),
-						advertiser_name: ucfirst(advName.advertiserName),
-						company_name: ucfirst(advName.advName),
-						offer_id: trackier_camp_id,
-						offer_name: ucfirst(offer_name),
-						category: "Campaign",
 
-						subject_adv: 'Offer ' + offer_name + ' has been edited',
-						message_adv: "<span class='text_primary'>State</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    // INSERT DATA INTO NOTIFICATIONS
+                    const notificationData = {
+                        advertiser_id: parseInt(trackier_adv_id),
+                        advertiser_name: ucfirst(advName.advertiserName),
+                        company_name: ucfirst(advName.advName),
+                        offer_id: trackier_camp_id,
+                        offer_name: ucfirst(offer_name),
+                        category: "Campaign",
 
-						subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-						message_sa: "<span class='text_primary'>State</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                        subject_adv: 'Offer ' + offer_name + ' has been edited',
+                        message_adv: "<span class='text_primary'>State</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-						read: 0,
-					  }
-					  // END INSERT DATA INTO NOTIFICATIONS
-					  await addNotificationsData(notificationData);
-					  
-					  // INSERT DATA INTO Tileline
-					  const timelineData = {
-						advertiser_id: parseInt(trackier_adv_id),
-						advertiser_name: ucfirst(advName.advertiserName),
-						offer_id: trackier_camp_id,
-						offer_name: ucfirst(offer_name),
-						type: "State",
-						old_value: stateOldString,
-						new_value: stateString,
-						edited_by: user_name
-					  }
-					  // END INSERT DATA INTO Tileline
-					  await addTimelineData(timelineData);
+                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                        message_sa: "<span class='text_primary'>State</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                        read: 0,
+                    }
+                    // END INSERT DATA INTO NOTIFICATIONS
+                    await addNotificationsData(notificationData);
+
+                    // INSERT DATA INTO Tileline
+                    const timelineData = {
+                        advertiser_id: parseInt(trackier_adv_id),
+                        advertiser_name: ucfirst(advName.advertiserName),
+                        offer_id: trackier_camp_id,
+                        offer_name: ucfirst(offer_name),
+                        type: "State",
+                        old_value: stateOldString,
+                        new_value: stateString,
+                        edited_by: user_name
+                    }
+                    // END INSERT DATA INTO Tileline
+                    await addTimelineData(timelineData);
 
                     if (advName.email_preferences == true) {
                         // Send Mail to Admin if status inactive/suspended
@@ -6008,7 +6008,7 @@ exports.updateOffer = async (req, res) => {
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                         const msgAdvertiser = {
-                             to: advName.email,
+                            to: advName.email,
                             //to: 'sudish@applabs.ai',
                             from: {
                                 name: process.env.MAIL_FROM_NAME,
@@ -6103,40 +6103,40 @@ exports.updateOffer = async (req, res) => {
                         // Send Mail to User
 
                         const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-						
-						// INSERT DATA INTO NOTIFICATIONS
-						const notificationData = {
-						  advertiser_id: parseInt(trackier_adv_id),
-						  advertiser_name: ucfirst(advName.advertiserName),
-						  company_name: ucfirst(advName.advName),
-						  offer_id: trackier_camp_id,
-						  offer_name: ucfirst(offer_name),
-						  category: "Campaign",
 
-						  subject_adv: 'Offer ' + offer_name + ' has been edited',
-						  message_adv: "<span class='text_primary'>Offer Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                        // INSERT DATA INTO NOTIFICATIONS
+                        const notificationData = {
+                            advertiser_id: parseInt(trackier_adv_id),
+                            advertiser_name: ucfirst(advName.advertiserName),
+                            company_name: ucfirst(advName.advName),
+                            offer_id: trackier_camp_id,
+                            offer_name: ucfirst(offer_name),
+                            category: "Campaign",
 
-						  subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-						  message_sa: "<span class='text_primary'>Offer Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                            subject_adv: 'Offer ' + offer_name + ' has been edited',
+                            message_adv: "<span class='text_primary'>Offer Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-						  read: 0,
-						}
-						// END INSERT DATA INTO NOTIFICATIONS
-						await addNotificationsData(notificationData);
-						
-						  // INSERT DATA INTO Tileline
-						const timelineData = {
-						  advertiser_id: parseInt(trackier_adv_id),
-						  advertiser_name: ucfirst(advName.advertiserName),
-						  offer_id: trackier_camp_id,
-						  offer_name: ucfirst(offer_name),
-						  type: "Offer Name",
-						  old_value: differencesOld.offer_name,
-						  new_value: differencesReq.offer_name,
-						  edited_by: user_name
-						}
-						// END INSERT DATA INTO Tileline
-						await addTimelineData(timelineData);
+                            subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                            message_sa: "<span class='text_primary'>Offer Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                            read: 0,
+                        }
+                        // END INSERT DATA INTO NOTIFICATIONS
+                        await addNotificationsData(notificationData);
+
+                        // INSERT DATA INTO Tileline
+                        const timelineData = {
+                            advertiser_id: parseInt(trackier_adv_id),
+                            advertiser_name: ucfirst(advName.advertiserName),
+                            offer_id: trackier_camp_id,
+                            offer_name: ucfirst(offer_name),
+                            type: "Offer Name",
+                            old_value: differencesOld.offer_name,
+                            new_value: differencesReq.offer_name,
+                            edited_by: user_name
+                        }
+                        // END INSERT DATA INTO Tileline
+                        await addTimelineData(timelineData);
 
                         if (advName.email_preferences == true) {
                             // Send Mail to Admin if status inactive/suspended
@@ -6160,7 +6160,7 @@ exports.updateOffer = async (req, res) => {
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                             const msgAdvertiser = {
-                                 to: advName.email,
+                                to: advName.email,
                                 //to: 'sudish@applabs.ai',
                                 from: {
                                     name: process.env.MAIL_FROM_NAME,
@@ -6239,10 +6239,10 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-			console.log(err);
-			const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-			res.status(200).send(resMsg);
-			return;
+            console.log(err);
+            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -6278,9 +6278,9 @@ exports.updateOffer = async (req, res) => {
                             }
                         }).catch(err => {
                             console.log(err);
-							const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-							res.status(200).send(resMsg);
-							return;
+                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                            res.status(200).send(resMsg);
+                            return;
                         });
                     }).catch(err => {
                         console.error(err);
@@ -6289,40 +6289,40 @@ exports.updateOffer = async (req, res) => {
 
                     // Send Mail to User
                     const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-					
-					// INSERT DATA INTO NOTIFICATIONS
-					  const notificationData = {
-						advertiser_id: parseInt(trackier_adv_id),
-						advertiser_name: ucfirst(advName.advertiserName),
-						company_name: ucfirst(advName.advName),
-						offer_id: trackier_camp_id,
-						offer_name: ucfirst(offer_name),
-						category: "Campaign",
 
-						subject_adv: 'Offer ' + offer_name + ' has been edited',
-						message_adv: "<span class='text_primary'>Icon</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    // INSERT DATA INTO NOTIFICATIONS
+                    const notificationData = {
+                        advertiser_id: parseInt(trackier_adv_id),
+                        advertiser_name: ucfirst(advName.advertiserName),
+                        company_name: ucfirst(advName.advName),
+                        offer_id: trackier_camp_id,
+                        offer_name: ucfirst(offer_name),
+                        category: "Campaign",
 
-						subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-						message_sa: "<span class='text_primary'>Icon</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                        subject_adv: 'Offer ' + offer_name + ' has been edited',
+                        message_adv: "<span class='text_primary'>Icon</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-						read: 0,
-					  }
-					  // END INSERT DATA INTO NOTIFICATIONS
-					  await addNotificationsData(notificationData);
-					  
-					  // INSERT DATA INTO Tileline
-					  const timelineData = {
-						advertiser_id: parseInt(trackier_adv_id),
-						advertiser_name: ucfirst(advName.advertiserName),
-						offer_id: trackier_camp_id,
-						offer_name: ucfirst(offer_name),
-						type: "Icon",
-						old_value: differencesOld.icon,
-						new_value: differencesReq.icon,
-						edited_by: user_name
-					  }
-					  // END INSERT DATA INTO Tileline
-					  await addTimelineData(timelineData);
+                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                        message_sa: "<span class='text_primary'>Icon</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                        read: 0,
+                    }
+                    // END INSERT DATA INTO NOTIFICATIONS
+                    await addNotificationsData(notificationData);
+
+                    // INSERT DATA INTO Tileline
+                    const timelineData = {
+                        advertiser_id: parseInt(trackier_adv_id),
+                        advertiser_name: ucfirst(advName.advertiserName),
+                        offer_id: trackier_camp_id,
+                        offer_name: ucfirst(offer_name),
+                        type: "Icon",
+                        old_value: differencesOld.icon,
+                        new_value: differencesReq.icon,
+                        edited_by: user_name
+                    }
+                    // END INSERT DATA INTO Tileline
+                    await addTimelineData(timelineData);
 
                     if (advName.email_preferences == true) {
                         // Send Mail to Admin if status inactive/suspended
@@ -6346,7 +6346,7 @@ exports.updateOffer = async (req, res) => {
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                         const msgAdvertiser = {
-                             to: advName.email,
+                            to: advName.email,
                             //to: 'sudish@applabs.ai',
                             from: {
                                 name: process.env.MAIL_FROM_NAME,
@@ -6454,9 +6454,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch(err => {
             console.log(err);
-			const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -6732,10 +6732,10 @@ exports.updateOffer = async (req, res) => {
                                     console.log('API Edit a Landing Page Response');
                                 }
                             }).catch(err => {
-								console.log(err);
-								const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-								res.status(200).send(resMsg);
-								return;
+                                console.log(err);
+                                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                res.status(200).send(resMsg);
+                                return;
                             });
 
                         }
@@ -6797,40 +6797,40 @@ exports.updateOffer = async (req, res) => {
 
                                 // SENDING MAIL TO EDIT CTA LINK
                                 const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-								
-								// INSERT DATA INTO NOTIFICATIONS
-								const notificationData = {
-								  advertiser_id: parseInt(trackier_adv_id),
-								  advertiser_name: ucfirst(advName.advertiserName),
-								  company_name: ucfirst(advName.advName),
-								  offer_id: trackier_camp_id,
-								  offer_name: ucfirst(offer_name),
-								  category: "Campaign",
 
-								  subject_adv: 'Offer ' + offer_name + ' has been edited',
-								  message_adv: "<span class='text_primary'>CTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                // INSERT DATA INTO NOTIFICATIONS
+                                const notificationData = {
+                                    advertiser_id: parseInt(trackier_adv_id),
+                                    advertiser_name: ucfirst(advName.advertiserName),
+                                    company_name: ucfirst(advName.advName),
+                                    offer_id: trackier_camp_id,
+                                    offer_name: ucfirst(offer_name),
+                                    category: "Campaign",
 
-								  subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-								  message_sa: "<span class='text_primary'>CTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                    message_adv: "<span class='text_primary'>CTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-								  read: 0
-								}
-								// END INSERT DATA INTO NOTIFICATIONS
-								await addNotificationsData(notificationData);
-								
-								// INSERT DATA INTO Tileline
-								const timelineData = {
-								  advertiser_id: parseInt(trackier_adv_id),
-								  advertiser_name: ucfirst(advName.advertiserName),
-								  offer_id: trackier_camp_id,
-								  offer_name: ucfirst(offer_name),
-								  type: "CTA Link",
-								  old_value: differencesOld.cta_link,
-								  new_value: differencesReq.cta_link,
-								  edited_by: user_name
-								}
-								// END INSERT DATA INTO Tileline
-								await addTimelineData(timelineData);
+                                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                    message_sa: "<span class='text_primary'>CTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                    read: 0
+                                }
+                                // END INSERT DATA INTO NOTIFICATIONS
+                                await addNotificationsData(notificationData);
+
+                                // INSERT DATA INTO Tileline
+                                const timelineData = {
+                                    advertiser_id: parseInt(trackier_adv_id),
+                                    advertiser_name: ucfirst(advName.advertiserName),
+                                    offer_id: trackier_camp_id,
+                                    offer_name: ucfirst(offer_name),
+                                    type: "CTA Link",
+                                    old_value: differencesOld.cta_link,
+                                    new_value: differencesReq.cta_link,
+                                    edited_by: user_name
+                                }
+                                // END INSERT DATA INTO Tileline
+                                await addTimelineData(timelineData);
 
                                 if (advName.email_preferences == true) {
                                     // Send Mail to Admin if status inactive/suspended
@@ -6855,7 +6855,7 @@ exports.updateOffer = async (req, res) => {
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                     const msgAdvertiser = {
-                                         to: advName.email,
+                                        to: advName.email,
                                         //to: 'sudish@applabs.ai',
                                         from: {
                                             name: process.env.MAIL_FROM_NAME,
@@ -6933,9 +6933,9 @@ exports.updateOffer = async (req, res) => {
 
                 }).catch(err => {
                     console.log(err);
-					const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-					res.status(200).send(resMsg);
-					return;
+                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                    res.status(200).send(resMsg);
+                    return;
                 });
             } else {
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
@@ -6944,9 +6944,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch(err => {
             console.log(err);
-			const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+            res.status(200).send(resMsg);
+            return;
         });
 
 
@@ -7067,9 +7067,9 @@ exports.updateOffer = async (req, res) => {
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
             });
 
             const campaignVTALink = { "iurl": finalVtaLink };
@@ -7094,9 +7094,9 @@ exports.updateOffer = async (req, res) => {
                                     }
                                 }).catch(err => {
                                     console.log(err);
-									const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-									res.status(200).send(resMsg);
-									return;
+                                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
                             }
 
@@ -7141,10 +7141,10 @@ exports.updateOffer = async (req, res) => {
                             var vta_link_basic_link = "";
                             if (typeof MMP !== "undefined" && MMP == "Branch") {
                                 const parts_br_n = require('url').parse(normalURL, true).query;
-                                if (typeof parts_br_n['~agency_id'] !== 'undefined' && parts_br_n['~agency_id'] !== "") {
-                                    vta_link_basic_link = vta_link + "&~agency_id=" + parts_br_n['~agency_id'];
-                                } else {
+                                if (parts_br_n['~agency_id']) {
                                     vta_link_basic_link = vta_link;
+                                } else {
+                                    vta_link_basic_link = vta_link + "&~agency_id=730316834393313593";
                                 }
                             } else {
                                 vta_link_basic_link = vta_link;
@@ -7157,40 +7157,40 @@ exports.updateOffer = async (req, res) => {
 
                                     // SENDING MAIL TO EDIT CTA LINK
                                     const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-									
-									// INSERT DATA INTO NOTIFICATIONS
-									  const notificationData = {
-										advertiser_id: parseInt(trackier_adv_id),
-										advertiser_name: ucfirst(advName.advertiserName),
-										company_name: ucfirst(advName.advName),
-										offer_id: trackier_camp_id,
-										offer_name: ucfirst(offer_name),
-										category: "Campaign",
 
-										subject_adv: 'Offer ' + offer_name + ' has been edited',
-										message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                    // INSERT DATA INTO NOTIFICATIONS
+                                    const notificationData = {
+                                        advertiser_id: parseInt(trackier_adv_id),
+                                        advertiser_name: ucfirst(advName.advertiserName),
+                                        company_name: ucfirst(advName.advName),
+                                        offer_id: trackier_camp_id,
+                                        offer_name: ucfirst(offer_name),
+                                        category: "Campaign",
 
-										subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-										message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                        subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                        message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-										read: 0,
-									  }
-									  // END INSERT DATA INTO NOTIFICATIONS
-									  await addNotificationsData(notificationData);
-									  
-									  // INSERT DATA INTO Tileline
-									  const timelineData = {
-										advertiser_id: parseInt(trackier_adv_id),
-										advertiser_name: ucfirst(advName.advertiserName),
-										offer_id: trackier_camp_id,
-										offer_name: ucfirst(offer_name),
-										type: "VTA Link",
-										old_value: differencesOld.vta_link,
-										new_value: differencesReq.vta_link,
-										edited_by: user_name
-									  }
-									  // END INSERT DATA INTO Tileline
-									  await addTimelineData(timelineData);
+                                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                        message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                        read: 0,
+                                    }
+                                    // END INSERT DATA INTO NOTIFICATIONS
+                                    await addNotificationsData(notificationData);
+
+                                    // INSERT DATA INTO Tileline
+                                    const timelineData = {
+                                        advertiser_id: parseInt(trackier_adv_id),
+                                        advertiser_name: ucfirst(advName.advertiserName),
+                                        offer_id: trackier_camp_id,
+                                        offer_name: ucfirst(offer_name),
+                                        type: "VTA Link",
+                                        old_value: differencesOld.vta_link,
+                                        new_value: differencesReq.vta_link,
+                                        edited_by: user_name
+                                    }
+                                    // END INSERT DATA INTO Tileline
+                                    await addTimelineData(timelineData);
 
                                     if (advName.email_preferences == true) {
                                         // Send Mail to Admin if status inactive/suspended
@@ -7214,7 +7214,7 @@ exports.updateOffer = async (req, res) => {
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                         const msgAdvertiser = {
-                                             to: advName.email,
+                                            to: advName.email,
                                             //to: 'sudish@applabs.ai',
                                             from: {
                                                 name: process.env.MAIL_FROM_NAME,
@@ -7286,16 +7286,16 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch(err => {
                         console.log(err);
-						const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
             });
         } else {
 
@@ -7309,9 +7309,9 @@ exports.updateOffer = async (req, res) => {
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
             });
 
             var campaignRevenue = 0;
@@ -7489,9 +7489,9 @@ exports.updateOffer = async (req, res) => {
                                     }
                                 }).catch(err => {
                                     console.log(err);
-									const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-									res.status(200).send(resMsg);
-									return;
+                                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
                             }
 
@@ -7502,26 +7502,26 @@ exports.updateOffer = async (req, res) => {
 
                                     // SENDING MAIL TO EDIT CTA LINK
                                     const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-									
-									// INSERT DATA INTO NOTIFICATIONS
-								  const notificationData = {
-									advertiser_id: parseInt(trackier_adv_id),
-									advertiser_name: ucfirst(advName.advertiserName),
-									company_name: ucfirst(advName.advName),
-									offer_id: trackier_camp_id,
-									offer_name: ucfirst(offer_name),
-									category: "Campaign",
 
-									subject_adv: 'Offer ' + offer_name + ' has been edited',
-									message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                    // INSERT DATA INTO NOTIFICATIONS
+                                    const notificationData = {
+                                        advertiser_id: parseInt(trackier_adv_id),
+                                        advertiser_name: ucfirst(advName.advertiserName),
+                                        company_name: ucfirst(advName.advName),
+                                        offer_id: trackier_camp_id,
+                                        offer_name: ucfirst(offer_name),
+                                        category: "Campaign",
 
-									subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-									message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                        subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                        message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-									read: 0,
-								  }
-								  // END INSERT DATA INTO NOTIFICATIONS
-								  await addNotificationsData(notificationData);
+                                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                        message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                        read: 0,
+                                    }
+                                    // END INSERT DATA INTO NOTIFICATIONS
+                                    await addNotificationsData(notificationData);
 
                                     if (advName.email_preferences == true) {
                                         // Send Mail to Admin if status inactive/suspended
@@ -7545,8 +7545,8 @@ exports.updateOffer = async (req, res) => {
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                         const msgAdvertiser = {
-                                             to: advName.email,
-                                           // to: 'sudish@applabs.ai',
+                                            to: advName.email,
+                                            // to: 'sudish@applabs.ai',
                                             from: {
                                                 name: process.env.MAIL_FROM_NAME,
                                                 email: process.env.MAIL_FROM_EMAIL,
@@ -7617,16 +7617,16 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch(err => {
                         console.log(err);
-						const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
             });
         } // CHECK VTA LINK FIRST EMPTY
     }  // UPDATE VTA LINK END
@@ -7675,40 +7675,40 @@ exports.updateOffer = async (req, res) => {
 
                                             // Send Mail to User
                                             const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-											
-											// INSERT DATA INTO NOTIFICATIONS
-											  const notificationData = {
-												advertiser_id: parseInt(trackier_adv_id),
-												advertiser_name: ucfirst(advName.advertiserName),
-												company_name: ucfirst(advName.advName),
-												offer_id: trackier_camp_id,
-												offer_name: ucfirst(offer_name),
-												category: "Campaign",
 
-												subject_adv: 'Offer ' + offer_name + ' has been edited',
-												message_adv: "<span class='text_primary'>Total Budget</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                            // INSERT DATA INTO NOTIFICATIONS
+                                            const notificationData = {
+                                                advertiser_id: parseInt(trackier_adv_id),
+                                                advertiser_name: ucfirst(advName.advertiserName),
+                                                company_name: ucfirst(advName.advName),
+                                                offer_id: trackier_camp_id,
+                                                offer_name: ucfirst(offer_name),
+                                                category: "Campaign",
 
-												subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-												message_sa: "<span class='text_primary'>Total Budget</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
-												read: 0
-											  }
-											  // END INSERT DATA INTO NOTIFICATIONS
-											  await addNotificationsData(notificationData);
-											  // INSERT DATA INTO Tileline
-											  const timelineData = {
-												advertiser_id: parseInt(trackier_adv_id),
-												advertiser_name: ucfirst(advName.advertiserName),
-												offer_id: trackier_camp_id,
-												offer_name: ucfirst(offer_name),
-												type: "Total Budget",
-												old_value: differencesOld.total_budget,
-												new_value: differencesReq.total_budget,
-												edited_by: user_name
-											  }
-											  // END INSERT DATA INTO Tileline
-											  await addTimelineData(timelineData);
-										  
-										  
+                                                subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                                message_adv: "<span class='text_primary'>Total Budget</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                message_sa: "<span class='text_primary'>Total Budget</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                                read: 0
+                                            }
+                                            // END INSERT DATA INTO NOTIFICATIONS
+                                            await addNotificationsData(notificationData);
+                                            // INSERT DATA INTO Tileline
+                                            const timelineData = {
+                                                advertiser_id: parseInt(trackier_adv_id),
+                                                advertiser_name: ucfirst(advName.advertiserName),
+                                                offer_id: trackier_camp_id,
+                                                offer_name: ucfirst(offer_name),
+                                                type: "Total Budget",
+                                                old_value: differencesOld.total_budget,
+                                                new_value: differencesReq.total_budget,
+                                                edited_by: user_name
+                                            }
+                                            // END INSERT DATA INTO Tileline
+                                            await addTimelineData(timelineData);
+
+
                                             if (advName.email_preferences == true) {
                                                 // Send Mail to Admin if status inactive/suspended
                                                 const bcc_mail = process.env.BCC_EMAILS.split(",");
@@ -7731,7 +7731,7 @@ exports.updateOffer = async (req, res) => {
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                                 const msgAdvertiser = {
-                                                     to: advName.email,
+                                                    to: advName.email,
                                                     //to: 'sudish@applabs.ai',
                                                     from: {
                                                         name: process.env.MAIL_FROM_NAME,
@@ -7810,17 +7810,17 @@ exports.updateOffer = async (req, res) => {
                                     return;
                                 }
                             }).catch((error) => {
-								 console.error(err);
-                                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                console.error(err);
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
                         }
                     }).catch(err => {
                         console.error(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             } else {
@@ -7831,8 +7831,8 @@ exports.updateOffer = async (req, res) => {
         }).catch(err => {
             console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -7862,41 +7862,41 @@ exports.updateOffer = async (req, res) => {
 
                                     // Send Mail to User
                                     const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-									
-									// INSERT DATA INTO NOTIFICATIONS
-									const notificationData = {
-										advertiser_id: parseInt(trackier_adv_id),
-										advertiser_name: ucfirst(advName.advertiserName),
-										company_name: ucfirst(advName.advName),
-										offer_id: trackier_camp_id,
-										offer_name: ucfirst(offer_name),
-										category: "Campaign",
 
-										subject_adv: 'Offer ' + offer_name + ' has been edited',
-										message_adv: "<span class='text_primary'>Daily Budget</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                    // INSERT DATA INTO NOTIFICATIONS
+                                    const notificationData = {
+                                        advertiser_id: parseInt(trackier_adv_id),
+                                        advertiser_name: ucfirst(advName.advertiserName),
+                                        company_name: ucfirst(advName.advName),
+                                        offer_id: trackier_camp_id,
+                                        offer_name: ucfirst(offer_name),
+                                        category: "Campaign",
 
-										subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-										message_sa: "<span class='text_primary'>Daily Budget</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                        subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                        message_adv: "<span class='text_primary'>Daily Budget</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-										read: 0
-									}
-									// END INSERT DATA INTO NOTIFICATIONS
-									await addNotificationsData(notificationData);
-									
-									// INSERT DATA INTO Tileline
-								  const timelineData = {
-									advertiser_id: parseInt(trackier_adv_id),
-									advertiser_name: ucfirst(advName.advertiserName),
-									offer_id: trackier_camp_id,
-									offer_name: ucfirst(offer_name),
-									type: "Daily Budget",
-									old_value: differencesOld.daily_budget,
-									new_value: differencesReq.daily_budget,
-									edited_by: user_name
-								  }
-								  // END INSERT DATA INTO Tileline
-								  await addTimelineData(timelineData);
-									
+                                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                        message_sa: "<span class='text_primary'>Daily Budget</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                        read: 0
+                                    }
+                                    // END INSERT DATA INTO NOTIFICATIONS
+                                    await addNotificationsData(notificationData);
+
+                                    // INSERT DATA INTO Tileline
+                                    const timelineData = {
+                                        advertiser_id: parseInt(trackier_adv_id),
+                                        advertiser_name: ucfirst(advName.advertiserName),
+                                        offer_id: trackier_camp_id,
+                                        offer_name: ucfirst(offer_name),
+                                        type: "Daily Budget",
+                                        old_value: differencesOld.daily_budget,
+                                        new_value: differencesReq.daily_budget,
+                                        edited_by: user_name
+                                    }
+                                    // END INSERT DATA INTO Tileline
+                                    await addTimelineData(timelineData);
+
                                     if (advName.email_preferences == true) {
                                         // Send Mail to Admin if status inactive/suspended
                                         const bcc_mail = process.env.BCC_EMAILS.split(",");
@@ -7919,7 +7919,7 @@ exports.updateOffer = async (req, res) => {
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                         const msgAdvertiser = {
-                                             to: advName.email,
+                                            to: advName.email,
                                             //to: 'sudish@applabs.ai',
                                             from: {
                                                 name: process.env.MAIL_FROM_NAME,
@@ -7987,18 +7987,18 @@ exports.updateOffer = async (req, res) => {
                                     return;
                                 }
                             }).catch((error) => {
-								 console.log(error);
-								const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                console.log(error);
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
                         }
                     }).catch(err => {
                         console.error(err);
-                         console.log(err);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						 return;
+                        console.log(err);
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             } else {
@@ -8009,8 +8009,8 @@ exports.updateOffer = async (req, res) => {
         }).catch(err => {
             console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -8042,43 +8042,43 @@ exports.updateOffer = async (req, res) => {
 
                         // Send Mail to User
                         const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-						
-						
-						 // INSERT DATA INTO NOTIFICATIONS
-						const notificationData = {
-							advertiser_id: parseInt(trackier_adv_id),
-							advertiser_name: ucfirst(advName.advertiserName),
-							company_name: ucfirst(advName.advName),
-							offer_id: trackier_camp_id,
-							offer_name: ucfirst(offer_name),
-							category: "Campaign",
 
-							subject_adv: 'Offer ' + offer_name + ' has been edited',
-							message_adv: "<span class='text_primary'>Start Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-							subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-							message_sa: "<span class='text_primary'>Start Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                        // INSERT DATA INTO NOTIFICATIONS
+                        const notificationData = {
+                            advertiser_id: parseInt(trackier_adv_id),
+                            advertiser_name: ucfirst(advName.advertiserName),
+                            company_name: ucfirst(advName.advName),
+                            offer_id: trackier_camp_id,
+                            offer_name: ucfirst(offer_name),
+                            category: "Campaign",
 
-							read: 0
-						}
-						// END INSERT DATA INTO NOTIFICATIONS
-						await addNotificationsData(notificationData);
-						
-						// INSERT DATA INTO Tileline
-						const timelineData = {
-						  advertiser_id: parseInt(trackier_adv_id),
-						  advertiser_name: ucfirst(advName.advertiserName),
-						  offer_id: trackier_camp_id,
-						  offer_name: ucfirst(offer_name),
-						  type: "Start Date",
-						  old_value: differencesOld.schedule_start_date,
-						  new_value: differencesReq.schedule_start_date,
-						  edited_by: user_name
-						}
-						// END INSERT DATA INTO Tileline
-						await addTimelineData(timelineData);
-						
-						
+                            subject_adv: 'Offer ' + offer_name + ' has been edited',
+                            message_adv: "<span class='text_primary'>Start Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                            subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                            message_sa: "<span class='text_primary'>Start Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                            read: 0
+                        }
+                        // END INSERT DATA INTO NOTIFICATIONS
+                        await addNotificationsData(notificationData);
+
+                        // INSERT DATA INTO Tileline
+                        const timelineData = {
+                            advertiser_id: parseInt(trackier_adv_id),
+                            advertiser_name: ucfirst(advName.advertiserName),
+                            offer_id: trackier_camp_id,
+                            offer_name: ucfirst(offer_name),
+                            type: "Start Date",
+                            old_value: differencesOld.schedule_start_date,
+                            new_value: differencesReq.schedule_start_date,
+                            edited_by: user_name
+                        }
+                        // END INSERT DATA INTO Tileline
+                        await addTimelineData(timelineData);
+
+
                         if (advName.email_preferences == true) {
                             // Send Mail to Admin if status inactive/suspended
                             const bcc_mail = process.env.BCC_EMAILS.split(",");
@@ -8170,16 +8170,16 @@ exports.updateOffer = async (req, res) => {
                     }
                 }).catch((error) => {
                     console.log(error);
-					const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-					res.status(200).send(resMsg);
-					return;
+                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                    res.status(200).send(resMsg);
+                    return;
                 });
             }
         }).catch(err => {
             console.log(err);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -8203,40 +8203,40 @@ exports.updateOffer = async (req, res) => {
 
                             // Send Mail to User
                             const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-							
-							// INSERT DATA INTO NOTIFICATIONS
-							const notificationData = {
-								advertiser_id: parseInt(trackier_adv_id),
-								advertiser_name: ucfirst(advName.advertiserName),
-								company_name: ucfirst(advName.advName),
-								offer_id: trackier_camp_id,
-								offer_name: ucfirst(offer_name),
-								category: "Campaign",
 
-								subject_adv: 'Offer ' + offer_name + ' has been edited',
-								message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                            // INSERT DATA INTO NOTIFICATIONS
+                            const notificationData = {
+                                advertiser_id: parseInt(trackier_adv_id),
+                                advertiser_name: ucfirst(advName.advertiserName),
+                                company_name: ucfirst(advName.advName),
+                                offer_id: trackier_camp_id,
+                                offer_name: ucfirst(offer_name),
+                                category: "Campaign",
 
-								subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-								message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-								read: 0
-							}
-							// END INSERT DATA INTO NOTIFICATIONS
-							await addNotificationsData(notificationData);
-							
-							 // INSERT DATA INTO Tileline
-							  const timelineData = {
-								advertiser_id: parseInt(trackier_adv_id),
-								advertiser_name: ucfirst(advName.advertiserName),
-								offer_id: trackier_camp_id,
-								offer_name: ucfirst(offer_name),
-								type: "End Date",
-								old_value: differencesOld.schedule_end_date,
-								new_value: differencesReq.schedule_end_date,
-								edited_by: user_name
-							  }
-							  // END INSERT DATA INTO Tileline
-							  await addTimelineData(timelineData);
+                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                read: 0
+                            }
+                            // END INSERT DATA INTO NOTIFICATIONS
+                            await addNotificationsData(notificationData);
+
+                            // INSERT DATA INTO Tileline
+                            const timelineData = {
+                                advertiser_id: parseInt(trackier_adv_id),
+                                advertiser_name: ucfirst(advName.advertiserName),
+                                offer_id: trackier_camp_id,
+                                offer_name: ucfirst(offer_name),
+                                type: "End Date",
+                                old_value: differencesOld.schedule_end_date,
+                                new_value: differencesReq.schedule_end_date,
+                                edited_by: user_name
+                            }
+                            // END INSERT DATA INTO Tileline
+                            await addTimelineData(timelineData);
 
                             if (advName.email_preferences == true) {
                                 // Send Mail to Admin if status inactive/suspended
@@ -8329,16 +8329,16 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch((error) => {
                         console.log(error);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                res.status(200).send(resMsg);
+                return;
             });
 
         } else {
@@ -8370,42 +8370,42 @@ exports.updateOffer = async (req, res) => {
 
                             // Send Mail to User
                             const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-							
-							// INSERT DATA INTO NOTIFICATIONS
-							const notificationData = {
-								advertiser_id: parseInt(trackier_adv_id),
-								advertiser_name: ucfirst(advName.advertiserName),
-								company_name: ucfirst(advName.advName),
-								offer_id: trackier_camp_id,
-								offer_name: ucfirst(offer_name),
-								category: "Campaign",
 
-								subject_adv: 'Offer ' + offer_name + ' has been edited',
-								message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                            // INSERT DATA INTO NOTIFICATIONS
+                            const notificationData = {
+                                advertiser_id: parseInt(trackier_adv_id),
+                                advertiser_name: ucfirst(advName.advertiserName),
+                                company_name: ucfirst(advName.advName),
+                                offer_id: trackier_camp_id,
+                                offer_name: ucfirst(offer_name),
+                                category: "Campaign",
 
-								subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-								message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-								read: 0
-							}
-							// END INSERT DATA INTO NOTIFICATIONS
-							await addNotificationsData(notificationData);
-							
-							 // INSERT DATA INTO Tileline
-							  const timelineData = {
-								advertiser_id: parseInt(trackier_adv_id),
-								advertiser_name: ucfirst(advName.advertiserName),
-								offer_id: trackier_camp_id,
-								offer_name: ucfirst(offer_name),
-								type: "End Date",
-								old_value: differencesOld.schedule_end_date,
-								new_value: differencesReq.schedule_end_date,
-								edited_by: user_name
-							  }
-							  // END INSERT DATA INTO Tileline
-							  await addTimelineData(timelineData);
-							
-							
+                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                read: 0
+                            }
+                            // END INSERT DATA INTO NOTIFICATIONS
+                            await addNotificationsData(notificationData);
+
+                            // INSERT DATA INTO Tileline
+                            const timelineData = {
+                                advertiser_id: parseInt(trackier_adv_id),
+                                advertiser_name: ucfirst(advName.advertiserName),
+                                offer_id: trackier_camp_id,
+                                offer_name: ucfirst(offer_name),
+                                type: "End Date",
+                                old_value: differencesOld.schedule_end_date,
+                                new_value: differencesReq.schedule_end_date,
+                                edited_by: user_name
+                            }
+                            // END INSERT DATA INTO Tileline
+                            await addTimelineData(timelineData);
+
+
                             if (advName.email_preferences == true) {
                                 // Send Mail to Admin if status inactive/suspended
                                 const bcc_mail = process.env.BCC_EMAILS.split(",");
@@ -8428,7 +8428,7 @@ exports.updateOffer = async (req, res) => {
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                 const msgAdvertiser = {
-                                     to: advName.email,
+                                    to: advName.email,
                                     //to: 'sudish@applabs.ai',
                                     from: {
                                         name: process.env.MAIL_FROM_NAME,
@@ -8497,16 +8497,16 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch((error) => {
                         console.log(error);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                res.status(200).send(resMsg);
+                return;
             });
         }
 
@@ -8560,9 +8560,9 @@ exports.updateOffer = async (req, res) => {
                     }).catch(err => {
                         console.error(err);
                         console.log(err);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
 
                 }
@@ -8593,7 +8593,7 @@ exports.updateOffer = async (req, res) => {
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                     const msgAdvertiser = {
-                         to: advName.email,
+                        to: advName.email,
                         //to: 'sudish@applabs.ai',
                         from: {
                             name: process.env.MAIL_FROM_NAME,
@@ -8665,9 +8665,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch((error) => {
             console.log(error);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -8718,9 +8718,9 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch(err => {
                         console.log(err);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
 
@@ -8750,7 +8750,7 @@ exports.updateOffer = async (req, res) => {
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                     const msgAdvertiser = {
-                         to: advName.email,
+                        to: advName.email,
                         //to: 'sudish@applabs.ai',
                         from: {
                             name: process.env.MAIL_FROM_NAME,
@@ -8822,9 +8822,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch((error) => {
             console.log(error);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -8934,10 +8934,10 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch((error) => {
-			console.log(error);
+            console.log(error);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -8985,9 +8985,9 @@ exports.updateOffer = async (req, res) => {
                                                 }
                                             }).catch(err => {
                                                 console.log(err);
-												const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-												res.status(200).send(resMsg);
-												return;
+                                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                res.status(200).send(resMsg);
+                                                return;
                                             });
                                         }
                                     }
@@ -9011,9 +9011,9 @@ exports.updateOffer = async (req, res) => {
                     }
                 }).catch(err => {
                     console.log(err);
-					const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-					res.status(200).send(resMsg);
-					return;
+                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                    res.status(200).send(resMsg);
+                    return;
                 });
 
 
@@ -9042,7 +9042,7 @@ exports.updateOffer = async (req, res) => {
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                     const msgAdvertiser = {
-                         to: advName.email,
+                        to: advName.email,
                         //to: 'sudish@applabs.ai',
                         from: {
                             name: process.env.MAIL_FROM_NAME,
@@ -9113,10 +9113,10 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch((error) => {
-             console.log(error);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            console.log(error);
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -9170,8 +9170,8 @@ exports.updateOffer = async (req, res) => {
                                             }).catch(err => {
                                                 console.log(err);
                                                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-												res.status(200).send(resMsg);
-												return;
+                                                res.status(200).send(resMsg);
+                                                return;
                                             });
                                         }
                                     }
@@ -9184,9 +9184,9 @@ exports.updateOffer = async (req, res) => {
                             }).catch(err => {
                                 console.error(err);
                                 console.log(err);
-								const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
                         }
                     } else {
@@ -9196,9 +9196,9 @@ exports.updateOffer = async (req, res) => {
                     }
                 }).catch(err => {
                     console.log(err);
-					const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-					res.status(200).send(resMsg);
-					return;
+                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                    res.status(200).send(resMsg);
+                    return;
                 });
 
 
@@ -9299,9 +9299,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch((error) => {
             console.log(error);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -9335,10 +9335,10 @@ exports.updateOffer = async (req, res) => {
                                             return;
                                         }
                                     }).catch(err => {
-										console.log(err);
-										const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-										res.status(200).send(resMsg);
-										return;
+                                        console.log(err);
+                                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                        res.status(200).send(resMsg);
+                                        return;
                                     });
                                 }
                             }
@@ -9349,9 +9349,9 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch(err => {
                         console.log(err);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             } else {
@@ -9361,9 +9361,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch(err => {
             console.log(err);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
 
 
@@ -9404,10 +9404,10 @@ exports.updateOffer = async (req, res) => {
                 }
             }).catch(err => {
                 console.error(err);
-               console.log(err);
-				const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-				res.status(200).send(resMsg);
-				return;
+                console.log(err);
+                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                res.status(200).send(resMsg);
+                return;
             });
         }
 
@@ -9436,9 +9436,9 @@ exports.updateOffer = async (req, res) => {
                             }
                         }).catch(err => {
                             console.log(err);
-							const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-							res.status(200).send(resMsg);
-							return;
+                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                            res.status(200).send(resMsg);
+                            return;
                         });
                     }
                 }
@@ -9461,9 +9461,9 @@ exports.updateOffer = async (req, res) => {
                             }
                         }).catch(err => {
                             console.log(err);
-							const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-							res.status(200).send(resMsg);
-							return;
+                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                            res.status(200).send(resMsg);
+                            return;
                         });
                     }
                 }
@@ -9502,9 +9502,9 @@ exports.updateOffer = async (req, res) => {
                         }
                     }).catch(err => {
                         console.log(err);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             } else {
@@ -9567,9 +9567,9 @@ exports.updateOffer = async (req, res) => {
                                             }
                                         }).catch(err => {
                                             console.log(err);
-											const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-											res.status(200).send(resMsg);
-											return;
+                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                            res.status(200).send(resMsg);
+                                            return;
                                         });
                                     } else {
                                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
@@ -9580,9 +9580,9 @@ exports.updateOffer = async (req, res) => {
                                 }).catch(err => {
                                     //console.log(err);
                                     console.log(err);
-									const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-									res.status(200).send(resMsg);
-									return;
+                                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
 
                             } else {
@@ -9599,10 +9599,10 @@ exports.updateOffer = async (req, res) => {
                                         return;
                                     }
                                 }).catch(err => {
-									console.log(err);
-									const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-									res.status(200).send(resMsg);
-									return;
+                                    console.log(err);
+                                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
                             }
                         } else {
@@ -9620,9 +9620,9 @@ exports.updateOffer = async (req, res) => {
                                 }
                             }).catch(err => {
                                 console.log(err);
-								const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
 
                             // SET publisher samplings/CutBack
@@ -9638,9 +9638,9 @@ exports.updateOffer = async (req, res) => {
                                 }
                             }).catch(err => {
                                 console.log(err);
-								const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
                         }
                     }
@@ -9701,9 +9701,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
 
                                                         const sampValue = (pub_avg_payout - (goalBudget.payouts[0].revenue - (goalBudget.payouts[0].revenue * pubPayoutDt.profit / 100))) / pub_avg_payout;
@@ -9726,9 +9726,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
                                                     } else {
                                                         const pub_avg_payout = parseFloat(goalBudget.payouts[0].revenue);
@@ -9745,9 +9745,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
                                                     }
                                                 } else {
@@ -9769,10 +9769,10 @@ exports.updateOffer = async (req, res) => {
                                                                 return;
                                                             }
                                                         }).catch(err => {
-                                                           console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            console.log(err);
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
                                                     } else {
                                                         const pubNonPayblePayout = ((parseFloat(goalBudget.payouts[0].revenue) * parseFloat(pCheck.revenue_share)) / 100);
@@ -9792,9 +9792,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
 
                                                     }
@@ -9816,9 +9816,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
 
                                                     } else {
@@ -9836,9 +9836,9 @@ exports.updateOffer = async (req, res) => {
                                                             }
                                                         }).catch(err => {
                                                             console.log(err);
-															const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-															res.status(200).send(resMsg);
-															return;
+                                                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                            res.status(200).send(resMsg);
+                                                            return;
                                                         });
                                                     }
                                                 }
@@ -9852,10 +9852,10 @@ exports.updateOffer = async (req, res) => {
                                 return;
                             }
                         }).catch(err => {
-                           console.log(err);
-							const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-							res.status(200).send(resMsg);
-							return;
+                            console.log(err);
+                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                            res.status(200).send(resMsg);
+                            return;
                         });
                     }
                 } else {
@@ -9865,9 +9865,9 @@ exports.updateOffer = async (req, res) => {
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                res.status(200).send(resMsg);
+                return;
             });
 
 
@@ -9913,9 +9913,9 @@ exports.updateOffer = async (req, res) => {
                                                 }
                                             }).catch(err => {
                                                 console.log(err);
-												const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-												res.status(200).send(resMsg);
-												return;
+                                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                                res.status(200).send(resMsg);
+                                                return;
                                             });
                                         } else {
                                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
@@ -9925,9 +9925,9 @@ exports.updateOffer = async (req, res) => {
                                     }).catch(err => {
                                         //console.log(err);
                                         console.log(err);
-										const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-										res.status(200).send(resMsg);
-										return;
+                                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                        res.status(200).send(resMsg);
+                                        return;
                                     });
 
                                 } else {
@@ -9945,9 +9945,9 @@ exports.updateOffer = async (req, res) => {
                                         }
                                     }).catch(err => {
                                         console.log(err);
-										const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-										res.status(200).send(resMsg);
-										return;
+                                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                        res.status(200).send(resMsg);
+                                        return;
                                     });
                                 }
                             } else {
@@ -9965,9 +9965,9 @@ exports.updateOffer = async (req, res) => {
                                     }
                                 }).catch(err => {
                                     console.log(err);
-									const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-									res.status(200).send(resMsg);
-									return;
+                                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
 
                                 // SET publisher samplings/CutBack
@@ -9983,9 +9983,9 @@ exports.updateOffer = async (req, res) => {
                                     }
                                 }).catch(err => {
                                     console.log(err);
-									const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-									res.status(200).send(resMsg);
-									return;
+                                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                    res.status(200).send(resMsg);
+                                    return;
                                 });
                             }
                         }
@@ -10002,40 +10002,40 @@ exports.updateOffer = async (req, res) => {
 
                 // Send Mail to User
                 const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-				
-				// INSERT DATA INTO NOTIFICATIONS
-				const notificationData = {
-					advertiser_id: parseInt(trackier_adv_id),
-					advertiser_name: ucfirst(advName.advertiserName),
-					company_name: ucfirst(advName.advName),
-					offer_id: trackier_camp_id,
-					offer_name: ucfirst(offer_name),
-					category: "Campaign",
 
-					subject_adv: 'Offer ' + offer_name + ' has been edited',
-					message_adv: "<span class='text_primary'>Country</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                // INSERT DATA INTO NOTIFICATIONS
+                const notificationData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    company_name: ucfirst(advName.advName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    category: "Campaign",
 
-					subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-					message_sa: "<span class='text_primary'>Country</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Country</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-					read: 0
-				}
-				// END INSERT DATA INTO NOTIFICATIONS
-				await addNotificationsData(notificationData);
-				
-				  // INSERT DATA INTO Tileline
-				const timelineData = {
-				  advertiser_id: parseInt(trackier_adv_id),
-				  advertiser_name: ucfirst(advName.advertiserName),
-				  offer_id: trackier_camp_id,
-				  offer_name: ucfirst(offer_name),
-				  type: "Country",
-				  old_value: offData.country,
-				  new_value: countryString,
-				  edited_by: user_name
-				}
-				// END INSERT DATA INTO Tileline
-				await addTimelineData(timelineData);
+                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Country</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                    read: 0
+                }
+                // END INSERT DATA INTO NOTIFICATIONS
+                await addNotificationsData(notificationData);
+
+                // INSERT DATA INTO Tileline
+                const timelineData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    type: "Country",
+                    old_value: offData.country,
+                    new_value: countryString,
+                    edited_by: user_name
+                }
+                // END INSERT DATA INTO Tileline
+                await addTimelineData(timelineData);
 
                 if (advName.email_preferences == true) {
                     // Send Mail to Admin if status inactive/suspended
@@ -10059,7 +10059,7 @@ exports.updateOffer = async (req, res) => {
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                     const msgAdvertiser = {
-                         to: advName.email,
+                        to: advName.email,
                         //to: 'sudish@applabs.ai',
                         from: {
                             name: process.env.MAIL_FROM_NAME,
@@ -10131,9 +10131,9 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch((error) => {
             console.log(err);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
@@ -10159,40 +10159,40 @@ exports.updateOffer = async (req, res) => {
 
                                 // Send Mail to User
                                 const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-								
-								// INSERT DATA INTO NOTIFICATIONS
-								const notificationData = {
-									advertiser_id: parseInt(trackier_adv_id),
-									advertiser_name: ucfirst(advName.advertiserName),
-									company_name: ucfirst(advName.advName),
-									offer_id: trackier_camp_id,
-									offer_name: ucfirst(offer_name),
-									category: "Campaign",
 
-									subject_adv: 'Offer ' + offer_name + ' has been edited',
-									message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                // INSERT DATA INTO NOTIFICATIONS
+                                const notificationData = {
+                                    advertiser_id: parseInt(trackier_adv_id),
+                                    advertiser_name: ucfirst(advName.advertiserName),
+                                    company_name: ucfirst(advName.advName),
+                                    offer_id: trackier_camp_id,
+                                    offer_name: ucfirst(offer_name),
+                                    category: "Campaign",
 
-									subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-									message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                    message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-									read: 0
-								}
-								// END INSERT DATA INTO NOTIFICATIONS
-								await addNotificationsData(notificationData);
-								
-								// INSERT DATA INTO Tileline
-								const timelineData = {
-								  advertiser_id: parseInt(trackier_adv_id),
-								  advertiser_name: ucfirst(advName.advertiserName),
-								  offer_id: trackier_camp_id,
-								  offer_name: ucfirst(offer_name),
-								  type: "Price",
-								  old_value: offData.payable_event_price,
-								  new_value: payable_event_price,
-								  edited_by: user_name
-								}
-								// END INSERT DATA INTO Tileline
-								await addTimelineData(timelineData);
+                                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                    message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                    read: 0
+                                }
+                                // END INSERT DATA INTO NOTIFICATIONS
+                                await addNotificationsData(notificationData);
+
+                                // INSERT DATA INTO Tileline
+                                const timelineData = {
+                                    advertiser_id: parseInt(trackier_adv_id),
+                                    advertiser_name: ucfirst(advName.advertiserName),
+                                    offer_id: trackier_camp_id,
+                                    offer_name: ucfirst(offer_name),
+                                    type: "Price",
+                                    old_value: offData.payable_event_price,
+                                    new_value: payable_event_price,
+                                    edited_by: user_name
+                                }
+                                // END INSERT DATA INTO Tileline
+                                await addTimelineData(timelineData);
 
                                 if (advName.email_preferences == true) {
                                     // Send Mail to Admin if status inactive/suspended
@@ -10216,7 +10216,7 @@ exports.updateOffer = async (req, res) => {
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                     const msgAdvertiser = {
-                                         to: advName.email,
+                                        to: advName.email,
                                         //to: 'sudish@applabs.ai',
                                         from: {
                                             name: process.env.MAIL_FROM_NAME,
@@ -10288,9 +10288,9 @@ exports.updateOffer = async (req, res) => {
                             }
                         }).catch((error) => {
                             console.log(error);
-							const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-							res.status(200).send(resMsg);
-							return;
+                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                            res.status(200).send(resMsg);
+                            return;
                         });
                     } else {
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
@@ -10299,9 +10299,9 @@ exports.updateOffer = async (req, res) => {
                     }
                 }).catch(err => {
                     console.log(err);
-					const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-					res.status(200).send(resMsg);
-					return;
+                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                    res.status(200).send(resMsg);
+                    return;
                 });
 
             } else {
@@ -10311,780 +10311,780 @@ exports.updateOffer = async (req, res) => {
             }
         }).catch(err => {
             console.log(err);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
     }
 
 
-     if (typeof differencesReq.goal_budget === 'object' && !Array.isArray(differencesReq.goal_budget) && differencesReq.goal_budget !== null) {
+    if (typeof differencesReq.goal_budget === 'object' && !Array.isArray(differencesReq.goal_budget) && differencesReq.goal_budget !== null) {
 
 
-    const differenceEventName = currentArrNonPayableEventName.filter((element) => !existArrNonPayableEventName.includes(element));
-    const differenceEventNameOld = existArrNonPayableEventName.filter((element) => !currentArrNonPayableEventName.includes(element));
+        const differenceEventName = currentArrNonPayableEventName.filter((element) => !existArrNonPayableEventName.includes(element));
+        const differenceEventNameOld = existArrNonPayableEventName.filter((element) => !currentArrNonPayableEventName.includes(element));
 
-    if (Array.isArray(differenceEventName) && differenceEventName.length > 0 && Array.isArray(differenceEventNameOld) && differenceEventNameOld.length > 0) {
-
-
-      var old_ctalink = offData.cta_link;
-      var old_vtaLink = offData.vta_link;
-
-      if (typeof MMP !== 'undefined' && MMP == "Adjust") {
-
-        // get campaign goals
-        await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, axios_header).then(async (getMainLink) => {
-
-          if (typeof getMainLink.statusText !== 'undefined' && getMainLink.statusText == "OK") {
-
-            if (typeof getMainLink.data.campaign.url !== 'undefined' && getMainLink.data.campaign.url !== '') {
-
-              if (getMainLink.data.campaign.url.indexOf('%26goal_value%3D') !== false) {
-
-                var search_replace_cta = {};
-                var regexArrData = [];
-                var old_event_name_array = {};
-                var new_event_name_array = {};
-                for (let t = 0; t < differenceEventName.length; t++) {
-                  let evNewName = differenceEventName[t];
-                  let evOldName = differenceEventNameOld[t];
-
-                  old_event_name_array[evOldName.trim()] = evOldName.trim();
-                  new_event_name_array[evOldName.trim()] = evNewName.trim();
-
-                  const search_br_n = "%26goal_value%3D" + evOldName.trim();
-                  const search_br_n_replace = "%26goal_value%3D" + evNewName.trim();
-
-                  Object.assign(search_replace_cta, { [search_br_n]: [search_br_n_replace] });
-                  regexArrData.push(search_br_n);
-                }
-                const quotedAndCommaSeparated = regexArrData.join("|");
-                const regexData = new RegExp("" + quotedAndCommaSeparated + "", "g");
-
-                const mainCTAURL = getMainLink.data.campaign.url.replace(regexData, matched => search_replace_cta[matched]);
-
-                if (typeof getMainLink.data.campaign.iurl !== 'undefined' && getMainLink.data.campaign.iurl !== '') {
-                  const mainVTAURL = getMainLink.data.campaign.iurl.replace(regexData, matched => search_replace_cta[matched]);
-
-                  var campaignCTAVTA = { "url": mainCTAURL, "iurl": mainVTAURL };
-                } else {
-                  var campaignCTAVTA = { "url": mainCTAURL };
-                }
-
-                //Update CTA and VTA link main on trackier
-                axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, campaignCTAVTA, axios_header).then(async (CTAVTAMainRes) => {
-                  console.log('CTA VTA OR VAT link Update Request');
-                  if (typeof CTAVTAMainRes.data.success !== 'undefined' && CTAVTAMainRes.data.success == true) {
-                    //   console.log('CTA VTA OR VAT link Update Response');
-                    const campaignCTA = "https://abc.com?i=1" + old_ctalink.replace(regexData, matched => search_replace_cta[matched]);
-                    if (typeof old_vtaLink !== 'undefined' && old_vtaLink !== '') {
-                      const campaignVTA = "https://abc.com?i=1" + old_vtaLink.replace(regexData, matched => search_replace_cta[matched]);
-
-                      var cta_link = campaignCTA.replace('https://abc.com?i=1', "");
-                      var vta_link = campaignVTA.replace('https://abc.com?i=1', "");
-                    } else {
-                      var cta_link = campaignCTA.replace('https://abc.com?i=1', "");
-                      var vta_link = "";
-                    }
-
-                    // FindAll landing pages
-                    await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps", axios_header).then(async (getLp) => {
-                      if (typeof getLp.statusText !== 'undefined' && getLp.statusText == "OK") {
-
-                        for (let j = 0; j < getLp.data.landingPages.length; j++) {
-                          let lp = getLp.data.landingPages[j];
-                          let LpURL = decodeHtml(lp.url);
-
-                          if (LpURL.indexOf('%26goal_value%3D') !== false) {
-
-                            const lpCTAReplaceEventyName = LpURL.replace(regexData, matched => search_replace_cta[matched]);
-
-                            if (typeof getMainLink.data.campaign.iurl !== 'undefined' && getMainLink.data.campaign.iurl !== '') {
-                              const lpVTAReplaceEventName = getMainLink.data.campaign.iurl.replace(regexData, matched => search_replace_cta[matched]);
-
-                              var lpData = {
-                                title: lp.title,
-                                url: lpCTAReplaceEventyName,
-                                status: lp.status,
-                                lpType: lp.lpType,
-                                visibility: lp.visibility,
-                                iurl: lpVTAReplaceEventName
-                              };
-                            } else {
-                              var lpData = {
-                                title: lp.title,
-                                url: lpCTAReplaceEventyName,
-                                status: lp.status,
-                                lpType: lp.lpType,
-                                visibility: lp.visibility
-                              };
-                            }
-
-                            console.log('API Edit a Landing Page with Publisher Update Request');
-                            await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps/" + lp._id, lpData, axios_header).then((resLpData) => {
-                              if (typeof resLpData.data.success !== 'undefined' && resLpData.data.success == true) {
-                                console.log('API Edit a Landing Page with Publisher Update Response');
-                              }
-                            }).catch(err => {
-                              console.log(err);
-                              const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                              res.status(200).send(resMsg);
-                              return;
-                            });
-
-                          }
-                        }
-                      } else {
-                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                        res.status(200).send(resMsg);
-                        return;
-                      }
-                    }).catch(err => {
-                      console.error(err);
-                      const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                      res.status(200).send(resMsg);
-                      return;
-                    });
+        if (Array.isArray(differenceEventName) && differenceEventName.length > 0 && Array.isArray(differenceEventNameOld) && differenceEventNameOld.length > 0) {
 
 
-                    // UPDATE DB AND GOALS EVENT ON TRACKIER
+            var old_ctalink = offData.cta_link;
+            var old_vtaLink = offData.vta_link;
 
-                    var nonPayableEventNameString = currentArrNonPayableEventName.join(',');
-                    // get campaign goals
-                    await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals", axios_header).then(async (resCampGoals) => {
+            if (typeof MMP !== 'undefined' && MMP == "Adjust") {
 
-                      if (typeof resCampGoals.statusText !== 'undefined' && resCampGoals.statusText == "OK") {
+                // get campaign goals
+                await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, axios_header).then(async (getMainLink) => {
 
-                        for (let k = 0; k < resCampGoals.data.goals.length; k++) {
-                          let campGoals = resCampGoals.data.goals[k];
+                    if (typeof getMainLink.statusText !== 'undefined' && getMainLink.statusText == "OK") {
 
-                          if (typeof campGoals.title !== 'undefined' && new_event_name_array.hasOwnProperty(campGoals.title)) {
+                        if (typeof getMainLink.data.campaign.url !== 'undefined' && getMainLink.data.campaign.url !== '') {
 
-                            const goalsId = campGoals._id;
-                            const title = new_event_name_array[campGoals.title];
-                            const type = campGoals.type;
-                            const payout = campGoals.payouts[0].payout;
-                            const revenue = campGoals.payouts[0].revenue;
-                            const payout_model = campGoals.payouts[0].payout_model;
-                            const geo = campGoals.payouts[0].geo;
+                            if (getMainLink.data.campaign.url.indexOf('%26goal_value%3D') !== false) {
 
-                            const campaignGoals = { "title": title, "value": title, "type": type, "payout_model": payout_model, "payouts": [{ "payout": parseFloat(payout), "revenue": parseFloat(revenue), "geo": geo }] };
+                                var search_replace_cta = {};
+                                var regexArrData = [];
+                                var old_event_name_array = {};
+                                var new_event_name_array = {};
+                                for (let t = 0; t < differenceEventName.length; t++) {
+                                    let evNewName = differenceEventName[t];
+                                    let evOldName = differenceEventNameOld[t];
 
-                            await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals/" + goalsId, campaignGoals, axios_header).then(async (cGoalRes) => {
-                              console.log('Goals Price Edited Request');
-                              if (typeof cGoalRes.data.success !== 'undefined' && cGoalRes.data.success == true) {
-                                console.log('Goals Price Edited Response');
+                                    old_event_name_array[evOldName.trim()] = evOldName.trim();
+                                    new_event_name_array[evOldName.trim()] = evNewName.trim();
 
-                                // Event Name CTA Link Main ANd VTA Link Main Update
-                                Offer.findOneAndUpdate({ _id }, { non_payable_event_name: nonPayableEventNameString, cta_link: cta_link, vta_link: vta_link, }, { new: true }).exec().then(async (resOffer) => {
-                                  console.log('Non Payable event name Update Request');
-                                  if (resOffer) {
-                                    console.log('Non Payable event name Update Response');
+                                    const search_br_n = "%26goal_value%3D" + evOldName.trim();
+                                    const search_br_n_replace = "%26goal_value%3D" + evNewName.trim();
 
-                                    // Send Mail to User
-                                    const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+                                    Object.assign(search_replace_cta, { [search_br_n]: [search_br_n_replace] });
+                                    regexArrData.push(search_br_n);
+                                }
+                                const quotedAndCommaSeparated = regexArrData.join("|");
+                                const regexData = new RegExp("" + quotedAndCommaSeparated + "", "g");
 
-                                    // INSERT DATA INTO NOTIFICATIONS
-                                    const notificationData = {
-                                      advertiser_id: parseInt(trackier_adv_id),
-                                      advertiser_name: ucfirst(advName.advertiserName),
-                                      company_name: ucfirst(advName.advName),
-                                      offer_id: trackier_camp_id,
-                                      offer_name: ucfirst(offer_name),
-                                      category: "Campaign",
+                                const mainCTAURL = getMainLink.data.campaign.url.replace(regexData, matched => search_replace_cta[matched]);
 
-                                      subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                      message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                if (typeof getMainLink.data.campaign.iurl !== 'undefined' && getMainLink.data.campaign.iurl !== '') {
+                                    const mainVTAURL = getMainLink.data.campaign.iurl.replace(regexData, matched => search_replace_cta[matched]);
 
-                                      subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                      message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                    var campaignCTAVTA = { "url": mainCTAURL, "iurl": mainVTAURL };
+                                } else {
+                                    var campaignCTAVTA = { "url": mainCTAURL };
+                                }
 
-                                      read: 0,
-                                    }
-                                    // END INSERT DATA INTO NOTIFICATIONS
-                                    await addNotificationsData(notificationData);
+                                //Update CTA and VTA link main on trackier
+                                axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, campaignCTAVTA, axios_header).then(async (CTAVTAMainRes) => {
+                                    console.log('CTA VTA OR VAT link Update Request');
+                                    if (typeof CTAVTAMainRes.data.success !== 'undefined' && CTAVTAMainRes.data.success == true) {
+                                        //   console.log('CTA VTA OR VAT link Update Response');
+                                        const campaignCTA = "https://abc.com?i=1" + old_ctalink.replace(regexData, matched => search_replace_cta[matched]);
+                                        if (typeof old_vtaLink !== 'undefined' && old_vtaLink !== '') {
+                                            const campaignVTA = "https://abc.com?i=1" + old_vtaLink.replace(regexData, matched => search_replace_cta[matched]);
 
-                                    // INSERT DATA INTO Tileline
-                                    const timelineData = {
-                                      advertiser_id: parseInt(trackier_adv_id),
-                                      advertiser_name: ucfirst(advName.advertiserName),
-                                      offer_id: trackier_camp_id,
-                                      offer_name: ucfirst(offer_name),
-                                      type: "Event Name",
-                                      old_value: old_event_name_array[campGoals.title],
-                                      new_value: new_event_name_array[campGoals.title],
-                                      edited_by: user_name
-                                    }
-                                    // END INSERT DATA INTO Tileline
-                                    await addTimelineData(timelineData);
-
-                                    if (advName.email_preferences == true) {
-                                      // Send Mail to Admin if status inactive/suspended
-                                      const bcc_mail = process.env.BCC_EMAILS.split(",");
-                                      var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
-
-                                      const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-                                      const messageBodyAdvetiser = (templateAdvertiser({
-                                        todayDate: dateprint(),
-                                        adv_id: trackier_adv_id,
-                                        offer_id: trackier_camp_id,
-                                        offer_name: offer_name,
-                                        adv_name: ucwords(advName.advName),
-                                        advertiserName: ucwords(advName.advertiserName),
-                                        edit_filed: "Event Name",
-                                        old_value: old_event_name_array[campGoals.title],
-                                        new_value: new_event_name_array[campGoals.title],
-                                        edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-                                        base_url: process.env.APPLABS_URL
-                                      }))
-                                      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                                      const msgAdvertiser = {
-                                        // to: advName.email,
-                                        to: 'sudish@applabs.ai',
-                                        from: {
-                                          name: process.env.MAIL_FROM_NAME,
-                                          email: process.env.MAIL_FROM_EMAIL,
-                                        },
-                                        bcc: bcc_mail,
-                                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
-                                        html: messageBodyAdvetiser
-                                      };
-                                      //ES6
-                                      sgMail.send(msgAdvertiser).then(() => { }, error => {
-                                        console.error(error);
-                                        if (error.response) {
-                                          console.error(error.response.body)
+                                            var cta_link = campaignCTA.replace('https://abc.com?i=1', "");
+                                            var vta_link = campaignVTA.replace('https://abc.com?i=1', "");
+                                        } else {
+                                            var cta_link = campaignCTA.replace('https://abc.com?i=1', "");
+                                            var vta_link = "";
                                         }
-                                      }).catch((error) => {
-                                        const response = { 'success': false, 'message': error };
-                                        res.status(200).send(response);
-                                        return;
-                                      });
-                                    }
 
-                                    // Send Mail to Admin
-                                    const admin_mail = process.env.ADMIN_EMAILS.split(",");
-                                    const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
-                                    const templateAdmin = handlebars.compile(emailTemplateAdmin);
-                                    const messageBodyAdmin = (templateAdmin({
-                                      todayDate: dateprint(),
-                                      adv_id: trackier_adv_id,
-                                      offer_id: trackier_camp_id,
-                                      offer_name: offer_name,
-                                      adv_name: ucwords(advName.advName),
-                                      advertiserName: ucwords(advName.advertiserName),
-                                      edit_filed: "Event Name",
-                                      old_value: old_event_name_array[campGoals.title],
-                                      new_value: new_event_name_array[campGoals.title],
-                                      edited_by: user_name,
-                                      url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-                                      base_url: process.env.APPLABS_URL
-                                    }))
-                                    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                                    const msgAdmin = {
-                                      to: admin_mail,
-                                      from: {
-                                        name: process.env.MAIL_FROM_NAME,
-                                        email: process.env.MAIL_FROM_EMAIL,
-                                      },
-                                      //bcc: bcc_mail,
-                                      subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
-                                      html: messageBodyAdmin
-                                    };
-                                    //ES6
-                                    sgMail.send(msgAdmin).then(() => { }, error => {
-                                      console.error(error);
-                                      if (error.response) {
-                                        console.error(error.response.body)
-                                      }
-                                    }).catch((error) => {
-                                      console.log(error);
-                                      const response = { 'success': false, 'message': error };
-                                      console.error(response);
-                                    });
-                                    // End Send Mail to Admin
-                                  } else {
+                                        // FindAll landing pages
+                                        await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps", axios_header).then(async (getLp) => {
+                                            if (typeof getLp.statusText !== 'undefined' && getLp.statusText == "OK") {
+
+                                                for (let j = 0; j < getLp.data.landingPages.length; j++) {
+                                                    let lp = getLp.data.landingPages[j];
+                                                    let LpURL = decodeHtml(lp.url);
+
+                                                    if (LpURL.indexOf('%26goal_value%3D') !== false) {
+
+                                                        const lpCTAReplaceEventyName = LpURL.replace(regexData, matched => search_replace_cta[matched]);
+
+                                                        if (typeof getMainLink.data.campaign.iurl !== 'undefined' && getMainLink.data.campaign.iurl !== '') {
+                                                            const lpVTAReplaceEventName = getMainLink.data.campaign.iurl.replace(regexData, matched => search_replace_cta[matched]);
+
+                                                            var lpData = {
+                                                                title: lp.title,
+                                                                url: lpCTAReplaceEventyName,
+                                                                status: lp.status,
+                                                                lpType: lp.lpType,
+                                                                visibility: lp.visibility,
+                                                                iurl: lpVTAReplaceEventName
+                                                            };
+                                                        } else {
+                                                            var lpData = {
+                                                                title: lp.title,
+                                                                url: lpCTAReplaceEventyName,
+                                                                status: lp.status,
+                                                                lpType: lp.lpType,
+                                                                visibility: lp.visibility
+                                                            };
+                                                        }
+
+                                                        console.log('API Edit a Landing Page with Publisher Update Request');
+                                                        await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps/" + lp._id, lpData, axios_header).then((resLpData) => {
+                                                            if (typeof resLpData.data.success !== 'undefined' && resLpData.data.success == true) {
+                                                                console.log('API Edit a Landing Page with Publisher Update Response');
+                                                            }
+                                                        }).catch(err => {
+                                                            console.log(err);
+                                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                            res.status(200).send(resMsg);
+                                                            return;
+                                                        });
+
+                                                    }
+                                                }
+                                            } else {
+                                                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                res.status(200).send(resMsg);
+                                                return;
+                                            }
+                                        }).catch(err => {
+                                            console.error(err);
+                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                            res.status(200).send(resMsg);
+                                            return;
+                                        });
+
+
+                                        // UPDATE DB AND GOALS EVENT ON TRACKIER
+
+                                        var nonPayableEventNameString = currentArrNonPayableEventName.join(',');
+                                        // get campaign goals
+                                        await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals", axios_header).then(async (resCampGoals) => {
+
+                                            if (typeof resCampGoals.statusText !== 'undefined' && resCampGoals.statusText == "OK") {
+
+                                                for (let k = 0; k < resCampGoals.data.goals.length; k++) {
+                                                    let campGoals = resCampGoals.data.goals[k];
+
+                                                    if (typeof campGoals.title !== 'undefined' && new_event_name_array.hasOwnProperty(campGoals.title)) {
+
+                                                        const goalsId = campGoals._id;
+                                                        const title = new_event_name_array[campGoals.title];
+                                                        const type = campGoals.type;
+                                                        const payout = campGoals.payouts[0].payout;
+                                                        const revenue = campGoals.payouts[0].revenue;
+                                                        const payout_model = campGoals.payouts[0].payout_model;
+                                                        const geo = campGoals.payouts[0].geo;
+
+                                                        const campaignGoals = { "title": title, "value": title, "type": type, "payout_model": payout_model, "payouts": [{ "payout": parseFloat(payout), "revenue": parseFloat(revenue), "geo": geo }] };
+
+                                                        await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals/" + goalsId, campaignGoals, axios_header).then(async (cGoalRes) => {
+                                                            console.log('Goals Price Edited Request');
+                                                            if (typeof cGoalRes.data.success !== 'undefined' && cGoalRes.data.success == true) {
+                                                                console.log('Goals Price Edited Response');
+
+                                                                // Event Name CTA Link Main ANd VTA Link Main Update
+                                                                Offer.findOneAndUpdate({ _id }, { non_payable_event_name: nonPayableEventNameString, cta_link: cta_link, vta_link: vta_link, }, { new: true }).exec().then(async (resOffer) => {
+                                                                    console.log('Non Payable event name Update Request');
+                                                                    if (resOffer) {
+                                                                        console.log('Non Payable event name Update Response');
+
+                                                                        // Send Mail to User
+                                                                        const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+
+                                                                        // INSERT DATA INTO NOTIFICATIONS
+                                                                        const notificationData = {
+                                                                            advertiser_id: parseInt(trackier_adv_id),
+                                                                            advertiser_name: ucfirst(advName.advertiserName),
+                                                                            company_name: ucfirst(advName.advName),
+                                                                            offer_id: trackier_camp_id,
+                                                                            offer_name: ucfirst(offer_name),
+                                                                            category: "Campaign",
+
+                                                                            subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                                                            message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                                                                            subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                                            message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                                                            read: 0,
+                                                                        }
+                                                                        // END INSERT DATA INTO NOTIFICATIONS
+                                                                        await addNotificationsData(notificationData);
+
+                                                                        // INSERT DATA INTO Tileline
+                                                                        const timelineData = {
+                                                                            advertiser_id: parseInt(trackier_adv_id),
+                                                                            advertiser_name: ucfirst(advName.advertiserName),
+                                                                            offer_id: trackier_camp_id,
+                                                                            offer_name: ucfirst(offer_name),
+                                                                            type: "Event Name",
+                                                                            old_value: old_event_name_array[campGoals.title],
+                                                                            new_value: new_event_name_array[campGoals.title],
+                                                                            edited_by: user_name
+                                                                        }
+                                                                        // END INSERT DATA INTO Tileline
+                                                                        await addTimelineData(timelineData);
+
+                                                                        if (advName.email_preferences == true) {
+                                                                            // Send Mail to Admin if status inactive/suspended
+                                                                            const bcc_mail = process.env.BCC_EMAILS.split(",");
+                                                                            var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
+
+                                                                            const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+                                                                            const messageBodyAdvetiser = (templateAdvertiser({
+                                                                                todayDate: dateprint(),
+                                                                                adv_id: trackier_adv_id,
+                                                                                offer_id: trackier_camp_id,
+                                                                                offer_name: offer_name,
+                                                                                adv_name: ucwords(advName.advName),
+                                                                                advertiserName: ucwords(advName.advertiserName),
+                                                                                edit_filed: "Event Name",
+                                                                                old_value: old_event_name_array[campGoals.title],
+                                                                                new_value: new_event_name_array[campGoals.title],
+                                                                                edited_by: user_name,
+                                                                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                                                base_url: process.env.APPLABS_URL
+                                                                            }))
+                                                                            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                                                                            const msgAdvertiser = {
+                                                                                // to: advName.email,
+                                                                                to: 'sudish@applabs.ai',
+                                                                                from: {
+                                                                                    name: process.env.MAIL_FROM_NAME,
+                                                                                    email: process.env.MAIL_FROM_EMAIL,
+                                                                                },
+                                                                                bcc: bcc_mail,
+                                                                                subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                                                html: messageBodyAdvetiser
+                                                                            };
+                                                                            //ES6
+                                                                            sgMail.send(msgAdvertiser).then(() => { }, error => {
+                                                                                console.error(error);
+                                                                                if (error.response) {
+                                                                                    console.error(error.response.body)
+                                                                                }
+                                                                            }).catch((error) => {
+                                                                                const response = { 'success': false, 'message': error };
+                                                                                res.status(200).send(response);
+                                                                                return;
+                                                                            });
+                                                                        }
+
+                                                                        // Send Mail to Admin
+                                                                        const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                                                        const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+                                                                        const templateAdmin = handlebars.compile(emailTemplateAdmin);
+                                                                        const messageBodyAdmin = (templateAdmin({
+                                                                            todayDate: dateprint(),
+                                                                            adv_id: trackier_adv_id,
+                                                                            offer_id: trackier_camp_id,
+                                                                            offer_name: offer_name,
+                                                                            adv_name: ucwords(advName.advName),
+                                                                            advertiserName: ucwords(advName.advertiserName),
+                                                                            edit_filed: "Event Name",
+                                                                            old_value: old_event_name_array[campGoals.title],
+                                                                            new_value: new_event_name_array[campGoals.title],
+                                                                            edited_by: user_name,
+                                                                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                                            base_url: process.env.APPLABS_URL
+                                                                        }))
+                                                                        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                                                                        const msgAdmin = {
+                                                                            to: admin_mail,
+                                                                            from: {
+                                                                                name: process.env.MAIL_FROM_NAME,
+                                                                                email: process.env.MAIL_FROM_EMAIL,
+                                                                            },
+                                                                            //bcc: bcc_mail,
+                                                                            subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+                                                                            html: messageBodyAdmin
+                                                                        };
+                                                                        //ES6
+                                                                        sgMail.send(msgAdmin).then(() => { }, error => {
+                                                                            console.error(error);
+                                                                            if (error.response) {
+                                                                                console.error(error.response.body)
+                                                                            }
+                                                                        }).catch((error) => {
+                                                                            console.log(error);
+                                                                            const response = { 'success': false, 'message': error };
+                                                                            console.error(response);
+                                                                        });
+                                                                        // End Send Mail to Admin
+                                                                    } else {
+                                                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                                        res.status(200).send(resMsg);
+                                                                        return;
+                                                                    }
+                                                                }).catch((error) => {
+                                                                    console.log(err);
+                                                                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                                    res.status(200).send(resMsg);
+                                                                    return;
+                                                                });
+                                                            } else {
+                                                                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                                res.status(200).send(resMsg);
+                                                                return;
+                                                            }
+                                                        }).catch(err => {
+                                                            console.log(err);
+                                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                            res.status(200).send(resMsg);
+                                                            return;
+                                                        });
+                                                    }
+                                                }
+                                            } else {
+                                                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                res.status(200).send(resMsg);
+                                                return;
+                                            }
+
+                                        }).catch(err => {
+                                            console.error(err);
+                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                            res.status(200).send(resMsg);
+                                            return;
+                                        });
+
+                                    } else {
+                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                        res.status(200).send(resMsg);
+                                        return;
+                                    }
+                                }).catch(err => {
+                                    console.log(err);
                                     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
                                     res.status(200).send(resMsg);
                                     return;
-                                  }
-                                }).catch((error) => {
-                                  console.log(err);
-                                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                                  res.status(200).send(resMsg);
-                                  return;
                                 });
-                              } else {
-                                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                                res.status(200).send(resMsg);
-                                return;
-                              }
-                            }).catch(err => {
-                              console.log(err);
-                              const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                              res.status(200).send(resMsg);
-                              return;
-                            });
-                          }
-                        }
-                      } else {
-                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                        res.status(200).send(resMsg);
-                        return;
-                      }
-
-                    }).catch(err => {
-                      console.error(err);
-                      const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                      res.status(200).send(resMsg);
-                      return;
-                    });
-
-                  } else {
-                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                    res.status(200).send(resMsg);
-                    return;
-                  }
-                }).catch(err => {
-                  console.log(err);
-                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                  res.status(200).send(resMsg);
-                  return;
-                });
-              }
-            } else {
-              const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-              res.status(200).send(resMsg);
-              return;
-            }
-          } else {
-            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-            res.status(200).send(resMsg);
-            return;
-          }
-        }).catch(err => {
-          console.error(err);
-          const errMsg = { "success": false, "errors": err.response.data.errors };
-          res.status(400).send(errMsg);
-          return;
-        });
-
-      } else {
-        var old_event_name_array = {};
-        var new_event_name_array = {};
-        for (let t = 0; t < differenceEventName.length; t++) {
-          let evNewName = differenceEventName[t];
-          let evOldName = differenceEventNameOld[t];
-          old_event_name_array[evOldName.trim()] = evOldName.trim();
-          new_event_name_array[evOldName.trim()] = evNewName.trim();
-        }
-        var nonPayableEventNameString = currentArrNonPayableEventName.join(',');
-        // get campaign goals
-        await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals", axios_header).then(async (resCampGoals) => {
-
-          if (typeof resCampGoals.statusText !== 'undefined' && resCampGoals.statusText == "OK") {
-
-            for (let k = 0; k < resCampGoals.data.goals.length; k++) {
-              let campGoals = resCampGoals.data.goals[k];
-
-              if (typeof campGoals.title !== 'undefined' && new_event_name_array.hasOwnProperty(campGoals.title)) {
-
-                const goalsId = campGoals._id;
-                const title = new_event_name_array[campGoals.title];
-                const type = campGoals.type;
-                const payout = campGoals.payouts[0].payout;
-                const revenue = campGoals.payouts[0].revenue;
-                const payout_model = campGoals.payouts[0].payout_model;
-                const geo = campGoals.payouts[0].geo;
-
-                const campaignGoals = { "title": title, "value": title, "type": type, "payout_model": payout_model, "payouts": [{ "payout": parseFloat(payout), "revenue": parseFloat(revenue), "geo": geo }] };
-
-                await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals/" + goalsId, campaignGoals, axios_header).then(async (cGoalRes) => {
-                  console.log('Goals Price Edited Request');
-                  if (typeof cGoalRes.data.success !== 'undefined' && cGoalRes.data.success == true) {
-                    console.log('Goals Price Edited Response');
-
-                    // Event Name CTA Link Main ANd VTA Link Main Update
-                    Offer.findOneAndUpdate({ _id }, { non_payable_event_name: nonPayableEventNameString }, { new: true }).exec().then(async (resOffer) => {
-                      console.log('Non Payable event name Update Request');
-                      if (resOffer) {
-                        console.log('Non Payable event name Update Response');
-
-                        // Send Mail to User
-                        const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-
-                        // INSERT DATA INTO NOTIFICATIONS
-                        const notificationData = {
-                          advertiser_id: parseInt(trackier_adv_id),
-                          advertiser_name: ucfirst(advName.advertiserName),
-                          company_name: ucfirst(advName.advName),
-                          offer_id: trackier_camp_id,
-                          offer_name: ucfirst(offer_name),
-                          category: "Campaign",
-
-                          subject_adv: 'Offer ' + offer_name + ' has been edited',
-                          message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
-
-                          subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                          message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
-
-                          read: 0,
-                        }
-                        // END INSERT DATA INTO NOTIFICATIONS
-                        await addNotificationsData(notificationData);
-
-                        // INSERT DATA INTO Tileline
-                        const timelineData = {
-                          advertiser_id: parseInt(trackier_adv_id),
-                          advertiser_name: ucfirst(advName.advertiserName),
-                          offer_id: trackier_camp_id,
-                          offer_name: ucfirst(offer_name),
-                          type: "Event Name",
-                          old_value: old_event_name_array[campGoals.title],
-                          new_value: new_event_name_array[campGoals.title],
-                          edited_by: user_name
-                        }
-                        // END INSERT DATA INTO Tileline
-                        await addTimelineData(timelineData);
-
-                        if (advName.email_preferences == true) {
-                          // Send Mail to Admin if status inactive/suspended
-                          const bcc_mail = process.env.BCC_EMAILS.split(",");
-                          var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
-
-                          const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-                          const messageBodyAdvetiser = (templateAdvertiser({
-                            todayDate: dateprint(),
-                            adv_id: trackier_adv_id,
-                            offer_id: trackier_camp_id,
-                            offer_name: offer_name,
-                            adv_name: ucwords(advName.advName),
-                            advertiserName: ucwords(advName.advertiserName),
-                            edit_filed: "Event Name",
-                            old_value: old_event_name_array[campGoals.title],
-                            new_value: new_event_name_array[campGoals.title],
-                            edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-                            base_url: process.env.APPLABS_URL
-                          }))
-                          sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                          const msgAdvertiser = {
-                            // to: advName.email,
-                            to: 'sudish@applabs.ai',
-                            from: {
-                              name: process.env.MAIL_FROM_NAME,
-                              email: process.env.MAIL_FROM_EMAIL,
-                            },
-                            bcc: bcc_mail,
-                            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
-                            html: messageBodyAdvetiser
-                          };
-                          //ES6
-                          sgMail.send(msgAdvertiser).then(() => { }, error => {
-                            console.error(error);
-                            if (error.response) {
-                              console.error(error.response.body)
                             }
-                          }).catch((error) => {
-                            const response = { 'success': false, 'message': error };
-                            res.status(200).send(response);
+                        } else {
+                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                            res.status(200).send(resMsg);
                             return;
-                          });
                         }
-
-                        // Send Mail to Admin
-                        const admin_mail = process.env.ADMIN_EMAILS.split(",");
-                        const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
-                        const templateAdmin = handlebars.compile(emailTemplateAdmin);
-                        const messageBodyAdmin = (templateAdmin({
-                          todayDate: dateprint(),
-                          adv_id: trackier_adv_id,
-                          offer_id: trackier_camp_id,
-                          offer_name: offer_name,
-                          adv_name: ucwords(advName.advName),
-                          advertiserName: ucwords(advName.advertiserName),
-                          edit_filed: "Event Name",
-                          old_value: old_event_name_array[campGoals.title],
-                          new_value: new_event_name_array[campGoals.title],
-                          edited_by: user_name,
-                          url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-                          base_url: process.env.APPLABS_URL
-                        }))
-                        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                        const msgAdmin = {
-                          to: admin_mail,
-                          from: {
-                            name: process.env.MAIL_FROM_NAME,
-                            email: process.env.MAIL_FROM_EMAIL,
-                          },
-                          //bcc: bcc_mail,
-                          subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
-                          html: messageBodyAdmin
-                        };
-                        //ES6
-                        sgMail.send(msgAdmin).then(() => { }, error => {
-                          console.error(error);
-                          if (error.response) {
-                            console.error(error.response.body)
-                          }
-                        }).catch((error) => {
-                          console.log(error);
-                          const response = { 'success': false, 'message': error };
-                          console.error(response);
-                        });
-                        // End Send Mail to Admin
-                      } else {
+                    } else {
                         const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
                         res.status(200).send(resMsg);
                         return;
-                      }
-                    }).catch((error) => {
-                      console.log(err);
-                      const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                      res.status(200).send(resMsg);
-                      return;
-                    });
-                  } else {
+                    }
+                }).catch(err => {
+                    console.error(err);
+                    const errMsg = { "success": false, "errors": err.response.data.errors };
+                    res.status(400).send(errMsg);
+                    return;
+                });
+
+            } else {
+                var old_event_name_array = {};
+                var new_event_name_array = {};
+                for (let t = 0; t < differenceEventName.length; t++) {
+                    let evNewName = differenceEventName[t];
+                    let evOldName = differenceEventNameOld[t];
+                    old_event_name_array[evOldName.trim()] = evOldName.trim();
+                    new_event_name_array[evOldName.trim()] = evNewName.trim();
+                }
+                var nonPayableEventNameString = currentArrNonPayableEventName.join(',');
+                // get campaign goals
+                await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals", axios_header).then(async (resCampGoals) => {
+
+                    if (typeof resCampGoals.statusText !== 'undefined' && resCampGoals.statusText == "OK") {
+
+                        for (let k = 0; k < resCampGoals.data.goals.length; k++) {
+                            let campGoals = resCampGoals.data.goals[k];
+
+                            if (typeof campGoals.title !== 'undefined' && new_event_name_array.hasOwnProperty(campGoals.title)) {
+
+                                const goalsId = campGoals._id;
+                                const title = new_event_name_array[campGoals.title];
+                                const type = campGoals.type;
+                                const payout = campGoals.payouts[0].payout;
+                                const revenue = campGoals.payouts[0].revenue;
+                                const payout_model = campGoals.payouts[0].payout_model;
+                                const geo = campGoals.payouts[0].geo;
+
+                                const campaignGoals = { "title": title, "value": title, "type": type, "payout_model": payout_model, "payouts": [{ "payout": parseFloat(payout), "revenue": parseFloat(revenue), "geo": geo }] };
+
+                                await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals/" + goalsId, campaignGoals, axios_header).then(async (cGoalRes) => {
+                                    console.log('Goals Price Edited Request');
+                                    if (typeof cGoalRes.data.success !== 'undefined' && cGoalRes.data.success == true) {
+                                        console.log('Goals Price Edited Response');
+
+                                        // Event Name CTA Link Main ANd VTA Link Main Update
+                                        Offer.findOneAndUpdate({ _id }, { non_payable_event_name: nonPayableEventNameString }, { new: true }).exec().then(async (resOffer) => {
+                                            console.log('Non Payable event name Update Request');
+                                            if (resOffer) {
+                                                console.log('Non Payable event name Update Response');
+
+                                                // Send Mail to User
+                                                const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+
+                                                // INSERT DATA INTO NOTIFICATIONS
+                                                const notificationData = {
+                                                    advertiser_id: parseInt(trackier_adv_id),
+                                                    advertiser_name: ucfirst(advName.advertiserName),
+                                                    company_name: ucfirst(advName.advName),
+                                                    offer_id: trackier_camp_id,
+                                                    offer_name: ucfirst(offer_name),
+                                                    category: "Campaign",
+
+                                                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                                    message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                                                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                    message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                                    read: 0,
+                                                }
+                                                // END INSERT DATA INTO NOTIFICATIONS
+                                                await addNotificationsData(notificationData);
+
+                                                // INSERT DATA INTO Tileline
+                                                const timelineData = {
+                                                    advertiser_id: parseInt(trackier_adv_id),
+                                                    advertiser_name: ucfirst(advName.advertiserName),
+                                                    offer_id: trackier_camp_id,
+                                                    offer_name: ucfirst(offer_name),
+                                                    type: "Event Name",
+                                                    old_value: old_event_name_array[campGoals.title],
+                                                    new_value: new_event_name_array[campGoals.title],
+                                                    edited_by: user_name
+                                                }
+                                                // END INSERT DATA INTO Tileline
+                                                await addTimelineData(timelineData);
+
+                                                if (advName.email_preferences == true) {
+                                                    // Send Mail to Admin if status inactive/suspended
+                                                    const bcc_mail = process.env.BCC_EMAILS.split(",");
+                                                    var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
+
+                                                    const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+                                                    const messageBodyAdvetiser = (templateAdvertiser({
+                                                        todayDate: dateprint(),
+                                                        adv_id: trackier_adv_id,
+                                                        offer_id: trackier_camp_id,
+                                                        offer_name: offer_name,
+                                                        adv_name: ucwords(advName.advName),
+                                                        advertiserName: ucwords(advName.advertiserName),
+                                                        edit_filed: "Event Name",
+                                                        old_value: old_event_name_array[campGoals.title],
+                                                        new_value: new_event_name_array[campGoals.title],
+                                                        edited_by: user_name,
+                                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                        base_url: process.env.APPLABS_URL
+                                                    }))
+                                                    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                                                    const msgAdvertiser = {
+                                                        // to: advName.email,
+                                                        to: 'sudish@applabs.ai',
+                                                        from: {
+                                                            name: process.env.MAIL_FROM_NAME,
+                                                            email: process.env.MAIL_FROM_EMAIL,
+                                                        },
+                                                        bcc: bcc_mail,
+                                                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                        html: messageBodyAdvetiser
+                                                    };
+                                                    //ES6
+                                                    sgMail.send(msgAdvertiser).then(() => { }, error => {
+                                                        console.error(error);
+                                                        if (error.response) {
+                                                            console.error(error.response.body)
+                                                        }
+                                                    }).catch((error) => {
+                                                        const response = { 'success': false, 'message': error };
+                                                        res.status(200).send(response);
+                                                        return;
+                                                    });
+                                                }
+
+                                                // Send Mail to Admin
+                                                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                                const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+                                                const templateAdmin = handlebars.compile(emailTemplateAdmin);
+                                                const messageBodyAdmin = (templateAdmin({
+                                                    todayDate: dateprint(),
+                                                    adv_id: trackier_adv_id,
+                                                    offer_id: trackier_camp_id,
+                                                    offer_name: offer_name,
+                                                    adv_name: ucwords(advName.advName),
+                                                    advertiserName: ucwords(advName.advertiserName),
+                                                    edit_filed: "Event Name",
+                                                    old_value: old_event_name_array[campGoals.title],
+                                                    new_value: new_event_name_array[campGoals.title],
+                                                    edited_by: user_name,
+                                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                    base_url: process.env.APPLABS_URL
+                                                }))
+                                                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                                                const msgAdmin = {
+                                                    to: admin_mail,
+                                                    from: {
+                                                        name: process.env.MAIL_FROM_NAME,
+                                                        email: process.env.MAIL_FROM_EMAIL,
+                                                    },
+                                                    //bcc: bcc_mail,
+                                                    subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+                                                    html: messageBodyAdmin
+                                                };
+                                                //ES6
+                                                sgMail.send(msgAdmin).then(() => { }, error => {
+                                                    console.error(error);
+                                                    if (error.response) {
+                                                        console.error(error.response.body)
+                                                    }
+                                                }).catch((error) => {
+                                                    console.log(error);
+                                                    const response = { 'success': false, 'message': error };
+                                                    console.error(response);
+                                                });
+                                                // End Send Mail to Admin
+                                            } else {
+                                                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                                res.status(200).send(resMsg);
+                                                return;
+                                            }
+                                        }).catch((error) => {
+                                            console.log(err);
+                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                            res.status(200).send(resMsg);
+                                            return;
+                                        });
+                                    } else {
+                                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                        res.status(200).send(resMsg);
+                                        return;
+                                    }
+                                }).catch(err => {
+                                    console.log(err);
+                                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                    res.status(200).send(resMsg);
+                                    return;
+                                });
+                            }
+                        }
+                    } else {
+                        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                        res.status(200).send(resMsg);
+                        return;
+                    }
+
+                }).catch(err => {
+                    console.error(err);
                     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
                     res.status(200).send(resMsg);
                     return;
-                  }
-                }).catch(err => {
-                  console.log(err);
-                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                  res.status(200).send(resMsg);
-                  return;
                 });
-              }
+
+
             }
-          } else {
-            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-            res.status(200).send(resMsg);
-            return;
-          }
 
-        }).catch(err => {
-          console.error(err);
-          const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-          res.status(200).send(resMsg);
-          return;
-        });
-
-
-      }
-
-    } else {
-
-      const event_price_obj = offData.non_payable_event_price.split(",");
-      var prUpdateVal = [];
-      var nonPayableEventPrice = 0;
-      var nonPayableEventPriceOld = 0;
-      for (let i = 0; i < event_price_obj.length; i++) {
-        let ev_pr = event_price_obj[i];
-        if (ev_pr > 0) {
-          if (typeof differencesReq.goal_budget[i] !== 'undefined' && differencesReq.goal_budget[i] !== "") {
-            prUpdateVal.push(differencesReq.goal_budget[i].non_payable_event_price);
-            nonPayableEventPrice = differencesReq.goal_budget[i].non_payable_event_price;
-            nonPayableEventPriceOld = ev_pr;
-          } else {
-            prUpdateVal.push(ev_pr);
-          }
         } else {
-          prUpdateVal.push(ev_pr);
-        }
-      }
 
-      // get campaign goals
-      await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals", axios_header).then(async (campGoals) => {
-        if (typeof campGoals.statusText !== 'undefined' && campGoals.statusText == "OK") {
-
-          for (let k = 0; k < campGoals.data.goals.length; k++) {
-            let goalBudget = campGoals.data.goals[k];
-
-            if (typeof goalBudget.payouts[0].revenue !== 'undefined' && goalBudget.payouts[0].revenue > 0) {
-
-              const goalsId = goalBudget._id;
-              const title = goalBudget.title;
-              const type = goalBudget.type;
-              const revenue = nonPayableEventPrice;
-              const payout_model = goalBudget.payouts[0].payout_model;
-              const geo = goalBudget.payouts[0].geo;
-
-              const campaignGoals = { "title": title, "value": title, "type": type, "payout_model": payout_model, "payouts": [{ "payout": 0, "revenue": parseFloat(revenue), "geo": geo }] };
-
-              await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals/" + goalsId, campaignGoals, axios_header).then(async (cGoalRes) => {
-                console.log('Goals Price Edited Request');
-                if (typeof cGoalRes.data.success !== 'undefined' && cGoalRes.data.success == true) {
-                  console.log('Goals Price Edited Response');
-
-                  // Event prie update in collection
-                  const nonPayableEventPriceString = prUpdateVal.join(',');
-                  Offer.findOneAndUpdate({ _id }, { non_payable_event_price: nonPayableEventPriceString }, { new: true }).exec().then(async (resOffer) => {
-                    console.log('Non Payable event price Update Request');
-                    if (resOffer) {
-                      console.log('Non Payable event price Update Response');
-
-                      // Send Mail to User
-                      const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-
-                      // INSERT DATA INTO NOTIFICATIONS
-                      const notificationData = {
-                        advertiser_id: parseInt(trackier_adv_id),
-                        advertiser_name: ucfirst(advName.advertiserName),
-                        company_name: ucfirst(advName.advName),
-                        offer_id: trackier_camp_id,
-                        offer_name: ucfirst(offer_name),
-                        category: "Campaign",
-
-                        subject_adv: 'Offer ' + offer_name + ' has been edited',
-                        message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
-
-                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                        message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
-
-                        read: 0,
-                      }
-                      // END INSERT DATA INTO NOTIFICATIONS
-                      await addNotificationsData(notificationData);
-
-                      // INSERT DATA INTO Tileline
-                      const timelineData = {
-                        advertiser_id: parseInt(trackier_adv_id),
-                        advertiser_name: ucfirst(advName.advertiserName),
-                        offer_id: trackier_camp_id,
-                        offer_name: ucfirst(offer_name),
-                        type: "Price",
-                        old_value: parseFloat(nonPayableEventPriceOld),
-                        new_value: parseFloat(nonPayableEventPrice),
-                        edited_by: user_name
-                      }
-                      // END INSERT DATA INTO Tileline
-                      await addTimelineData(timelineData);
-
-                      if (advName.email_preferences == true) {
-                        // Send Mail to Admin if status inactive/suspended
-                        const bcc_mail = process.env.BCC_EMAILS.split(",");
-                        var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
-
-                        const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-                        const messageBodyAdvetiser = (templateAdvertiser({
-                          todayDate: dateprint(),
-                          adv_id: trackier_adv_id,
-                          offer_id: trackier_camp_id,
-                          offer_name: offer_name,
-                          adv_name: ucwords(advName.advName),
-                          advertiserName: ucwords(advName.advertiserName),
-                          edit_filed: "Price",
-                          old_value: parseFloat(nonPayableEventPriceOld),
-                          new_value: parseFloat(nonPayableEventPrice),
-                          edited_by: user_name,
-                          url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-                          base_url: process.env.APPLABS_URL
-                        }))
-                        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                        const msgAdvertiser = {
-                          // to: advName.email,
-                          to: 'sudish@applabs.ai',
-                          from: {
-                            name: process.env.MAIL_FROM_NAME,
-                            email: process.env.MAIL_FROM_EMAIL,
-                          },
-                          bcc: bcc_mail,
-                          subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
-                          html: messageBodyAdvetiser
-                        };
-                        //ES6
-                        sgMail.send(msgAdvertiser).then(() => { }, error => {
-                          console.error(error);
-                          if (error.response) {
-                            console.error(error.response.body)
-                          }
-                        }).catch((error) => {
-                          const response = { 'success': false, 'message': error };
-                          res.status(200).send(response);
-                          return;
-                        });
-                      }
-
-                      // Send Mail to Admin
-                      const admin_mail = process.env.ADMIN_EMAILS.split(",");
-                      const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
-                      const templateAdmin = handlebars.compile(emailTemplateAdmin);
-                      const messageBodyAdmin = (templateAdmin({
-                        todayDate: dateprint(),
-                        adv_id: trackier_adv_id,
-                        offer_id: trackier_camp_id,
-                        offer_name: offer_name,
-                        adv_name: ucwords(advName.advName),
-                        advertiserName: ucwords(advName.advertiserName),
-                        edit_filed: "Price",
-                        old_value: parseFloat(nonPayableEventPriceOld),
-                        new_value: parseFloat(nonPayableEventPrice),
-                        edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-                        base_url: process.env.APPLABS_URL
-                      }))
-                      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                      const msgAdmin = {
-                        to: admin_mail,
-                        from: {
-                          name: process.env.MAIL_FROM_NAME,
-                          email: process.env.MAIL_FROM_EMAIL,
-                        },
-                        //bcc: bcc_mail,
-                        subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
-                        html: messageBodyAdmin
-                      };
-                      //ES6
-                      sgMail.send(msgAdmin).then(() => { }, error => {
-                        console.error(error);
-                        if (error.response) {
-                          console.error(error.response.body)
-                        }
-                      }).catch((error) => {
-                        console.log(error);
-                        const response = { 'success': false, 'message': error };
-                        console.error(response);
-                      });
-                      // End Send Mail to Admin
-
+            const event_price_obj = offData.non_payable_event_price.split(",");
+            var prUpdateVal = [];
+            var nonPayableEventPrice = 0;
+            var nonPayableEventPriceOld = 0;
+            for (let i = 0; i < event_price_obj.length; i++) {
+                let ev_pr = event_price_obj[i];
+                if (ev_pr > 0) {
+                    if (typeof differencesReq.goal_budget[i] !== 'undefined' && differencesReq.goal_budget[i] !== "") {
+                        prUpdateVal.push(differencesReq.goal_budget[i].non_payable_event_price);
+                        nonPayableEventPrice = differencesReq.goal_budget[i].non_payable_event_price;
+                        nonPayableEventPriceOld = ev_pr;
                     } else {
-                      const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                      res.status(200).send(resMsg);
-                      return;
+                        prUpdateVal.push(ev_pr);
                     }
-                  }).catch((error) => {
-                    const reMsg = { "status": false, "message": error.message };
-                    res.status(400).send(reMsg);
-                  });
                 } else {
-                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-                  res.status(200).send(resMsg);
-                  return;
+                    prUpdateVal.push(ev_pr);
                 }
-              }).catch(err => {
-                console.log(err);
+            }
+
+            // get campaign goals
+            await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals", axios_header).then(async (campGoals) => {
+                if (typeof campGoals.statusText !== 'undefined' && campGoals.statusText == "OK") {
+
+                    for (let k = 0; k < campGoals.data.goals.length; k++) {
+                        let goalBudget = campGoals.data.goals[k];
+
+                        if (typeof goalBudget.payouts[0].revenue !== 'undefined' && goalBudget.payouts[0].revenue > 0) {
+
+                            const goalsId = goalBudget._id;
+                            const title = goalBudget.title;
+                            const type = goalBudget.type;
+                            const revenue = nonPayableEventPrice;
+                            const payout_model = goalBudget.payouts[0].payout_model;
+                            const geo = goalBudget.payouts[0].geo;
+
+                            const campaignGoals = { "title": title, "value": title, "type": type, "payout_model": payout_model, "payouts": [{ "payout": 0, "revenue": parseFloat(revenue), "geo": geo }] };
+
+                            await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/goals/" + goalsId, campaignGoals, axios_header).then(async (cGoalRes) => {
+                                console.log('Goals Price Edited Request');
+                                if (typeof cGoalRes.data.success !== 'undefined' && cGoalRes.data.success == true) {
+                                    console.log('Goals Price Edited Response');
+
+                                    // Event prie update in collection
+                                    const nonPayableEventPriceString = prUpdateVal.join(',');
+                                    Offer.findOneAndUpdate({ _id }, { non_payable_event_price: nonPayableEventPriceString }, { new: true }).exec().then(async (resOffer) => {
+                                        console.log('Non Payable event price Update Request');
+                                        if (resOffer) {
+                                            console.log('Non Payable event price Update Response');
+
+                                            // Send Mail to User
+                                            const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+
+                                            // INSERT DATA INTO NOTIFICATIONS
+                                            const notificationData = {
+                                                advertiser_id: parseInt(trackier_adv_id),
+                                                advertiser_name: ucfirst(advName.advertiserName),
+                                                company_name: ucfirst(advName.advName),
+                                                offer_id: trackier_camp_id,
+                                                offer_name: ucfirst(offer_name),
+                                                category: "Campaign",
+
+                                                subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                                message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                                read: 0,
+                                            }
+                                            // END INSERT DATA INTO NOTIFICATIONS
+                                            await addNotificationsData(notificationData);
+
+                                            // INSERT DATA INTO Tileline
+                                            const timelineData = {
+                                                advertiser_id: parseInt(trackier_adv_id),
+                                                advertiser_name: ucfirst(advName.advertiserName),
+                                                offer_id: trackier_camp_id,
+                                                offer_name: ucfirst(offer_name),
+                                                type: "Price",
+                                                old_value: parseFloat(nonPayableEventPriceOld),
+                                                new_value: parseFloat(nonPayableEventPrice),
+                                                edited_by: user_name
+                                            }
+                                            // END INSERT DATA INTO Tileline
+                                            await addTimelineData(timelineData);
+
+                                            if (advName.email_preferences == true) {
+                                                // Send Mail to Admin if status inactive/suspended
+                                                const bcc_mail = process.env.BCC_EMAILS.split(",");
+                                                var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
+
+                                                const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+                                                const messageBodyAdvetiser = (templateAdvertiser({
+                                                    todayDate: dateprint(),
+                                                    adv_id: trackier_adv_id,
+                                                    offer_id: trackier_camp_id,
+                                                    offer_name: offer_name,
+                                                    adv_name: ucwords(advName.advName),
+                                                    advertiserName: ucwords(advName.advertiserName),
+                                                    edit_filed: "Price",
+                                                    old_value: parseFloat(nonPayableEventPriceOld),
+                                                    new_value: parseFloat(nonPayableEventPrice),
+                                                    edited_by: user_name,
+                                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                    base_url: process.env.APPLABS_URL
+                                                }))
+                                                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                                                const msgAdvertiser = {
+                                                    // to: advName.email,
+                                                    to: 'sudish@applabs.ai',
+                                                    from: {
+                                                        name: process.env.MAIL_FROM_NAME,
+                                                        email: process.env.MAIL_FROM_EMAIL,
+                                                    },
+                                                    bcc: bcc_mail,
+                                                    subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                    html: messageBodyAdvetiser
+                                                };
+                                                //ES6
+                                                sgMail.send(msgAdvertiser).then(() => { }, error => {
+                                                    console.error(error);
+                                                    if (error.response) {
+                                                        console.error(error.response.body)
+                                                    }
+                                                }).catch((error) => {
+                                                    const response = { 'success': false, 'message': error };
+                                                    res.status(200).send(response);
+                                                    return;
+                                                });
+                                            }
+
+                                            // Send Mail to Admin
+                                            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                            const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+                                            const templateAdmin = handlebars.compile(emailTemplateAdmin);
+                                            const messageBodyAdmin = (templateAdmin({
+                                                todayDate: dateprint(),
+                                                adv_id: trackier_adv_id,
+                                                offer_id: trackier_camp_id,
+                                                offer_name: offer_name,
+                                                adv_name: ucwords(advName.advName),
+                                                advertiserName: ucwords(advName.advertiserName),
+                                                edit_filed: "Price",
+                                                old_value: parseFloat(nonPayableEventPriceOld),
+                                                new_value: parseFloat(nonPayableEventPrice),
+                                                edited_by: user_name,
+                                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                base_url: process.env.APPLABS_URL
+                                            }))
+                                            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                                            const msgAdmin = {
+                                                to: admin_mail,
+                                                from: {
+                                                    name: process.env.MAIL_FROM_NAME,
+                                                    email: process.env.MAIL_FROM_EMAIL,
+                                                },
+                                                //bcc: bcc_mail,
+                                                subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+                                                html: messageBodyAdmin
+                                            };
+                                            //ES6
+                                            sgMail.send(msgAdmin).then(() => { }, error => {
+                                                console.error(error);
+                                                if (error.response) {
+                                                    console.error(error.response.body)
+                                                }
+                                            }).catch((error) => {
+                                                console.log(error);
+                                                const response = { 'success': false, 'message': error };
+                                                console.error(response);
+                                            });
+                                            // End Send Mail to Admin
+
+                                        } else {
+                                            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                            res.status(200).send(resMsg);
+                                            return;
+                                        }
+                                    }).catch((error) => {
+                                        const reMsg = { "status": false, "message": error.message };
+                                        res.status(400).send(reMsg);
+                                    });
+                                } else {
+                                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                                    res.status(200).send(resMsg);
+                                    return;
+                                }
+                            }).catch(err => {
+                                console.log(err);
+                                const errMsg = { "success": false, "errors": err.response.data.errors };
+                                res.status(400).send(errMsg);
+                                return;
+                            });
+                        }
+                    }
+                } else {
+                    const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                    res.status(200).send(resMsg);
+                    return;
+                }
+            }).catch(err => {
+                console.error(err);
                 const errMsg = { "success": false, "errors": err.response.data.errors };
                 res.status(400).send(errMsg);
                 return;
-              });
-            }
-          }
-        } else {
-          const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-          res.status(200).send(resMsg);
-          return;
+            });
         }
-      }).catch(err => {
-        console.error(err);
-        const errMsg = { "success": false, "errors": err.response.data.errors };
-        res.status(400).send(errMsg);
-        return;
-      });
-    }
 
-  }
+    }
 
 
 
@@ -11131,9 +11131,9 @@ exports.updateOffer = async (req, res) => {
                                 }
                             }).catch(err => {
                                 console.log(err);
-								const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
 
                         } else {
@@ -11145,9 +11145,9 @@ exports.updateOffer = async (req, res) => {
                                 }
                             }).catch(err => {
                                 console.log(err);
-								const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-								res.status(200).send(resMsg);
-								return;
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
                             });
                         }
                     }
@@ -11161,40 +11161,40 @@ exports.updateOffer = async (req, res) => {
 
                             // SENDING MAIL TO EDIT CTA LINK
                             const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-							
-							// INSERT DATA INTO NOTIFICATIONS
-							const notificationData = {
-								advertiser_id: parseInt(trackier_adv_id),
-								advertiser_name: ucfirst(advName.advertiserName),
-								company_name: ucfirst(advName.advName),
-								offer_id: trackier_camp_id,
-								offer_name: ucfirst(offer_name),
-								category: "Campaign",
 
-								subject_adv: 'Offer ' + offer_name + ' has been edited',
-								message_adv: "<span class='text_primary'>Publisher</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                            // INSERT DATA INTO NOTIFICATIONS
+                            const notificationData = {
+                                advertiser_id: parseInt(trackier_adv_id),
+                                advertiser_name: ucfirst(advName.advertiserName),
+                                company_name: ucfirst(advName.advName),
+                                offer_id: trackier_camp_id,
+                                offer_name: ucfirst(offer_name),
+                                category: "Campaign",
 
-								subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-								message_sa: "<span class='text_primary'>Publisher</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                subject_adv: 'Offer ' + offer_name + ' has been edited',
+                                message_adv: "<span class='text_primary'>Publisher</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-								read: 0
-							}
-							// END INSERT DATA INTO NOTIFICATIONS
-							await addNotificationsData(notificationData);
-							
-							 // INSERT DATA INTO Tileline
-							  const timelineData = {
-								advertiser_id: parseInt(trackier_adv_id),
-								advertiser_name: ucfirst(advName.advertiserName),
-								offer_id: trackier_camp_id,
-								offer_name: ucfirst(offer_name),
-								type: "Publisher",
-								old_value: old_pub_String,
-								new_value: new_pub_String,
-								edited_by: user_name
-							  }
-							  // END INSERT DATA INTO Tileline
-							  await addTimelineData(timelineData);
+                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                message_sa: "<span class='text_primary'>Publisher</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                                read: 0
+                            }
+                            // END INSERT DATA INTO NOTIFICATIONS
+                            await addNotificationsData(notificationData);
+
+                            // INSERT DATA INTO Tileline
+                            const timelineData = {
+                                advertiser_id: parseInt(trackier_adv_id),
+                                advertiser_name: ucfirst(advName.advertiserName),
+                                offer_id: trackier_camp_id,
+                                offer_name: ucfirst(offer_name),
+                                type: "Publisher",
+                                old_value: old_pub_String,
+                                new_value: new_pub_String,
+                                edited_by: user_name
+                            }
+                            // END INSERT DATA INTO Tileline
+                            await addTimelineData(timelineData);
 
                             if (advName.email_preferences == true) {
                                 // Send Mail to Admin if status inactive/suspended
@@ -11218,8 +11218,8 @@ exports.updateOffer = async (req, res) => {
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                                 const msgAdvertiser = {
-                                     to: advName.email,
-                                   // to: 'sudish@applabs.ai',
+                                    to: advName.email,
+                                    // to: 'sudish@applabs.ai',
                                     from: {
                                         name: process.env.MAIL_FROM_NAME,
                                         email: process.env.MAIL_FROM_EMAIL,
@@ -11283,17 +11283,17 @@ exports.updateOffer = async (req, res) => {
                             // End Send Mail to Admin
                         }
                     }).catch((error) => {
-                       console.log(error);
-						const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-						res.status(200).send(resMsg);
-						return;
+                        console.log(error);
+                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                        res.status(200).send(resMsg);
+                        return;
                     });
                 }
             }).catch(err => {
                 console.log(err);
-				const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-				res.status(200).send(resMsg);
-				return;
+                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                res.status(200).send(resMsg);
+                return;
             });
         }
     }
@@ -11301,408 +11301,408 @@ exports.updateOffer = async (req, res) => {
     // Creatives UPDATE
     if (typeof differencesReq.creatives !== 'undefined' && differencesReq.creatives !== "" && Array.isArray(creatives) && creatives.length > 0) {
 
-		const creativesListOld = await CreativeModel.find({ campaign_id: _id }).sort({ _id: -1 }).exec();
-		var creativeNameOld = [];
-		for (let i = 0; i < creativesListOld.length; i++) {
-			creativeNameOld.push(creativesListOld[i].creative);
-		}
-
-		for (let i = 0; i < creatives.length; i++) {
-
-			//process.exit();
-			const creative_data = new CreativeModel({
-				campaign_id: _id,
-				trackier_adv_id: trackier_adv_id,
-				trackier_camp_id: trackier_camp_id,
-				creative: creatives[i].creative,
-				creative_type: creatives[i].creative_type,
-				concept_name: creatives[i].concept_name,
-				image_dimension: creatives[i].image_dimension,
-				ads_end_date: creatives[i].ads_end_date,
-				ads: creatives[i].ads,
-				user: creatives[i].user,
-				expired: "No"
-			});
-
-			//console.log(creative_data);
-			// Save Creative in the database
-			let saveUser = await creative_data.save(creative_data).then(data_c => {
-				console.log('Creative ok');
-			}).catch(err => {
-				console.error(err);
-			});
-		}
-
-		const creativesList = await CreativeModel.find({ campaign_id: _id }).sort({ _id: -1 }).exec();
-		var creativeName = [];
-		for (let i = 0; i < creativesList.length; i++) {
-			creativeName.push(creativesList[i].creative);
-		}
-
-		const final_creative_list = getCreativeLists(creativeName);
-		// START INSERT DATA INTO DB WITH CREATIVE CTR
-		const banner_ctr = {
-			"300x250": "1.1348-1.4514",
-			"320x480": "1.3514-1.7373",
-			"480x320": "1.303-1.8345",
-			"84x84": "1.1348-1.4514",
-			"720x1280": "1.3514-1.7373",
-			"540x960": "1.3514-1.7373",
-			"1080x1920": "1.3514-1.7373",
-			"640x640": "1.3514-1.7373",
-			"1280x720": "1.3514-1.7373",
-			"960x540": "1.3514-1.7373"
-		}
-		var creativeArr = [];
-		for (const [key, val] of Object.entries(banner_ctr)) {
-			let ctrArr = val.split('-');
-			let randCTR = await generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
-			creativeArr[key] = parseFloat(randCTR);
-		}
-
-		for (let i = 0; i < final_creative_list.length; i++) {
-			let creative = final_creative_list[i];
-			for (const [size, val] of Object.entries(creativeArr)) {
-				if (creative.indexOf(size) !== -1) {
-					const aData = new CreativeCtrModel({
-						trackier_adv_id: trackier_adv_id,
-						trackier_camp_id: trackier_camp_id,
-						creative_name: creative,
-						creative_ctr: val,
-					});
-					let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
-					var creative_ctr_exist_arr = [];
-					for (let n = 0; n < creative_ctr_exist.length; n++) {
-						let creative_c = creative_ctr_exist[n];
-						creative_ctr_exist_arr.push(creative_c.creative_name);
-					}
-					if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-						await aData.save(aData).then(ctr_data => {
-							console.log('Creative ctr ok');
-						}).catch(err => {
-							console.error(err);
-						});
-					}
-				}
-			}
-		}
-		console.log("Creative");
-		// END INSERT DATA INTO DB WITH CREATIVE CTR              
-		const creativeData = { "creativeNames": final_creative_list };
-
-		// // STEP-11 push app lists on trackier
-		await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then(async (creativeUpload) => {
-			console.log('Step39 Request');
-			if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
-				console.log('Step39 Response');
-
-				// Send Mail to User
-				const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-				
-				// INSERT DATA INTO NOTIFICATIONS
-				  const notificationData = {
-					advertiser_id: parseInt(trackier_adv_id),
-					advertiser_name: ucfirst(advName.advertiserName),
-					company_name: ucfirst(advName.advName),
-					offer_id: trackier_camp_id,
-					offer_name: ucfirst(offer_name),
-					category: "Campaign",
-
-					subject_adv: 'Offer ' + offer_name + ' has been edited',
-					message_adv: "<span class='text_primary'>Ads</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
-
-					subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-					message_sa: "<span class='text_primary'>Ads</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
-
-					read: 0,
-				  }
-				  // END INSERT DATA INTO NOTIFICATIONS
-				  await addNotificationsData(notificationData);
-
-				const creativeNameNewString = creativeName.join(', ');
-				const creativeNameOldString = creativeNameOld.join(', ');
-				
-				
-				// INSERT DATA INTO Tileline
-				const timelineData = {
-				  advertiser_id: parseInt(trackier_adv_id),
-				  advertiser_name: ucfirst(advName.advertiserName),
-				  offer_id: trackier_camp_id,
-				  offer_name: ucfirst(offer_name),
-				  type: "Ads",
-				  old_value: creativeNameNewString,
-				  new_value: creativeNameOldString,
-				  edited_by: user_name
-				}
-				// END INSERT DATA INTO Tileline
-				await addTimelineData(timelineData);
-
-				if (advName.email_preferences == true) {
-					// Send Mail to Admin if status inactive/suspended
-					const bcc_mail = process.env.BCC_EMAILS.split(",");
-					var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
-
-
-					const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-					const messageBodyAdvetiser = (templateAdvertiser({
-						todayDate: dateprint(),
-						adv_id: trackier_adv_id,
-						offer_id: trackier_camp_id,
-						offer_name: offer_name,
-						adv_name: ucwords(advName.advName),
-						advertiserName: ucwords(advName.advertiserName),
-						edit_filed: "Ads",
-						old_value: creativeNameOldString,
-						new_value: creativeNameNewString,
-						edited_by: user_name,
-						url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-						base_url: process.env.APPLABS_URL
-					}))
-					sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-					const msgAdvertiser = {
-						 to: advName.email,
-						//to: 'sudish@applabs.ai',
-						from: {
-							name: process.env.MAIL_FROM_NAME,
-							email: process.env.MAIL_FROM_EMAIL,
-						},
-						bcc: bcc_mail,
-						subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
-						html: messageBodyAdvetiser
-					};
-					//ES6
-					sgMail.send(msgAdvertiser).then(() => { }, error => {
-						console.error(error);
-						if (error.response) {
-							console.error(error.response.body)
-						}
-					}).catch((error) => {
-						const response = { 'success': false, 'message': error };
-						res.status(200).send(response);
-						return;
-					});
-				}
-
-				// Send Mail to Admin
-				const admin_mail = process.env.ADMIN_EMAILS.split(",");
-				const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
-				const templateAdmin = handlebars.compile(emailTemplateAdmin);
-				const messageBodyAdmin = (templateAdmin({
-					todayDate: dateprint(),
-					adv_id: trackier_adv_id,
-					offer_id: trackier_camp_id,
-					offer_name: offer_name,
-					adv_name: ucwords(advName.advName),
-					advertiserName: ucwords(advName.advertiserName),
-					edit_filed: "Ads",
-				    old_value: creativeNameOldString,
-				    new_value: creativeNameNewString,
-					edited_by: user_name,
-					url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-					base_url: process.env.APPLABS_URL
-				}))
-				sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-				const msgAdmin = {
-					to: admin_mail,
-					from: {
-						name: process.env.MAIL_FROM_NAME,
-						email: process.env.MAIL_FROM_EMAIL,
-					},
-					//bcc: bcc_mail,
-					subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
-					html: messageBodyAdmin
-				};
-				//ES6
-				sgMail.send(msgAdmin).then(() => { }, error => {
-					console.error(error);
-					if (error.response) {
-						console.error(error.response.body)
-					}
-				}).catch((error) => {
-					const response = { 'success': false, 'message': error };
-					console.error(response);
-				});
-				// End Send Mail to Admin
-
-
-			} else {
-				const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-				res.status(200).send(resMsg);
-				return;
-			}
-		}).catch(err => {
-			console.log(err);
-			const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-			res.status(200).send(resMsg);
-			return;
-		});
-        
-    }
-	
-	 // premium_apps UPDATE
-  if (typeof differencesReq.premium_apps !== 'undefined' && differencesReq.premium_apps !== "" && Array.isArray(premium_apps) && premium_apps.length > 0) {
-
-    // UPDATE Premium patrtners          
-    const premiumAppsData = { "premium_apps": premium_apps };
-
-    Offer.findOneAndUpdate({ _id }, premiumAppsData, { new: true }).exec().then(async (resOffer) => {
-      console.log('Premium Partners U Update Request');
-      if (resOffer) {
-        console.log('Premium Partners Update Response');
-
-        var premiumPartnersNew = [];
-        for (let i = 0; i < premium_apps.length; i++) {
-          premiumPartnersNew.push(premium_apps[i].appName);
+        const creativesListOld = await CreativeModel.find({ campaign_id: _id }).sort({ _id: -1 }).exec();
+        var creativeNameOld = [];
+        for (let i = 0; i < creativesListOld.length; i++) {
+            creativeNameOld.push(creativesListOld[i].creative);
         }
 
-        var premiumPartnersOld = [];
-        for (let i = 0; i < offData.premium_apps.length; i++) {
-          premiumPartnersOld.push(offData.premium_apps[i].appName);
+        for (let i = 0; i < creatives.length; i++) {
+
+            //process.exit();
+            const creative_data = new CreativeModel({
+                campaign_id: _id,
+                trackier_adv_id: trackier_adv_id,
+                trackier_camp_id: trackier_camp_id,
+                creative: creatives[i].creative,
+                creative_type: creatives[i].creative_type,
+                concept_name: creatives[i].concept_name,
+                image_dimension: creatives[i].image_dimension,
+                ads_end_date: creatives[i].ads_end_date,
+                ads: creatives[i].ads,
+                user: creatives[i].user,
+                expired: "No"
+            });
+
+            //console.log(creative_data);
+            // Save Creative in the database
+            let saveUser = await creative_data.save(creative_data).then(data_c => {
+                console.log('Creative ok');
+            }).catch(err => {
+                console.error(err);
+            });
         }
 
-        // Send Mail to User
-        const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
-
-        // INSERT DATA INTO NOTIFICATIONS
-        const notificationData = {
-          advertiser_id: parseInt(trackier_adv_id),
-          advertiser_name: ucfirst(advName.advertiserName),
-          company_name: ucfirst(advName.advName),
-          offer_id: trackier_camp_id,
-          offer_name: ucfirst(offer_name),
-          category: "Campaign",
-
-          subject_adv: 'Offer ' + offer_name + ' has been edited',
-          message_adv: "<span class='text_primary'>Premium Partners</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
-
-          subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-          message_sa: "<span class='text_primary'>Premium Partners</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
-
-          read: 0,
+        const creativesList = await CreativeModel.find({ campaign_id: _id }).sort({ _id: -1 }).exec();
+        var creativeName = [];
+        for (let i = 0; i < creativesList.length; i++) {
+            creativeName.push(creativesList[i].creative);
         }
-        // END INSERT DATA INTO NOTIFICATIONS
-        await addNotificationsData(notificationData);
 
-        const premiumPartnerNewString = premiumPartnersNew.join(',');
-        const premiumPartnerOldString = premiumPartnersOld.join(',');
-		
-		// INSERT DATA INTO Tileline
-        const timelineData = {
-          advertiser_id: parseInt(trackier_adv_id),
-          advertiser_name: ucfirst(advName.advertiserName),
-          offer_id: trackier_camp_id,
-          offer_name: ucfirst(offer_name),
-          type: "Premium Partners",
-          old_value: premiumPartnerNewString,
-          new_value: premiumPartnerOldString,
-          edited_by: user_name
+        const final_creative_list = getCreativeLists(creativeName);
+        // START INSERT DATA INTO DB WITH CREATIVE CTR
+        const banner_ctr = {
+            "300x250": "1.1348-1.4514",
+            "320x480": "1.3514-1.7373",
+            "480x320": "1.303-1.8345",
+            "84x84": "1.1348-1.4514",
+            "720x1280": "1.3514-1.7373",
+            "540x960": "1.3514-1.7373",
+            "1080x1920": "1.3514-1.7373",
+            "640x640": "1.3514-1.7373",
+            "1280x720": "1.3514-1.7373",
+            "960x540": "1.3514-1.7373"
         }
-        // END INSERT DATA INTO Tileline
-        await addTimelineData(timelineData);
+        var creativeArr = [];
+        for (const [key, val] of Object.entries(banner_ctr)) {
+            let ctrArr = val.split('-');
+            let randCTR = await generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
+            creativeArr[key] = parseFloat(randCTR);
+        }
 
-        if (advName.email_preferences == true) {
-          // Send Mail to Admin if status inactive/suspended
-          const bcc_mail = process.env.BCC_EMAILS.split(",");
-          var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
-
-
-          const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-          const messageBodyAdvetiser = (templateAdvertiser({
-            todayDate: dateprint(),
-            adv_id: trackier_adv_id,
-            offer_id: trackier_camp_id,
-            offer_name: offer_name,
-            adv_name: ucwords(advName.advName),
-            advertiserName: ucwords(advName.advertiserName),
-            edit_filed: "Premium Partners",
-            old_value: premiumPartnerNewString,
-            new_value: premiumPartnerOldString,
-            edited_by: user_name,
-            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-            base_url: process.env.APPLABS_URL
-          }))
-          sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-          const msgAdvertiser = {
-             to: advName.email,
-            //to: 'sudish@applabs.ai',
-            from: {
-              name: process.env.MAIL_FROM_NAME,
-              email: process.env.MAIL_FROM_EMAIL,
-            },
-            bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
-            html: messageBodyAdvetiser
-          };
-          //ES6
-          sgMail.send(msgAdvertiser).then(() => { }, error => {
-            console.error(error);
-            if (error.response) {
-              console.error(error.response.body)
+        for (let i = 0; i < final_creative_list.length; i++) {
+            let creative = final_creative_list[i];
+            for (const [size, val] of Object.entries(creativeArr)) {
+                if (creative.indexOf(size) !== -1) {
+                    const aData = new CreativeCtrModel({
+                        trackier_adv_id: trackier_adv_id,
+                        trackier_camp_id: trackier_camp_id,
+                        creative_name: creative,
+                        creative_ctr: val,
+                    });
+                    let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
+                    var creative_ctr_exist_arr = [];
+                    for (let n = 0; n < creative_ctr_exist.length; n++) {
+                        let creative_c = creative_ctr_exist[n];
+                        creative_ctr_exist_arr.push(creative_c.creative_name);
+                    }
+                    if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
+                        await aData.save(aData).then(ctr_data => {
+                            console.log('Creative ctr ok');
+                        }).catch(err => {
+                            console.error(err);
+                        });
+                    }
+                }
             }
-          }).catch((error) => {
-            const response = { 'success': false, 'message': error };
-            res.status(200).send(response);
-            return;
-          });
         }
+        console.log("Creative");
+        // END INSERT DATA INTO DB WITH CREATIVE CTR              
+        const creativeData = { "creativeNames": final_creative_list };
 
-        // Send Mail to Admin
-        const admin_mail = process.env.ADMIN_EMAILS.split(",");
-        const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
-        const templateAdmin = handlebars.compile(emailTemplateAdmin);
-        const messageBodyAdmin = (templateAdmin({
-          todayDate: dateprint(),
-          adv_id: trackier_adv_id,
-          offer_id: trackier_camp_id,
-          offer_name: offer_name,
-          adv_name: ucwords(advName.advName),
-          advertiserName: ucwords(advName.advertiserName),
-          edit_filed: "Premium Partners",
-          old_value: premiumPartnerNewString,
-          new_value: premiumPartnerOldString,
-          edited_by: user_name,
-          url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
-          base_url: process.env.APPLABS_URL
-        }))
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msgAdmin = {
-           to: admin_mail,
-          //to: "sudish@applabs.ai",
-          from: {
-            name: process.env.MAIL_FROM_NAME,
-            email: process.env.MAIL_FROM_EMAIL,
-          },
-          //bcc: bcc_mail,
-          subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
-          html: messageBodyAdmin
-        };
-        //ES6
-        sgMail.send(msgAdmin).then(() => { }, error => {
-          console.error(error);
-          if (error.response) {
-            console.error(error.response.body)
-          }
-        }).catch((error) => {
-          const response = { 'success': false, 'message': error };
-          console.error(response);
+        // // STEP-11 push app lists on trackier
+        await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then(async (creativeUpload) => {
+            console.log('Step39 Request');
+            if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+                console.log('Step39 Response');
+
+                // Send Mail to User
+                const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+
+                // INSERT DATA INTO NOTIFICATIONS
+                const notificationData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    company_name: ucfirst(advName.advName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    category: "Campaign",
+
+                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Ads</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Ads</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                    read: 0,
+                }
+                // END INSERT DATA INTO NOTIFICATIONS
+                await addNotificationsData(notificationData);
+
+                const creativeNameNewString = creativeName.join(', ');
+                const creativeNameOldString = creativeNameOld.join(', ');
+
+
+                // INSERT DATA INTO Tileline
+                const timelineData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    type: "Ads",
+                    old_value: creativeNameNewString,
+                    new_value: creativeNameOldString,
+                    edited_by: user_name
+                }
+                // END INSERT DATA INTO Tileline
+                await addTimelineData(timelineData);
+
+                if (advName.email_preferences == true) {
+                    // Send Mail to Admin if status inactive/suspended
+                    const bcc_mail = process.env.BCC_EMAILS.split(",");
+                    var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
+
+
+                    const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+                    const messageBodyAdvetiser = (templateAdvertiser({
+                        todayDate: dateprint(),
+                        adv_id: trackier_adv_id,
+                        offer_id: trackier_camp_id,
+                        offer_name: offer_name,
+                        adv_name: ucwords(advName.advName),
+                        advertiserName: ucwords(advName.advertiserName),
+                        edit_filed: "Ads",
+                        old_value: creativeNameOldString,
+                        new_value: creativeNameNewString,
+                        edited_by: user_name,
+                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        base_url: process.env.APPLABS_URL
+                    }))
+                    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                    const msgAdvertiser = {
+                        to: advName.email,
+                        //to: 'sudish@applabs.ai',
+                        from: {
+                            name: process.env.MAIL_FROM_NAME,
+                            email: process.env.MAIL_FROM_EMAIL,
+                        },
+                        bcc: bcc_mail,
+                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        html: messageBodyAdvetiser
+                    };
+                    //ES6
+                    sgMail.send(msgAdvertiser).then(() => { }, error => {
+                        console.error(error);
+                        if (error.response) {
+                            console.error(error.response.body)
+                        }
+                    }).catch((error) => {
+                        const response = { 'success': false, 'message': error };
+                        res.status(200).send(response);
+                        return;
+                    });
+                }
+
+                // Send Mail to Admin
+                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+                const templateAdmin = handlebars.compile(emailTemplateAdmin);
+                const messageBodyAdmin = (templateAdmin({
+                    todayDate: dateprint(),
+                    adv_id: trackier_adv_id,
+                    offer_id: trackier_camp_id,
+                    offer_name: offer_name,
+                    adv_name: ucwords(advName.advName),
+                    advertiserName: ucwords(advName.advertiserName),
+                    edit_filed: "Ads",
+                    old_value: creativeNameOldString,
+                    new_value: creativeNameNewString,
+                    edited_by: user_name,
+                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    base_url: process.env.APPLABS_URL
+                }))
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                const msgAdmin = {
+                    to: admin_mail,
+                    from: {
+                        name: process.env.MAIL_FROM_NAME,
+                        email: process.env.MAIL_FROM_EMAIL,
+                    },
+                    //bcc: bcc_mail,
+                    subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+                    html: messageBodyAdmin
+                };
+                //ES6
+                sgMail.send(msgAdmin).then(() => { }, error => {
+                    console.error(error);
+                    if (error.response) {
+                        console.error(error.response.body)
+                    }
+                }).catch((error) => {
+                    const response = { 'success': false, 'message': error };
+                    console.error(response);
+                });
+                // End Send Mail to Admin
+
+
+            } else {
+                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                res.status(200).send(resMsg);
+                return;
+            }
+        }).catch(err => {
+            console.log(err);
+            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(200).send(resMsg);
+            return;
         });
-        // End Send Mail to Admin
+
+    }
+
+    // premium_apps UPDATE
+    if (typeof differencesReq.premium_apps !== 'undefined' && differencesReq.premium_apps !== "" && Array.isArray(premium_apps) && premium_apps.length > 0) {
+
+        // UPDATE Premium patrtners          
+        const premiumAppsData = { "premium_apps": premium_apps };
+
+        Offer.findOneAndUpdate({ _id }, premiumAppsData, { new: true }).exec().then(async (resOffer) => {
+            console.log('Premium Partners U Update Request');
+            if (resOffer) {
+                console.log('Premium Partners Update Response');
+
+                var premiumPartnersNew = [];
+                for (let i = 0; i < premium_apps.length; i++) {
+                    premiumPartnersNew.push(premium_apps[i].appName);
+                }
+
+                var premiumPartnersOld = [];
+                for (let i = 0; i < offData.premium_apps.length; i++) {
+                    premiumPartnersOld.push(offData.premium_apps[i].appName);
+                }
+
+                // Send Mail to User
+                const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+
+                // INSERT DATA INTO NOTIFICATIONS
+                const notificationData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    company_name: ucfirst(advName.advName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    category: "Campaign",
+
+                    subject_adv: 'Offer ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Premium Partners</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Premium Partners</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+                    read: 0,
+                }
+                // END INSERT DATA INTO NOTIFICATIONS
+                await addNotificationsData(notificationData);
+
+                const premiumPartnerNewString = premiumPartnersNew.join(',');
+                const premiumPartnerOldString = premiumPartnersOld.join(',');
+
+                // INSERT DATA INTO Tileline
+                const timelineData = {
+                    advertiser_id: parseInt(trackier_adv_id),
+                    advertiser_name: ucfirst(advName.advertiserName),
+                    offer_id: trackier_camp_id,
+                    offer_name: ucfirst(offer_name),
+                    type: "Premium Partners",
+                    old_value: premiumPartnerNewString,
+                    new_value: premiumPartnerOldString,
+                    edited_by: user_name
+                }
+                // END INSERT DATA INTO Tileline
+                await addTimelineData(timelineData);
+
+                if (advName.email_preferences == true) {
+                    // Send Mail to Admin if status inactive/suspended
+                    const bcc_mail = process.env.BCC_EMAILS.split(",");
+                    var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
 
-      } else {
-        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-        res.status(200).send(resMsg);
-        return;
-      }
-    }).catch((error) => {
-      console.log(error);
-      const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-      res.status(200).send(resMsg);
-      return;
-    });
+                    const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+                    const messageBodyAdvetiser = (templateAdvertiser({
+                        todayDate: dateprint(),
+                        adv_id: trackier_adv_id,
+                        offer_id: trackier_camp_id,
+                        offer_name: offer_name,
+                        adv_name: ucwords(advName.advName),
+                        advertiserName: ucwords(advName.advertiserName),
+                        edit_filed: "Premium Partners",
+                        old_value: premiumPartnerNewString,
+                        new_value: premiumPartnerOldString,
+                        edited_by: user_name,
+                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        base_url: process.env.APPLABS_URL
+                    }))
+                    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                    const msgAdvertiser = {
+                        to: advName.email,
+                        //to: 'sudish@applabs.ai',
+                        from: {
+                            name: process.env.MAIL_FROM_NAME,
+                            email: process.env.MAIL_FROM_EMAIL,
+                        },
+                        bcc: bcc_mail,
+                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        html: messageBodyAdvetiser
+                    };
+                    //ES6
+                    sgMail.send(msgAdvertiser).then(() => { }, error => {
+                        console.error(error);
+                        if (error.response) {
+                            console.error(error.response.body)
+                        }
+                    }).catch((error) => {
+                        const response = { 'success': false, 'message': error };
+                        res.status(200).send(response);
+                        return;
+                    });
+                }
 
-  }
-	
+                // Send Mail to Admin
+                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+                const templateAdmin = handlebars.compile(emailTemplateAdmin);
+                const messageBodyAdmin = (templateAdmin({
+                    todayDate: dateprint(),
+                    adv_id: trackier_adv_id,
+                    offer_id: trackier_camp_id,
+                    offer_name: offer_name,
+                    adv_name: ucwords(advName.advName),
+                    advertiserName: ucwords(advName.advertiserName),
+                    edit_filed: "Premium Partners",
+                    old_value: premiumPartnerNewString,
+                    new_value: premiumPartnerOldString,
+                    edited_by: user_name,
+                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    base_url: process.env.APPLABS_URL
+                }))
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                const msgAdmin = {
+                    to: admin_mail,
+                    //to: "sudish@applabs.ai",
+                    from: {
+                        name: process.env.MAIL_FROM_NAME,
+                        email: process.env.MAIL_FROM_EMAIL,
+                    },
+                    //bcc: bcc_mail,
+                    subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+                    html: messageBodyAdmin
+                };
+                //ES6
+                sgMail.send(msgAdmin).then(() => { }, error => {
+                    console.error(error);
+                    if (error.response) {
+                        console.error(error.response.body)
+                    }
+                }).catch((error) => {
+                    const response = { 'success': false, 'message': error };
+                    console.error(response);
+                });
+                // End Send Mail to Admin
+
+
+            } else {
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
+            }
+        }).catch((error) => {
+            console.log(error);
+            const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+            res.status(200).send(resMsg);
+            return;
+        });
+
+    }
+
     const response = { 'success': true, 'message': 'Offer updated successfully' };
     res.status(200).send(response);
     return;
@@ -11713,103 +11713,103 @@ exports.updateOffer = async (req, res) => {
 exports.getTimeLineData = async (req, res) => {
 
 
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const skipIndex = parseInt((page - 1) * limit);
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const skipIndex = parseInt((page - 1) * limit);
 
-  const { offer_id, sorttype, sortdirection, searchQuery } = req.body;
+    const { offer_id, sorttype, sortdirection, searchQuery } = req.body;
 
-  if (!offer_id) {
-    const reMsg = { 'success': false, 'message': "offer_id is not allowed to be empty" };
-    res.status(400).send(reMsg);
-    return;
-  }
-
-  if (sorttype && sortdirection) {
-    var sortObject = {};
-    var stype = sorttype;
-    var sdir = sortdirection;
-    sortObject[stype] = sdir;
-  } else {
-    var sortObject = {};
-    var stype = '_id';
-    var sdir = -1;
-    sortObject[stype] = sdir;
-  }
-
-  var filter = {};
-  filter['offer_id'] = parseInt(offer_id);
-  if (typeof searchQuery !== "undefined" && searchQuery !== "") {
-    Object.assign(filter, {
-      $or: [{ 'offer_name': { '$regex': searchQuery, $options: 'i' } }, { 'type': { '$regex': searchQuery, $options: 'i' } }, { 'date_time': { '$regex': searchQuery, $options: 'i' } }, { 'edited_by': { '$regex': searchQuery, $options: 'i' } }]
-    });
-  }
-
-  var filters = {};
-  filters['offer_id'] = parseInt(offer_id);
-  if (typeof searchQuery !== "undefined" && searchQuery !== "") {
-    Object.assign(filters, {
-      $or: [{ 'offer_name': { '$regex': searchQuery, $options: 'i' } }, { 'type': { '$regex': searchQuery, $options: 'i' } }, { 'date_time': { '$regex': searchQuery, $options: 'i' } }, { 'edited_by': { '$regex': searchQuery, $options: 'i' } }]
-    });
-  }
-
-  let result = await Timeline.find(filters).sort(sortObject).exec();
-  var totalTimeline = parseInt(result.length);
-
-
-  const filter_Datas = { '$match': filter };
-  await Timeline.aggregate([
-    filter_Datas,
-    {
-      '$lookup': {
-        'foreignField': 'trackier_camp_id',
-        'localField': 'offer_id',
-        'as': 'Offer',
-        'from': 'campaign_manager'
-      }
-    },
-    { $unwind: { path: '$Offer', preserveNullAndEmptyArrays: true } },
-    {
-      $addFields: {
-        'campaign_manager.icon': '$Offer.icon',
-      }
-    }, {
-      $project: {
-        'Offer': 0
-      }
+    if (!offer_id) {
+        const reMsg = { 'success': false, 'message': "offer_id is not allowed to be empty" };
+        res.status(400).send(reMsg);
+        return;
     }
-  ]).sort(sortObject).skip(skipIndex).limit(limit).exec().then((notRes) => {
-    var timeArray = [];
-    for (let i = 0; i < notRes.length; i++) {
-      let value = notRes[i];
-      timeArray.push({
-        advertiser_id: value.advertiser_id,
-        advertiser_name: value.advertiser_name,
-        offer_name: value.offer_name,
-        offer_id: value.offer_id,
-        type: value.type,
-        old_value: value.old_value,
-        new_value: value.new_value,
-        date_time: value.date_time,
-        edited_by: value.edited_by,
-        icon: value.campaign_manager.icon
-      });
-    }
-    if (notRes) {
-      const response = { 'success': true, 'totoalRecords': totalTimeline, 'results': timeArray };
-      res.status(200).send(response);
-      return;
+
+    if (sorttype && sortdirection) {
+        var sortObject = {};
+        var stype = sorttype;
+        var sdir = sortdirection;
+        sortObject[stype] = sdir;
     } else {
-      const resMsg = { "success": false, "message": "No records found" };
-      res.status(200).send(resMsg);
-      return;
+        var sortObject = {};
+        var stype = '_id';
+        var sdir = -1;
+        sortObject[stype] = sdir;
     }
-  }).catch(error => {
-    console.log(error);
-    const response = { 'success': false, 'error': error };
-    res.status(400).send(response);
-    return;
-  });
+
+    var filter = {};
+    filter['offer_id'] = parseInt(offer_id);
+    if (typeof searchQuery !== "undefined" && searchQuery !== "") {
+        Object.assign(filter, {
+            $or: [{ 'offer_name': { '$regex': searchQuery, $options: 'i' } }, { 'type': { '$regex': searchQuery, $options: 'i' } }, { 'date_time': { '$regex': searchQuery, $options: 'i' } }, { 'edited_by': { '$regex': searchQuery, $options: 'i' } }]
+        });
+    }
+
+    var filters = {};
+    filters['offer_id'] = parseInt(offer_id);
+    if (typeof searchQuery !== "undefined" && searchQuery !== "") {
+        Object.assign(filters, {
+            $or: [{ 'offer_name': { '$regex': searchQuery, $options: 'i' } }, { 'type': { '$regex': searchQuery, $options: 'i' } }, { 'date_time': { '$regex': searchQuery, $options: 'i' } }, { 'edited_by': { '$regex': searchQuery, $options: 'i' } }]
+        });
+    }
+
+    let result = await Timeline.find(filters).sort(sortObject).exec();
+    var totalTimeline = parseInt(result.length);
+
+
+    const filter_Datas = { '$match': filter };
+    await Timeline.aggregate([
+        filter_Datas,
+        {
+            '$lookup': {
+                'foreignField': 'trackier_camp_id',
+                'localField': 'offer_id',
+                'as': 'Offer',
+                'from': 'campaign_manager'
+            }
+        },
+        { $unwind: { path: '$Offer', preserveNullAndEmptyArrays: true } },
+        {
+            $addFields: {
+                'campaign_manager.icon': '$Offer.icon',
+            }
+        }, {
+            $project: {
+                'Offer': 0
+            }
+        }
+    ]).sort(sortObject).skip(skipIndex).limit(limit).exec().then((notRes) => {
+        var timeArray = [];
+        for (let i = 0; i < notRes.length; i++) {
+            let value = notRes[i];
+            timeArray.push({
+                advertiser_id: value.advertiser_id,
+                advertiser_name: value.advertiser_name,
+                offer_name: value.offer_name,
+                offer_id: value.offer_id,
+                type: value.type,
+                old_value: value.old_value,
+                new_value: value.new_value,
+                date_time: value.date_time,
+                edited_by: value.edited_by,
+                icon: value.campaign_manager.icon
+            });
+        }
+        if (notRes) {
+            const response = { 'success': true, 'totoalRecords': totalTimeline, 'results': timeArray };
+            res.status(200).send(response);
+            return;
+        } else {
+            const resMsg = { "success": false, "message": "No records found" };
+            res.status(200).send(resMsg);
+            return;
+        }
+    }).catch(error => {
+        console.log(error);
+        const response = { 'success': false, 'error': error };
+        res.status(400).send(response);
+        return;
+    });
 
 };
 
