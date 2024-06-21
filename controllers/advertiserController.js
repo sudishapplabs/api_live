@@ -59,7 +59,7 @@ exports.updateAdvertiserProfile = async (req, res) => {
     return;
   }
 
-  const { profile_pic_name, profile_pic, advertiser_name, organization, website, email, mobile, im_id, address, state, country, zip, email_preferences,	billing_detail } = req.body;
+  const { profile_pic_name, profile_pic, advertiser_name, organization, website, email, mobile, im_id, address, state, country, zip, email_preferences, billing_detail } = req.body;
   // Validate request
   if (!profile_pic_name || !advertiser_name || !organization || !website || !email || !mobile || !im_id || !address || !state || !country || !zip) {
     var requestVal = "";
@@ -85,7 +85,7 @@ exports.updateAdvertiserProfile = async (req, res) => {
       var requestVal = "country";
     } else if (!zip) {
       var requestVal = "zip";
-    } 
+    }
     // console.log(requestVal);
     const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": requestVal + " is not allowed to be empty" } };
     res.status(400).send(reMsg);
@@ -103,13 +103,13 @@ exports.updateAdvertiserProfile = async (req, res) => {
     country: country,
     zip: zip,
     email_preferences: email_preferences,
-	billing_detail:billing_detail
+    billing_detail: billing_detail
   }
 
   try {
 
     Users.findOneAndUpdate({ email: email }, { profile_status: 'complete' }, { new: true }).exec().then((resUser) => {
-		
+
       if (resUser) {
 
         if (profile_pic) {
@@ -348,7 +348,7 @@ exports.addAdvertiser = async (req, res) => {
         country: country,
         zip: zip,
         email_preferences: email_preferences,
-		billing_detail:billing_detail,
+        billing_detail: billing_detail,
         assigned_to: assigned_to
       });
 
@@ -377,10 +377,10 @@ exports.addAdvertiser = async (req, res) => {
               Users.findOneAndUpdate({ email: email.toLowerCase() }, { profile_status: 'complete', 'tid': adv_create_res.data.advertiser.id }, { new: true }).exec().then((resUser) => {
                 if (resUser) {
 
-                  AdvertiserUpdate.findOneAndUpdate({ email: email.toLowerCase() }, { 'tid': adv_create_res.data.advertiser.id }, { new: true }).exec().then(async(resAdvertiser) => {
+                  AdvertiserUpdate.findOneAndUpdate({ email: email.toLowerCase() }, { 'tid': adv_create_res.data.advertiser.id }, { new: true }).exec().then(async (resAdvertiser) => {
                     if (resAdvertiser) {
-						
-						// INSERT DATA INTO NOTIFICATIONS
+
+                      // INSERT DATA INTO NOTIFICATIONS
                       const notificationData = {
                         advertiser_id: parseInt(adv_create_res.data.advertiser.id),
                         advertiser_name: resAdvertiser.name.toUpperCase(),
@@ -396,8 +396,8 @@ exports.addAdvertiser = async (req, res) => {
                       }
                       // END INSERT DATA INTO NOTIFICATIONS
                       await addNotificationsData(notificationData);
-						
-						
+
+
                       //////////////////////////////////////
                       // EMAIlL SENT START
                       // send Mail to user
@@ -405,7 +405,7 @@ exports.addAdvertiser = async (req, res) => {
                       const emailAdvertiserTemplate = fs.readFileSync(path.join("templates/advertiser_account_created.handlebars"), "utf-8");
                       const templateAdv = handlebars.compile(emailAdvertiserTemplate);
                       const messageBodyAdv = (templateAdv({
-						todayDate: dateprint(),
+                        todayDate: dateprint(),
                         name: ucfirst(resAdvertiser.name),
                         adv_name: resAdvertiser.organization.toUpperCase(),
                         url: process.env.APPLABS_URL + 'dashboard',
@@ -440,7 +440,7 @@ exports.addAdvertiser = async (req, res) => {
                       const emailTemplateAdmin = fs.readFileSync(path.join("templates/advertiser_account_created_admin.handlebars"), "utf-8");
                       const templateAdmin = handlebars.compile(emailTemplateAdmin);
                       const messageBodyAdmin = (templateAdmin({
-						todayDate: dateprint(),
+                        todayDate: dateprint(),
                         adv_name: resAdvertiser.organization.toUpperCase(),
                         added_by: ucwords(added_by),
                         url: process.env.APPLABS_URL + 'all_advertiser',
@@ -602,9 +602,9 @@ exports.registerAdvertiser = async (req, res) => {
   // Save advertiser in user collection
   user.save(user).then(async DBdata => {
     if (DBdata) {
-		
-		
-		// INSERT DATA INTO NOTIFICATIONS
+
+
+      // INSERT DATA INTO NOTIFICATIONS
       const notificationData = {
         advertiser_id: 0,
         advertiser_name: name,
@@ -619,15 +619,15 @@ exports.registerAdvertiser = async (req, res) => {
         read: 0,
       }
       await addNotificationsData(notificationData);
-		
-		
+
+
       // EMAIlL SENT START
       const bcc_mail = process.env.BCC_EMAILS.split(",");
       // send Mail to user
       const emailAdvertiserTemplate = fs.readFileSync(path.join("templates/register_advertiser.handlebars"), "utf-8");
       const templateAdv = handlebars.compile(emailAdvertiserTemplate);
       const messageBodyAdv = (templateAdv({
-		todayDate: dateprint(),
+        todayDate: dateprint(),
         name: ucfirst(DBdata.name),
         base_url: process.env.APPLABS_URL
       }))
@@ -659,7 +659,7 @@ exports.registerAdvertiser = async (req, res) => {
       const emailTemplateAdmin = fs.readFileSync(path.join("templates/register_advertiser_admin.handlebars"), "utf-8");
       const templateAdmin = handlebars.compile(emailTemplateAdmin);
       const messageBodyAdmin = (templateAdmin({
-		todayDate: dateprint(),
+        todayDate: dateprint(),
         adv_name: DBdata.company_name.toUpperCase(),
         url: process.env.APPLABS_URL + 'all_advertiser',
         base_url: process.env.APPLABS_URL
@@ -737,7 +737,7 @@ exports.getAdvertiserData = async (req, res, next) => {
     }
   }
 
- 
+
   if (typeof searchQuery !== "undefined" && searchQuery !== "") {
 
     if (searchQuery && isNumeric(searchQuery)) {
@@ -766,7 +766,17 @@ exports.getAdvertiserData = async (req, res, next) => {
           foreignField: "trackier_adv_id", as: "offerData"
         }
       }, {
-        $addFields: { totalOffers: { $size: "$offerData" } }
+        $addFields: {
+          totalOffers: {
+            $size: {
+              $filter: {
+                input: "$offerData",
+                as: "offer",
+                cond: { $ne: ["$$offer.trackier_camp_id", 0] } // Conditional check on a field from the 'offers' collection
+              }
+            }
+          }
+        }
       },
       {
         $project: {
@@ -830,7 +840,17 @@ exports.getAdvertiserData = async (req, res, next) => {
         foreignField: "trackier_adv_id", as: "offerData"
       }
     }, {
-      $addFields: { totalOffers: { $size: "$offerData" } }
+      $addFields: {
+        totalOffers: {
+          $size: {
+            $filter: {
+              input: "$offerData",
+              as: "offer",
+              cond: { $ne: ["$$offer.trackier_camp_id", 0] } // Conditional check on a field from the 'offers' collection
+            }
+          }
+        }
+      }
     },
     {
       $project: {
@@ -948,11 +968,11 @@ exports.advertiserSatatusApproved = async (req, res) => {
       if (isNumericVal(adv_id)) {
         Users.findOne({ '$and': [{ 'tid': parseInt(adv_id) }, { 'user_type': 'advertiser' }] }).exec().then((adv_collect) => {
           if (adv_collect && adv_collect.status !== status) {
-            Users.findOneAndUpdate({ tid: parseInt(adv_id) }, { 'status': status }).exec().then(async(adv_user_status) => {
+            Users.findOneAndUpdate({ tid: parseInt(adv_id) }, { 'status': status }).exec().then(async (adv_user_status) => {
               if (adv_user_status) {
                 if (advStatus !== 'active') {
-					
-					// INSERT DATA INTO NOTIFICATIONS
+
+                  // INSERT DATA INTO NOTIFICATIONS
                   const notificationData = {
                     advertiser_id: parseInt(adv_id),
                     advertiser_name: ucfirst(adv_collect.name),
@@ -975,7 +995,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                   const emailTemplateAdmin = fs.readFileSync(path.join("templates/advertiser_account_suspended.handlebars"), "utf-8");
                   const templateAdmin = handlebars.compile(emailTemplateAdmin);
                   const messageBodyAdmin = (templateAdmin({
-					todayDate: dateprint(),
+                    todayDate: dateprint(),
                     suspended_by: ucfirst(approved_by),
                     suspended_by_email: approved_by_email,
                     adv_name: ucfirst(adv_collect.company_name),
@@ -1006,8 +1026,8 @@ exports.advertiserSatatusApproved = async (req, res) => {
                   });
 
                 } else {
-					
-					// INSERT DATA INTO NOTIFICATIONS
+
+                  // INSERT DATA INTO NOTIFICATIONS
                   const notificationData = {
                     advertiser_id: parseInt(adv_id),
                     advertiser_name: ucfirst(adv_collect.name),
@@ -1023,14 +1043,14 @@ exports.advertiserSatatusApproved = async (req, res) => {
                   }
                   // END INSERT DATA INTO NOTIFICATIONS
                   await addNotificationsData(notificationData);
-				  
-				  
+
+
                   // Send Mail to Admin if status approved
                   const admin_mail = process.env.ADMIN_EMAILS.split(",");
                   const emailTemplateAdmin = fs.readFileSync(path.join("templates/advertiser_approved_admin.handlebars"), "utf-8");
                   const templateAdmin = handlebars.compile(emailTemplateAdmin);
                   const messageBodyAdmin = (templateAdmin({
-					  todayDate: dateprint(),
+                    todayDate: dateprint(),
                     approved_by: ucfirst(approved_by),
                     approved_by_email: approved_by_email,
                     adv_name: ucfirst(adv_collect.company_name),
@@ -1122,10 +1142,10 @@ exports.advertiserSatatusApproved = async (req, res) => {
                       status: status,
                       tid: adv_create_res.data.advertiser.id
                     }
-                    Users.findOneAndUpdate({ email: user_data.email }, advUserUpdateData, { new: true }).exec().then(async(user_adv_update) => {
+                    Users.findOneAndUpdate({ email: user_data.email }, advUserUpdateData, { new: true }).exec().then(async (user_adv_update) => {
                       if (user_adv_update) {
-						  
-						  // INSERT DATA INTO NOTIFICATIONS
+
+                        // INSERT DATA INTO NOTIFICATIONS
                         const notificationData = {
                           advertiser_id: parseInt(adv_create_res.data.advertiser.id),
                           advertiser_name: ucfirst(user_data.name),
@@ -1150,7 +1170,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                         const emailAdvertiserTemplate = fs.readFileSync(path.join("templates/advertiser_approved.handlebars"), "utf-8");
                         const templateAdv = handlebars.compile(emailAdvertiserTemplate);
                         const messageBodyAdv = (templateAdv({
-						  todayDate: dateprint(),
+                          todayDate: dateprint(),
                           name: ucfirst(user_data.name),
                           adv_name: ucfirst(user_data.company_name),
                           url: process.env.APPLABS_URL + 'signin',
@@ -1184,7 +1204,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/advertiser_approved_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
                         const messageBodyAdmin = (templateAdmin({
-						  todayDate: dateprint(),
+                          todayDate: dateprint(),
                           approved_by: ucfirst(approved_by),
                           approved_by_email: approved_by_email,
                           adv_name: ucfirst(user_data.company_name),
@@ -1288,7 +1308,7 @@ exports.updateAdvertiser = async (req, res) => {
     return;
   }
 
-  const { profile_pic_name, profile_pic, advertiser_name, organization, website, email, mobile, im_id, address, state, country, zip, email_preferences,  assigned_to, billing_detail } = req.body;
+  const { profile_pic_name, profile_pic, advertiser_name, organization, website, email, mobile, im_id, address, state, country, zip, email_preferences, assigned_to, billing_detail } = req.body;
   // Validate request
   if (!profile_pic_name || !advertiser_name || !organization || !website || !email || !mobile || !im_id || !address || !state || !country || !zip) {
     var requestVal = "";
@@ -1322,38 +1342,38 @@ exports.updateAdvertiser = async (req, res) => {
   }
 
   if (profile_pic && profile_pic_name) {
-   
 
-   let data_val = profile_pic.replace(/^data:image\/[a-z]+;base64,/, "");
-      let data_name = profile_pic_name;
-      let mimetype = detectMimeType(profile_pic);
-      // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
-      const buffer = Buffer.from(data_val, "base64");
-      const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
-      let s3 = new aws.S3({
-        credentials: {
-          accessKeyId: BUCKET_ACCESS_ID,
-          secretAccessKey: BUCKET_SECRET
-        },
-        region: BUCKET_REGION
-      });
-      const putobj = {
-        Bucket: "applabs2024",
-        Key: data_name,
-        Body: buffer,
-        ContentType: mimetype,
-        acl: "private"
+
+    let data_val = profile_pic.replace(/^data:image\/[a-z]+;base64,/, "");
+    let data_name = profile_pic_name;
+    let mimetype = detectMimeType(profile_pic);
+    // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+    const buffer = Buffer.from(data_val, "base64");
+    const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+    let s3 = new aws.S3({
+      credentials: {
+        accessKeyId: BUCKET_ACCESS_ID,
+        secretAccessKey: BUCKET_SECRET
+      },
+      region: BUCKET_REGION
+    });
+    const putobj = {
+      Bucket: "applabs2024",
+      Key: data_name,
+      Body: buffer,
+      ContentType: mimetype,
+      acl: "private"
+    }
+    s3.upload(putobj, function (err, data) {
+      if (err) {
+        console.log("Error", err)
+        const erroData = { 'success': false, 'error': err };
+        res.status(400).send(erroData);
+        return;
+      } else {
+        data && console.log("Upload success", data);
       }
-      s3.upload(putobj, function (err, data) {
-        if (err) {
-          console.log("Error", err)
-          const erroData = { 'success': false, 'error': err };
-          res.status(400).send(erroData);
-          return;
-        } else {
-          data && console.log("Upload success", data);
-        }
-      })
+    })
 
   }
 
@@ -1367,7 +1387,7 @@ exports.updateAdvertiser = async (req, res) => {
     country: country,
     zip: zip,
     email_preferences: email_preferences,
-	billing_detail:billing_detail,
+    billing_detail: billing_detail,
     assigned_to: assigned_to
   }
 
