@@ -2214,6 +2214,20 @@ exports.addOffer = async (req, res) => {
                                         // END INSERT DATA INTO NOTIFICATIONS
                                         await addNotificationsData(notificationData);
 
+                                        // INSERT DATA INTO Tileline
+                                        const timelineData = {
+                                            advertiser_id: parseInt(advertiser),
+                                            advertiser_name: ucfirst(updateBalance.name),
+                                            offer_id: trackier_camp_id,
+                                            offer_name: ucfirst(offer_name),
+                                            type: "New Campaign Added",
+                                            old_value: "",
+                                            new_value: "",
+                                            edited_by: ucfirst(user_name),
+                                        }
+                                        // END INSERT DATA INTO Tileline
+                                        await addTimelineData(timelineData);
+
 
                                         // Send Mail to Admin
                                         const admin_mail = process.env.ADMIN_EMAILS.split(",");
