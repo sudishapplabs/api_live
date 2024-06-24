@@ -78,7 +78,7 @@ function bin2hex(s) {
 }
 
 const getCreativeLists = (creativeName) => {
-    var all_sizes = { "320x50": [], "300x250": [], "320x480": [], "480x320": [], "720x1280": [], "540x960": [], "1080x1920": [], "640x640": [], "1280x720": [], "1200x628": [],"960x540": [], "default": [] };
+    var all_sizes = { "320x50": [], "300x250": [], "320x480": [], "480x320": [], "720x1280": [], "540x960": [], "1080x1920": [], "640x640": [], "1280x720": [], "1200x628": [], "960x540": [], "default": [] };
 
     for (let i = 0; i < creativeName.length; i++) {
         var creative = creativeName[i];
@@ -128,7 +128,7 @@ const getCreativeLists = (creativeName) => {
                 case "1280x720":
                     m = Math.ceil(5 / value.length);
                     break;
-				case "1200x628":
+                case "1200x628":
                     m = Math.ceil(5 / value.length);
                     break;
                 case "960x540":
@@ -147,6 +147,81 @@ const getCreativeLists = (creativeName) => {
     }
     return final_creative_list;
 }
+
+
+
+const getCreativeNameLists = (creativeName, creativeDimnesion) => {
+    var all_sizes = { "320x50": [], "300x250": [], "320x480": [], "480x320": [], "720x1280": [], "540x960": [], "1080x1920": [], "640x640": [], "1280x720": [], "1200x628": [], "960x540": [], "default": [] };
+
+    for (let i = 0; i < creativeName.length; i++) {
+        var creative = creativeName[i];
+        var creative_size = creativeDimnesion[i];
+        for (const [key, value] of Object.entries(all_sizes)) {
+            var pushed = false;
+            if (creative_size.indexOf(key) !== -1) {
+                all_sizes[key].push(creative);
+                pushed = true;
+                break;
+            }
+        }
+        if (pushed == false) {
+            all_sizes['default'].push(creative);
+        }
+    }
+
+    // console.log(all_sizes);
+    var m = 1;
+    var final_creative_list = [];
+    for (const [key, value] of Object.entries(all_sizes)) {
+        if (value.length) {
+            switch (key) {
+                case "320x50":
+                    m = Math.ceil(25 / value.length);
+                    break;
+                case "300x250":
+                    m = Math.ceil(20 / value.length);
+                    break;
+                case "320x480":
+                    m = Math.ceil(15 / value.length);
+                    break;
+                case "480x320":
+                    m = Math.ceil(10 / value.length);
+                    break;
+                case "720x1280":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                case "540x960":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                case "1080x1920":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                case "640x640":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                case "1280x720":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                case "1200x628":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                case "960x540":
+                    m = Math.ceil(5 / value.length);
+                    break;
+                default:
+                    m = 1;
+                    break;
+            }
+            for (const [keys, values] of Object.entries(value)) {
+                for (let i = 0; i < m; i++) {
+                    final_creative_list.push({ [key]: values });
+                }
+            }
+        }
+    }
+    return final_creative_list;
+}
+
 
 
 function padTo2Digits(num) {
@@ -230,4 +305,4 @@ function timeSince(date) {
 }
 
 
-module.exports = { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, generateOTP, isNumericVal, generateRandomString, bin2hex, padTo2Digits, number_format, isEmpty, dateprint, timeSince }
+module.exports = { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, generateOTP, isNumericVal, generateRandomString, bin2hex, padTo2Digits, number_format, isEmpty, dateprint, timeSince, getCreativeNameLists }

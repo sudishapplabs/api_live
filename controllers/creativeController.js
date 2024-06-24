@@ -1,6 +1,6 @@
 const Creatives = require("../models/creativeModel");
 const CreativeCtrModel = require("../models/creativectrModel");
-const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists } = require('../common/helper');
+const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, getCreativeNameLists } = require('../common/helper');
 const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, decodeHtml } = require("../common/common");
 
 const { URL } = require('url');
@@ -123,11 +123,13 @@ exports.deleteCreativeById = (req, res) => {
       if (typeof campaign_id !== 'undefined' && campaign_id !== "") {
         const creatives = await Creatives.find({ campaign_id: campaign_id }).sort({ _id: -1 }).exec();
         var creativeName = [];
+        var creative_dimension = [];
         for (let i = 0; i < creatives.length; i++) {
           creativeName.push(creatives[i].creative);
+          creative_dimension.push(creatives[i].image_dimension);
         }
 
-        const final_creative_list = getCreativeLists(creativeName);
+        const final_creative_list = getCreativeNameLists(creativeName, creative_dimension);
         // START INSERT DATA INTO DB WITH CREATIVE CTR
         const banner_ctr = {
           "300x250": "1.1348-1.4514",
@@ -148,10 +150,15 @@ exports.deleteCreativeById = (req, res) => {
           creativeArr[key] = parseFloat(randCTR);
         }
 
+        var final_creative_list_mod = [];
         for (let i = 0; i < final_creative_list.length; i++) {
-          let creative = final_creative_list[i];
+          let key = Object.keys(final_creative_list[i])[0];
+          let value = final_creative_list[i][key];
+
+          final_creative_list_mod.push(value);
+          let creative = value;
           for (const [size, val] of Object.entries(creativeArr)) {
-            if (creative.indexOf(size) !== -1) {
+            if (key.indexOf(size) !== -1) {
               const aData = new CreativeCtrModel({
                 trackier_adv_id: trackier_adv_id,
                 trackier_camp_id: trackier_camp_id,
@@ -175,7 +182,7 @@ exports.deleteCreativeById = (req, res) => {
           }
         }
         // END INSERT DATA INTO DB WITH CREATIVE CTR              
-        const creativeData = { "creativeNames": final_creative_list };
+        const creativeData = { "creativeNames": final_creative_list_mod };
         // // STEP-11 push app lists on trackier
         console.log('API push Cretive Push on trackier Request');
         await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
@@ -206,8 +213,6 @@ exports.deleteCreativeById = (req, res) => {
     res.status(400).send(reMsg);
   });
 }
-
-
 
 // get creative from trackier
 exports.downloadCreative = async (req, res) => {
@@ -285,3 +290,123 @@ exports.uploadCreativeByOfferId = async (req, res) => {
 
 
 };
+
+
+exports.updateCreativeName = async (req, res) => {
+  const { creativeId, campaign_id, creative_name } = req.body;
+  await Creatives.findOne({ _id: creativeId }).exec().then(async (crRes) => {
+    if (crRes) {
+      if (crRes.creative == creative_name) {
+        const reMsg = { "status": false, "message": "Creative already exist" };
+        res.status(200).send(reMsg);
+      } else {
+        if (typeof campaign_id !== 'undefined' && campaign_id !== "") {
+          Creatives.findOneAndUpdate({ _id: creativeId }, { creative: creative_name }, { new: true }).exec().then(async (updateCrName) => {
+
+            if (updateCrName) {
+              const creatives = await Creatives.find({ campaign_id: campaign_id }).sort({ _id: -1 }).exec();
+              var creativeName = [];
+              var creative_dimension = [];
+              for (let i = 0; i < creatives.length; i++) {
+                creativeName.push(creatives[i].creative);
+                creative_dimension.push(creatives[i].image_dimension);
+              }
+
+              const final_creative_list = getCreativeNameLists(creativeName, creative_dimension);
+              // START INSERT DATA INTO DB WITH CREATIVE CTR
+              const banner_ctr = {
+                "300x250": "1.1348-1.4514",
+                "320x480": "1.3514-1.7373",
+                "480x320": "1.303-1.8345",
+                "84x84": "1.1348-1.4514",
+                "720x1280": "1.3514-1.7373",
+                "540x960": "1.3514-1.7373",
+                "1080x1920": "1.3514-1.7373",
+                "640x640": "1.3514-1.7373",
+                "1280x720": "1.3514-1.7373",
+                "960x540": "1.3514-1.7373"
+              }
+              var creativeArr = [];
+              for (const [key, val] of Object.entries(banner_ctr)) {
+                let ctrArr = val.split('-');
+                let randCTR = generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
+                creativeArr[key] = parseFloat(randCTR);
+              }
+
+              var final_creative_list_mod = [];
+              for (let i = 0; i < final_creative_list.length; i++) {
+                let key = Object.keys(final_creative_list[i])[0];
+                let value = final_creative_list[i][key];
+
+                final_creative_list_mod.push(value);
+                let creative = value;
+                for (const [size, val] of Object.entries(creativeArr)) {
+                  if (key.indexOf(size) !== -1) {
+                    const aData = new CreativeCtrModel({
+                      trackier_adv_id: updateCrName.trackier_adv_id,
+                      trackier_camp_id: updateCrName.trackier_camp_id,
+                      creative_name: creative,
+                      creative_ctr: val,
+                    });
+                    let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
+                    var creative_ctr_exist_arr = [];
+                    for (let n = 0; n < creative_ctr_exist.length; n++) {
+                      let creative_c = creative_ctr_exist[n];
+                      creative_ctr_exist_arr.push(creative_c.creative_name);
+                    }
+                    if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
+                      await aData.save(aData).then(ctr_data => {
+                        console.log('Creative ctr ok');
+                      }).catch(err => {
+                        console.error(err);
+                      });
+                    }
+                  }
+                }
+              }
+              // END INSERT DATA INTO DB WITH CREATIVE CTR              
+              const creativeData = { "creativeNames": final_creative_list_mod };
+              // // STEP-11 push app lists on trackier
+              console.log('API push Cretive Push on trackier Request');
+              await axios.put(process.env.API_BASE_URL + "campaigns/" + updateCrName.trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
+                if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+                  console.log('API push Cretive Push on trackier Response');
+                  const response = { 'success': true, 'message': 'Creative name updated successfully' };
+                  res.status(200).send(response);
+                  return;
+                } else {
+                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                  res.status(200).send(resMsg);
+                  return;
+                }
+              }).catch(err => {
+                console.log(err);
+                const errMsg = { "success": false, "errors": err.response.data.errors };
+                res.status(400).send(errMsg);
+                return;
+              });
+            } else {
+              const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+              res.status(200).send(resMsg);
+              return;
+            }
+          }).catch((error) => {
+            const reMsg = { "status": false, "message": error.message };
+            res.status(400).send(reMsg);
+          });
+
+        } else {
+          const reMsg = { "status": false, "message": "campaign_id not found!" };
+          res.status(400).send(reMsg);
+        }
+      }
+    } else {
+      const reMsg = { "status": false, "message": "Creative not found!" };
+      res.status(400).send(reMsg);
+    }
+  }).catch((error) => {
+    const reMsg = { "status": false, "message": error.message };
+    res.status(400).send(reMsg);
+  });
+
+}
