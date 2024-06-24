@@ -18,6 +18,5 @@ router.get('/creative/download/:id', isAuthenticatedUser, downloadCreative);
 const upload = multer({ storage: multer.memoryStorage() })
 router.post("/creative/upload", isAuthenticatedUser, upload.single('file'), uploadCreativeByOfferId);
 
-
-router.get('/creative/name/update', isAuthenticatedUser, updateCreativeName);
+router.post('/creative/name/update', isAuthenticatedUser, updateCreativeName);
 module.exports = router;
