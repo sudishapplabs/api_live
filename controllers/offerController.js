@@ -2640,39 +2640,47 @@ exports.getOfferData = async (req, res, next) => {
         });
     }
 };
+
+
 // Get Offers Data
-exports.getOfferDataByOfferId = (req, res) => {
+exports.getOfferDataByOfferId = async (req, res) => {
     const id = req.params.id;
 
     if (isNumeric(id)) {
-        Offer.findOne({ trackier_camp_id: id }).sort({ _id: -1 }).exec().then((offer) => {
+        await Offer.findOne({ trackier_camp_id: id }).sort({ _id: -1 }).exec().then(async (offer) => {
             if (offer) {
-                const response = { 'success': true, 'results': offer };
+                const c_string = offer.country;
+                const result = await Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` } }).sort({ pub_name: 1 }).exec();
+                const totalPublisher = parseInt(result.length);
+                const response = { 'success': true, 'totalPublisher': totalPublisher, 'results': offer };
                 res.status(200).send(response);
                 return;
             } else {
-                const response = { 'success': false, 'results': 'No records found!' };
+                const response = { 'success': false, 'totalPublisher': 0, 'results': 'No records found!' };
                 res.status(200).send(response);
                 return;
             }
         }).catch(error => {
-            const response = { 'success': false, 'error': error['message'] };
+            const response = { 'success': false, 'totalPublisher': 0, 'error': error['message'] };
             res.status(400).send(response);
             return;
         });
     } else {
-        Offer.findById(id).sort({ _id: -1 }).exec().then((offer) => {
+        await Offer.findById(id).sort({ _id: -1 }).exec().then(async (offer) => {
             if (offer) {
-                const response = { 'success': true, 'results': offer };
+                const c_string = offer.country;
+                const result = await Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` } }).sort({ pub_name: 1 }).exec();
+                const totalPublisher = parseInt(result.length);
+                const response = { 'success': true, 'totalPublisher': totalPublisher, 'results': offer };
                 res.status(200).send(response);
                 return;
             } else {
-                const response = { 'success': false, 'results': 'No records found!' };
+                const response = { 'success': false, 'totalPublisher': 0, 'results': 'No records found!' };
                 res.status(200).send(response);
                 return;
             }
         }).catch(error => {
-            const response = { 'success': false, 'error': error['message'] };
+            const response = { 'success': false, 'totalPublisher': 0, 'error': error['message'] };
             res.status(400).send(response);
             return;
         });
