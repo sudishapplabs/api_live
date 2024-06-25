@@ -4871,7 +4871,7 @@ function inArray(needle, haystack) {
 exports.updateOffer = async (req, res) => {
 
 
-    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_inc_and_exc, os_version_min, os_version_max, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status } = req.body;
+    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status } = req.body;
 
     // Validate request
     if (!user_type || !user_name || !user_email || !trackier_adv_id || !trackier_camp_id || !offer_name || !pubs || !icon || !operating_system || !cta_link || !payable_event_name || !total_budget || !daily_budget || !country || !language || !interest || !age_group || !schedule_start_date || !bundle_id) {
