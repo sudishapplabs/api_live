@@ -5305,8 +5305,6 @@ exports.updateOffer = async (req, res) => {
         "state_inc_and_exc": offData.state_inc_and_exc,
         "city": city_obj,
         "city_inc_and_exc": offData.city_inc_and_exc,
-        "os_version_min": (offData.os_version_min != null) ? offData.os_version_min : '',
-        "os_version_max": (offData.os_version_max != null) ? offData.os_version_max : '',
         "language": language_obj,
         "interest": interest_obj,
         "age_group": age_group_obj,
