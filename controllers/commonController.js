@@ -182,7 +182,7 @@ exports.getPublisherByCountry = async (req, res, next) => {
     return;
   }
   const c_string = country.join(',');
-  Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` } }).sort({ pub_name: 1 }).exec().then((publisher) => {
+  Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` + ",ALL" } }).sort({ pub_name: 1 }).exec().then((publisher) => {
     res.getPublisherByCountry = publisher;
     next();
     const response = { 'success': true, 'results': publisher };

@@ -2650,7 +2650,7 @@ exports.getOfferDataByOfferId = async (req, res) => {
         await Offer.findOne({ trackier_camp_id: id }).sort({ _id: -1 }).exec().then(async (offer) => {
             if (offer) {
                 const c_string = offer.country;
-                const result = await Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` } }).sort({ pub_name: 1 }).exec();
+                const result = await Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` + ",ALL" } }).sort({ pub_name: 1 }).exec();
                 const totalPublisher = parseInt(result.length);
                 const response = { 'success': true, 'totalPublisher': totalPublisher, 'results': offer };
                 res.status(200).send(response);
@@ -2669,7 +2669,7 @@ exports.getOfferDataByOfferId = async (req, res) => {
         await Offer.findById(id).sort({ _id: -1 }).exec().then(async (offer) => {
             if (offer) {
                 const c_string = offer.country;
-                const result = await Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` } }).sort({ pub_name: 1 }).exec();
+                const result = await Publishers.find({ "pub_status": "Enabled", '$text': { '$search': `${c_string}` + ",ALL" } }).sort({ pub_name: 1 }).exec();
                 const totalPublisher = parseInt(result.length);
                 const response = { 'success': true, 'totalPublisher': totalPublisher, 'results': offer };
                 res.status(200).send(response);
