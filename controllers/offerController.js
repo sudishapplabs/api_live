@@ -833,7 +833,7 @@ exports.addOffer = async (req, res) => {
         }
         if (typeof schedule_end_date == 'undefined' || schedule_end_date == "")
             delete trackierBasicPostData['endTime'];
-        if (typeof kpi == 'undefined' || kpi == "")
+        if (typeof kpi == 'undefined' || kpi == "" || kpi == null)
             delete trackierBasicPostData['kpi'];
         if (typeof finalVtaLink == 'undefined' || finalVtaLink == "")
             delete trackierBasicPostData['iurl'];
@@ -852,7 +852,7 @@ exports.addOffer = async (req, res) => {
                 'Content-Type': 'application/json'
             }
         };
-        console.log(trackierBasicPostData);
+        //console.log(trackierBasicPostData);
         // START CREATE OFFER ON TRACKIER BASICS
 
 
