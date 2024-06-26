@@ -5329,9 +5329,9 @@ exports.updateOffer = async (req, res) => {
     // console.log("=============================Request offerDataObj END=====================================");
 
 
-    // const diff = require("deep-object-diff").diff;
-    // let differencesReq = diff(offerDataObj, req.body);
-    // let differencesOld = diff(req.body, offerDataObj);
+    const diff = require("deep-object-diff").diff;
+    let differencesReq = diff(offerDataObj, req.body);
+    let differencesOld = diff(req.body, offerDataObj);
 
 
     // console.log("=========================differencesOld= START===========================");
