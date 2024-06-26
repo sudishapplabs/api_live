@@ -902,7 +902,7 @@ exports.uploadCreatives = async (req, res) => {
   }
 
   if (icon) {
-    for (let i = 0; i < creative.length; i++) {
+    for (let i = 0; i < icon.length; i++) {
       let adsVal = icon[i]
       let data_name = icon_name;
       let mimetype = adsVal.mimetype;
