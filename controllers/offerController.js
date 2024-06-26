@@ -2316,7 +2316,7 @@ exports.addOffer = async (req, res) => {
         }).catch(err => {
             step1 = false;
             console.log("Create Offer");
-            console.error(err);
+            console.error(err.errors.message);
             const resMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(400).send(resMsg);
             return;
