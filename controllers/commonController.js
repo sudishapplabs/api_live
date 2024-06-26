@@ -859,6 +859,136 @@ exports.getFlagByDialCode = async (req, res) => {
 };
 
 
+exports.uploadCreatives = async (req, res) => {
+  const { icon_name, icon_url } = req.body;
+  const { creative, icon } = req.files;
+
+  var updateResult = [];
+  if (creative) {
+    for (let i = 0; i < creative.length; i++) {
+      let adsVal = creative[i];
+      let data_name = adsVal.originalname;
+      let mimetype = adsVal.mimetype;
+      // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+      const buffer = adsVal.buffer;
+      const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+      let s3 = new aws.S3({
+        credentials: {
+          accessKeyId: BUCKET_ACCESS_ID,
+          secretAccessKey: BUCKET_SECRET
+        },
+        region: BUCKET_REGION
+      });
+      const putobj = {
+        Bucket: "applabs2024",
+        Key: data_name,
+        Body: buffer,
+        ContentType: mimetype,
+        acl: "private"
+      }
+      s3.upload(putobj, function (err, data) {
+        if (err) {
+          console.log("Error", err)
+          updateResult.push(false);
+          const erroData = { 'success': false, 'error': err };
+          res.status(400).send(erroData);
+          return;
+        } else {
+          data && console.log("Upload success", data);
+          updateResult.push(true);
+        }
+      })
+    }
+  }
+
+  if (icon) {
+    let adsVal = icon
+    let data_name = icon_name;
+    let mimetype = adsVal.mimetype;
+    // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+    const buffer = adsVal.buffer;
+    const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+    let s3 = new aws.S3({
+      credentials: {
+        accessKeyId: BUCKET_ACCESS_ID,
+        secretAccessKey: BUCKET_SECRET
+      },
+      region: BUCKET_REGION
+    });
+    const putobj = {
+      Bucket: "applabs2024",
+      Key: data_name,
+      Body: buffer,
+      ContentType: mimetype,
+      acl: "private"
+    }
+    s3.upload(putobj, function (err, data) {
+      if (err) {
+        console.log("Error", err)
+        updateResult.push(false);
+        const erroData = { 'success': false, 'error': err };
+        res.status(400).send(erroData);
+        return;
+      } else {
+        data && console.log("Upload success", data);
+        updateResult.push(true);
+      }
+    })
+  }
+
+  if (icon_url) {
+    let adsVal = icon_url
+    let image = await axios.get(adsVal, { responseType: 'arraybuffer' });
+    let ADS_image = Buffer.from(image.data).toString('base64');
+
+    let data_val = ADS_image.replace(/^data:image\/[a-z]+;base64,/, "");
+    let data_name = icon_name;
+    let mimetype = detectMimeType(ADS_image);
+    // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+    const buffer = Buffer.from(data_val, "base64");
+    const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+    let s3 = new aws.S3({
+      credentials: {
+        accessKeyId: BUCKET_ACCESS_ID,
+        secretAccessKey: BUCKET_SECRET
+      },
+      region: BUCKET_REGION
+    });
+    const putobj = {
+      Bucket: "applabs2024",
+      Key: data_name,
+      Body: buffer,
+      ContentType: mimetype,
+      acl: "private"
+    }
+    s3.upload(putobj, function (err, data) {
+      if (err) {
+        console.log("Error", err)
+        const erroData = { 'success': false, 'error': err };
+        res.status(400).send(erroData);
+        return;
+      } else {
+        data && console.log("Upload success", data);
+      }
+    })
+
+  }
+
+  if (Object.values(updateResult).every(result => result !== false)) {
+    const resData = { 'success': true, 'message': "Creative upload was successful." };
+    res.status(200).send(resData);
+    return;
+  } else {
+    const resData = { 'success': true, 'message': "Something went wrong!!" };
+    res.status(200).send(resData);
+    return;
+  }
+
+
+
+}
+
+
 // exports.uploadImagesFromBase64 = (req, res) => {
 //   const Jimp = require("jimp");
 //   const fs = require("fs-extra");
@@ -899,7 +1029,7 @@ exports.getFlagByDialCode = async (req, res) => {
 
 
 exports.getAllCretives = async (req, res) => {
-	process.exit();
+  process.exit();
   var creativeArr = ["DreameBanners8_53478_320x480.jpg", "DreameBanners9_43150_480x320.jpg"];
   for (let i = 0; i < creativeArr.length; i++) {
     let cr = creativeArr[i];

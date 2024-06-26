@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require('multer');
 const multipart = multer();
-const { getCountry, getSalesPartner, getStateByCountry, citySearch, getPublisherByCountry, getLanguageByCountry, getInterestByCountry, getGeoWisePrice, checkOffernameExist, addConversionlist, uploadImagesFromBase64,getApplists,getAllInterest,getApplistsByInterest, getAllFlagDialCode, getFlagByDialCode, getGoalByofferId } = require("../controllers/commonController");
+const { getCountry, getSalesPartner, getStateByCountry, citySearch, getPublisherByCountry, getLanguageByCountry, getInterestByCountry, getGeoWisePrice, checkOffernameExist, addConversionlist, uploadImagesFromBase64, getApplists, getAllInterest, getApplistsByInterest, getAllFlagDialCode, getFlagByDialCode, getGoalByofferId, uploadCreatives } = require("../controllers/commonController");
 
 const { addPublisher, getPublishersData, getPublisherDataById, updatePublisher, changePublisherStatus } = require("../controllers/masters/publisherController");
 const { addPublisherpayout, getPublisherPayoutData, getPublisherPayoutDataById, updatePublisherpayout, changePublisherPayoutStatus } = require("../controllers/masters/publisherpayoutController");
@@ -55,10 +55,19 @@ router.post("/coupon/status", isAuthenticatedUser, changeCoupanStatus);
 router.post("/coupon/statusAcInc", isAuthenticatedUser, changeCoupanStatusAcInc);
 
 
-const upload = multer({ storage: multer.memoryStorage() })
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
 router.post("/applist/add", isAuthenticatedUser, upload.single('file'), addApplist);
 
 router.post("/conversionlist/add", isAuthenticatedUser, upload.single('file'), addConversionlist);
+
+
+router.post("/creatives/upload", isAuthenticatedUser, upload.fields([
+    { name: 'creative', maxCount: 50 },
+    { name: 'icon', maxCount: 50 }
+]), uploadCreatives);
 
 router.get("/CronJob/conversionUpload", uploadConversions);
 
