@@ -852,8 +852,9 @@ exports.addOffer = async (req, res) => {
                 'Content-Type': 'application/json'
             }
         };
-        // console.log(trackierBasicPostData);
+        console.log(trackierBasicPostData);
         // START CREATE OFFER ON TRACKIER BASICS
+
 
         axios.post(process.env.API_BASE_URL + "campaigns", trackierBasicPostData, axios_header).then((response) => {
             //console.log('First');
@@ -2315,9 +2316,9 @@ exports.addOffer = async (req, res) => {
         }).catch(err => {
             step1 = false;
             console.log("Create Offer");
-            console.error(err.data);
-            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-            res.status(200).send(resMsg);
+            console.error(err);
+            const resMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+            res.status(400).send(resMsg);
             return;
         });
 
