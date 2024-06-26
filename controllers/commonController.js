@@ -902,38 +902,40 @@ exports.uploadCreatives = async (req, res) => {
   }
 
   if (icon) {
-    let adsVal = icon
-    let data_name = icon_name;
-    let mimetype = adsVal.mimetype;
-    // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
-    const buffer = adsVal.buffer;
-    const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
-    let s3 = new aws.S3({
-      credentials: {
-        accessKeyId: BUCKET_ACCESS_ID,
-        secretAccessKey: BUCKET_SECRET
-      },
-      region: BUCKET_REGION
-    });
-    const putobj = {
-      Bucket: "applabs2024",
-      Key: data_name,
-      Body: buffer,
-      ContentType: mimetype,
-      acl: "private"
-    }
-    s3.upload(putobj, function (err, data) {
-      if (err) {
-        console.log("Error", err)
-        updateResult.push(false);
-        const erroData = { 'success': false, 'error': err };
-        res.status(400).send(erroData);
-        return;
-      } else {
-        data && console.log("Upload success", data);
-        updateResult.push(true);
+    for (let i = 0; i < creative.length; i++) {
+      let adsVal = icon[i]
+      let data_name = icon_name;
+      let mimetype = adsVal.mimetype;
+      // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+      const buffer = adsVal.buffer;
+      const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+      let s3 = new aws.S3({
+        credentials: {
+          accessKeyId: BUCKET_ACCESS_ID,
+          secretAccessKey: BUCKET_SECRET
+        },
+        region: BUCKET_REGION
+      });
+      const putobj = {
+        Bucket: "applabs2024",
+        Key: data_name,
+        Body: buffer,
+        ContentType: mimetype,
+        acl: "private"
       }
-    })
+      s3.upload(putobj, function (err, data) {
+        if (err) {
+          console.log("Error", err)
+          updateResult.push(false);
+          const erroData = { 'success': false, 'error': err };
+          res.status(400).send(erroData);
+          return;
+        } else {
+          data && console.log("Upload success", data);
+          updateResult.push(true);
+        }
+      })
+    }
   }
 
   if (icon_url) {
