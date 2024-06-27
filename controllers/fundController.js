@@ -1,7 +1,7 @@
 const paypal = require('paypal-rest-sdk');
 const Fund = require("../models/fundModel");
 const { getAdvertiserBalByAdvId, addNotificationsData } = require("../common/common");
-const { dateprint,isNumeric } = require('../common/helper');
+const { dateprint, isNumeric } = require('../common/helper');
 const Advertiser = require("../models/advertiserModel");
 
 var ucfirst = require('ucfirst');
@@ -37,8 +37,8 @@ exports.renderBuyPage = async (req, res) => {
 }
 
 exports.addFund = async (req, res) => {
-	
-	//console.log(req.body);
+
+  //console.log(req.body);
 
   // check boy key
   const paramSchema = { 1: 'tid', 2: 'email', 3: 'amount', 4: 'comment', 5: 'description', 6: 'payment_id', 7: 'paypal_payment_id', 8: 'action', 9: 'payment_status', 10: 'mode' };
@@ -139,7 +139,7 @@ exports.addFund = async (req, res) => {
         for (let i = 0; i < payment.links.length; i++) {
           if (payment.links[i].rel === 'approval_url') {
             //res.redirect(payment.links[i].href);
-			res.json({forwardLink: payment.links[i].href});
+            res.json({ forwardLink: payment.links[i].href });
           }
         }
       }
@@ -192,8 +192,8 @@ exports.successPage = async (req, res) => {
             Advertiser.findOneAndUpdate({ tid: parseInt(tid) }, { balance: parseFloat(curr_bal) }, { new: true }).exec().then(async (updateBalance) => {
 
               if (updateBalance) {
-				  
-				  // INSERT DATA INTO NOTIFICATIONS
+
+                // INSERT DATA INTO NOTIFICATIONS
                 const notificationData = {
                   advertiser_id: parseInt(tid),
                   advertiser_name: ucfirst(updateBalance.name),
@@ -221,7 +221,7 @@ exports.successPage = async (req, res) => {
                   const emailUserTemplate = fs.readFileSync(path.join("templates/funds_added.handlebars"), "utf-8");
                   const templateUser = handlebars.compile(emailUserTemplate);
                   const messageBodyUser = (templateUser({
-					todayDate: dateprint(),
+                    todayDate: dateprint(),
                     amt: parseFloat(amount),
                     balance: parseFloat(curr_bal),
                     added_by_name: added_by_name,
@@ -258,11 +258,11 @@ exports.successPage = async (req, res) => {
                 }
 
                 ///////////////// Send Mail to Admin /////////////////
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/funds_added_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
-				  todayDate: dateprint(),
+                  todayDate: dateprint(),
                   amt: parseFloat(amount),
                   balance: parseFloat(curr_bal),
                   added_by_name: added_by_name,
@@ -300,33 +300,33 @@ exports.successPage = async (req, res) => {
                 //return;
                 // console.log(JSON.stringify(payment));
                 // res.render('success');
-				
-				
-				res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+
+
+                res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
               } else {
                 const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
                 //res.status(200).send(resMsg);
                 //return;
-				res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+                res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
               }
             }).catch((error) => {
               const resMsg = { "status": false, "message": error.message };
               /*res.status(400).send(resMsg);
               return;*/
-			  res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+              res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
             });
           } else {
             const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
             /*res.status(200).send(resMsg);
             return;*/
-			res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+            res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
           }
 
         }).catch((error) => {
           const resMsg = { "status": false, "message": error.message };
           /*res.status(400).send(resMsg);
           return;*/
-		  res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+          res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
         });
       }
     });
@@ -353,18 +353,18 @@ exports.cancelPage = async (req, res) => {
         const resMsg = { 'success': true, 'message': 'Payment failed' };
         //res.status(200).send(resMsg);
         //return;
-		res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+        res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
       } else {
         const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
         //res.status(200).send(resMsg);
         //return;
-		res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+        res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
       }
     }).catch((error) => {
       const resMsg = { "status": false, "message": error.message };
       //res.status(400).send(resMsg);
       //return;
-	  res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+      res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
     });
     // res.render('cancel');
   } catch (error) {
@@ -372,7 +372,7 @@ exports.cancelPage = async (req, res) => {
     const resMsg = { "status": false, "message": error.message };
     //res.status(400).send(resMsg);
     //return;
-	res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+    res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
   }
 }
 
@@ -818,7 +818,7 @@ exports.addAdminFund = async (req, res) => {
   } else {
     var curr_bal = parseFloat(amount);
   }
-  
+
   const fund = new Fund({
     tid: tid,
     email: email,
@@ -839,8 +839,8 @@ exports.addAdminFund = async (req, res) => {
         if (updateBalance) {
 
           if (typeof action !== 'undefined' && action == 'credited') {
-			  
-			  // INSERT DATA INTO NOTIFICATIONS
+
+            // INSERT DATA INTO NOTIFICATIONS
             const notificationData = {
               advertiser_id: parseInt(tid),
               advertiser_name: ucfirst(updateBalance.name),
@@ -859,8 +859,8 @@ exports.addAdminFund = async (req, res) => {
             }
             // END INSERT DATA INTO NOTIFICATIONS
             await addNotificationsData(notificationData);
-			
-			
+
+
             // Check mail preference is on or not
             const bcc_mail = process.env.BCC_EMAILS.split(",");
             if (updateBalance.email_preferences == true) {
@@ -869,7 +869,7 @@ exports.addAdminFund = async (req, res) => {
               const emailUserTemplate = fs.readFileSync(path.join("templates/funds_added.handlebars"), "utf-8");
               const templateUser = handlebars.compile(emailUserTemplate);
               const messageBodyUser = (templateUser({
-				todayDate: dateprint(),
+                todayDate: dateprint(),
                 amt: parseFloat(amount),
                 balance: parseFloat(curr_bal),
                 added_by_name: added_by_name,
@@ -906,11 +906,11 @@ exports.addAdminFund = async (req, res) => {
             }
 
             ///////////////// Send Mail to Admin /////////////////
-            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
             const emailTemplateAdmin = fs.readFileSync(path.join("templates/funds_added_admin.handlebars"), "utf-8");
             const templateAdmin = handlebars.compile(emailTemplateAdmin);
             const messageBodyAdmin = (templateAdmin({
-			  todayDate: dateprint(),
+              todayDate: dateprint(),
               amt: parseFloat(amount),
               balance: parseFloat(curr_bal),
               added_by_name: added_by_name,
@@ -946,8 +946,8 @@ exports.addAdminFund = async (req, res) => {
           }
 
           if (typeof action !== 'undefined' && action == 'debited') {
-			  
-			  // INSERT DATA INTO NOTIFICATIONS
+
+            // INSERT DATA INTO NOTIFICATIONS
             const notificationData = {
               advertiser_id: parseInt(tid),
               advertiser_name: ucfirst(updateBalance.name),
@@ -966,8 +966,8 @@ exports.addAdminFund = async (req, res) => {
             }
             // END INSERT DATA INTO NOTIFICATIONS
             await addNotificationsData(notificationData);
-			
-			
+
+
             // Check mail preference is on or not
             const bcc_mail = process.env.BCC_EMAILS.split(",");
             if (updateBalance.email_preferences == true) {
@@ -976,7 +976,7 @@ exports.addAdminFund = async (req, res) => {
               const emailUserTemplate = fs.readFileSync(path.join("templates/fund_short.handlebars"), "utf-8");
               const templateUser = handlebars.compile(emailUserTemplate);
               const messageBodyUser = (templateUser({
-				todayDate: dateprint(),
+                todayDate: dateprint(),
                 amt: parseFloat(amount),
                 balance: parseFloat(curr_bal),
                 added_by_name: added_by_name,
@@ -1013,11 +1013,11 @@ exports.addAdminFund = async (req, res) => {
             }
 
             ///////////////// Send Mail to Admin /////////////////
-            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
             const emailTemplateAdmin = fs.readFileSync(path.join("templates/fund_short_admin.handlebars"), "utf-8");
             const templateAdmin = handlebars.compile(emailTemplateAdmin);
             const messageBodyAdmin = (templateAdmin({
-			  todayDate: dateprint(),
+              todayDate: dateprint(),
               amt: parseFloat(amount),
               balance: parseFloat(curr_bal),
               added_by_name: added_by_name,

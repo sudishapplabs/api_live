@@ -3012,7 +3012,7 @@ exports.changeOfferStatus = async (req, res) => {
 
                                 // Send Mail to Admin if status approved
                                 const bcc_mail = process.env.BCC_EMAILS.split(",");
-                                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_status.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                 const messageBodyAdmin = (templateAdmin({
@@ -5475,7 +5475,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -5779,7 +5779,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -6048,7 +6048,7 @@ exports.updateOffer = async (req, res) => {
                     }
 
                     // Send Mail to Admin
-                    const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                    const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
                     const messageBodyAdmin = (templateAdmin({
@@ -6201,7 +6201,7 @@ exports.updateOffer = async (req, res) => {
                         }
 
                         // Send Mail to Admin
-                        const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                        const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
                         const messageBodyAdmin = (templateAdmin({
@@ -6388,7 +6388,7 @@ exports.updateOffer = async (req, res) => {
                     }
 
                     // Send Mail to Admin
-                    const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                    const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
                     const messageBodyAdmin = (templateAdmin({
@@ -6899,7 +6899,7 @@ exports.updateOffer = async (req, res) => {
                                 }
 
                                 // Send Mail to Admin
-                                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                 const messageBodyAdmin = (templateAdmin({
@@ -7259,7 +7259,7 @@ exports.updateOffer = async (req, res) => {
                                     }
 
                                     // Send Mail to Admin
-                                    const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                    const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                     const messageBodyAdmin = (templateAdmin({
@@ -7591,7 +7591,7 @@ exports.updateOffer = async (req, res) => {
                                     }
 
                                     // Send Mail to Admin
-                                    const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                    const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                     const messageBodyAdmin = (templateAdmin({
@@ -7778,7 +7778,7 @@ exports.updateOffer = async (req, res) => {
                                             }
 
                                             // Send Mail to Admin
-                                            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                             const messageBodyAdmin = (templateAdmin({
@@ -7966,7 +7966,7 @@ exports.updateOffer = async (req, res) => {
                                         });
                                     }
                                     // Send Mail to Admin
-                                    const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                    const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                     const messageBodyAdmin = (templateAdmin({
@@ -8148,7 +8148,7 @@ exports.updateOffer = async (req, res) => {
                             });
                         }
                         // Send Mail to Admin
-                        const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                        const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
                         const messageBodyAdmin = (templateAdmin({
@@ -8307,7 +8307,7 @@ exports.updateOffer = async (req, res) => {
                                 });
                             }
                             // Send Mail to Admin
-                            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
                             const messageBodyAdmin = (templateAdmin({
@@ -8475,7 +8475,7 @@ exports.updateOffer = async (req, res) => {
                                 });
                             }
                             // Send Mail to Admin
-                            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
                             const messageBodyAdmin = (templateAdmin({
@@ -8641,7 +8641,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -8798,7 +8798,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -8911,7 +8911,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -9743,7 +9743,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -9900,7 +9900,7 @@ exports.updateOffer = async (req, res) => {
                                 }
 
                                 // Send Mail to Admin
-                                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                 const messageBodyAdmin = (templateAdmin({
@@ -10224,7 +10224,7 @@ exports.updateOffer = async (req, res) => {
                                                                         }
 
                                                                         // Send Mail to Admin
-                                                                        const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                                                        const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                                                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                                                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                                                         const messageBodyAdmin = (templateAdmin({
@@ -10454,7 +10454,7 @@ exports.updateOffer = async (req, res) => {
                                                 }
 
                                                 // Send Mail to Admin
-                                                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                                 const messageBodyAdmin = (templateAdmin({
@@ -10668,7 +10668,7 @@ exports.updateOffer = async (req, res) => {
                                             }
 
                                             // Send Mail to Admin
-                                            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                                            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
                                             const messageBodyAdmin = (templateAdmin({
@@ -10903,7 +10903,7 @@ exports.updateOffer = async (req, res) => {
                             }
 
                             // Send Mail to Admin
-                            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
                             const messageBodyAdmin = (templateAdmin({
@@ -11145,7 +11145,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({
@@ -11308,7 +11308,7 @@ exports.updateOffer = async (req, res) => {
                 }
 
                 // Send Mail to Admin
-                const admin_mail = process.env.ADMIN_EMAILS.split(",");
+                const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
                 const messageBodyAdmin = (templateAdmin({

@@ -8,7 +8,21 @@ const { addPublisherpayout, getPublisherPayoutData, getPublisherPayoutDataById, 
 const { addCoupon, getCouponsData, changeCoupanStatus, changeCoupanStatusAcInc } = require("../controllers/couponController");
 
 const { addApplist } = require("../controllers/masters/applistController");
+
 const { uploadConversions } = require("../controllers/CronJob/conversionuploadController");
+const { getUpdatedCampaignStatus } = require("../controllers/CronJob/offerstatusController");
+const { getOfferEndDate } = require("../controllers/CronJob/offerEndDateController");
+const { getOfferTrafficStart } = require("../controllers/CronJob/offertrafficstartController");
+const { getOfferSpent } = require("../controllers/CronJob/updateOfferSpentController");
+const { getAllOffersLowBalance } = require("../controllers/CronJob/AllOfferLowBalanceController");
+const { getAllOffersDailyLowBalance } = require("../controllers/CronJob/offerDailyCapController");
+const { getReportPresetData } = require("../controllers/CronJob/presetReportMailController");
+const { getCreativeEndDate } = require("../controllers/CronJob/creativeExpiredController");
+const { getOfferConversionData } = require("../controllers/CronJob/offerConversionCheckController");
+const { getOffersLowBalance } = require("../controllers/CronJob/offerLowBalanceController");
+const { getTotalCapOffers } = require("../controllers/CronJob/offerTotalCapController");
+const { multiReset } = require("../controllers/CronJob/offerMultiResetController");
+
 
 const { getNotificationData, updateNotificationStatus } = require("../controllers/notificationController");
 
@@ -69,7 +83,22 @@ router.post("/creatives/upload", isAuthenticatedUser, upload.fields([
     { name: 'icon', maxCount: 50 }
 ]), uploadCreatives);
 
+
+
 router.get("/CronJob/conversionUpload", uploadConversions);
+router.get("/CronJob/offer_status", getUpdatedCampaignStatus);
+router.get("/CronJob/offer_end_date", getOfferEndDate);
+router.get("/CronJob/offer_traffic_start", getOfferTrafficStart);
+router.get("/CronJob/offer_spent", getOfferSpent);
+router.get("/CronJob/all_offer_low_balance", getAllOffersLowBalance);
+router.get("/CronJob/offer_daily_cap", getAllOffersDailyLowBalance);
+router.get("/CronJob/preset_report_mail", getReportPresetData);
+router.get("/CronJob/creative_expired", getCreativeEndDate);
+router.get("/CronJob/offer_conversion_check", getOfferConversionData);
+router.get("/CronJob/offer_low_balance", getOffersLowBalance);
+router.get("/CronJob/offer_total_cap", getTotalCapOffers);
+router.get("/CronJob/offer_multi_reset", multiReset);
+
 
 
 router.post("/imageUploadBase64/upload", isAuthenticatedUser, uploadImagesFromBase64);
