@@ -1936,7 +1936,7 @@ exports.addOffer = async (req, res) => {
                             });
                         }
 
-                        if (Array.isArray(creatives) && creatives.length == 0) {
+                        if (Array.isArray(creatives) && creatives.length > 0) {
                             var creativeName = [];
                             for (let i = 0; i < creatives.length; i++) {
                                 creativeName.push(creatives[i].creative);
