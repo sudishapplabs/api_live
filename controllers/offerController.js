@@ -5315,11 +5315,11 @@ exports.updateOffer = async (req, res) => {
     };
 
 
-    // console.log("============================Request Start=========================================");
+    console.log("============================Request Start=========================================");
 
-    // console.log(req.body);
-    // console.log("============================================================================");
-    // console.log("=============================Request End=====================================");
+    console.log(req.body);
+    console.log("============================================================================");
+    console.log("=============================Request End=====================================");
 
 
     // console.log("============================Request offerDataObj=========================================");
@@ -5335,15 +5335,15 @@ exports.updateOffer = async (req, res) => {
     let differencesOld = diff(req.body, offerDataObj);
 
 
-    // console.log("=========================differencesOld= START===========================");
-    // console.log(differencesOld);
-    // console.log("=========================differencesOld= END===========================");
+    console.log("=========================differencesOld= START===========================");
+    console.log(differencesOld);
+    console.log("=========================differencesOld= END===========================");
 
 
 
-    // console.log("============================differencesReq START======================================");
-    // console.log(differencesReq);
-    // console.log("=========================differencesReq END============================");
+    console.log("============================differencesReq START======================================");
+    console.log(differencesReq);
+    console.log("=========================differencesReq END============================");
 
 
     //process.exit();
@@ -5648,7 +5648,7 @@ exports.updateOffer = async (req, res) => {
                                         return;
                                     }
                                 }).catch(err => {
-                                    console.error(err.errors.message);
+                                    console.log(err);
                                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                     res.status(200).send(resMsg);
                                     return;
@@ -5674,7 +5674,7 @@ exports.updateOffer = async (req, res) => {
                                             return;
                                         }
                                     }).catch(err => {
-                                        console.error(err.errors.message);
+                                        console.log(err);
                                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                         res.status(200).send(resMsg);
                                         return;
@@ -5689,7 +5689,7 @@ exports.updateOffer = async (req, res) => {
                         return;
                     }
                 }).catch(err => {
-                    console.error(err.errors.message);
+                    console.log(err);
                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                     res.status(200).send(resMsg);
                     return;
@@ -5915,7 +5915,7 @@ exports.updateOffer = async (req, res) => {
                                             return;
                                         }
                                     }).catch(err => {
-                                        console.error(err.errors.message);
+                                        console.log(err);
                                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                         res.status(200).send(resMsg);
                                         return;
@@ -5943,7 +5943,7 @@ exports.updateOffer = async (req, res) => {
                                                 return;
                                             }
                                         }).catch(err => {
-                                            console.error(err.errors.message);
+                                            console.log(err);
                                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                             res.status(200).send(resMsg);
                                             return;
@@ -5958,7 +5958,7 @@ exports.updateOffer = async (req, res) => {
                             return;
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
+                        console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
                         return;
@@ -6257,7 +6257,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -6473,7 +6473,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -6964,7 +6964,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -7087,7 +7087,7 @@ exports.updateOffer = async (req, res) => {
                     console.log('API Offer Impression tracker Update Response')
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -7114,7 +7114,7 @@ exports.updateOffer = async (req, res) => {
                                         console.log('API Edit a Landing Page with VTA Response');
                                     }
                                 }).catch(err => {
-                                    console.error(err.errors.message);
+                                    console.log(err);
                                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                     res.status(200).send(resMsg);
                                     return;
@@ -7314,7 +7314,7 @@ exports.updateOffer = async (req, res) => {
                     });
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -7330,7 +7330,7 @@ exports.updateOffer = async (req, res) => {
                     console.log('API Offer Impression tracker Update Response')
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -7510,7 +7510,7 @@ exports.updateOffer = async (req, res) => {
                                         console.log('API Edit a Landing Page with VTA Response');
                                     }
                                 }).catch(err => {
-                                    console.error(err.errors.message);
+                                    console.log(err);
                                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                     res.status(200).send(resMsg);
                                     return;
@@ -7639,14 +7639,14 @@ exports.updateOffer = async (req, res) => {
                             });
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
+                        console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
                         return;
                     });
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -7853,7 +7853,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -8018,7 +8018,7 @@ exports.updateOffer = async (req, res) => {
                             });
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
+                        console.error(err);
                         console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
@@ -8031,7 +8031,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -8200,7 +8200,7 @@ exports.updateOffer = async (req, res) => {
                 });
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -8359,7 +8359,7 @@ exports.updateOffer = async (req, res) => {
                     });
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -8527,7 +8527,7 @@ exports.updateOffer = async (req, res) => {
                     });
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -8582,7 +8582,7 @@ exports.updateOffer = async (req, res) => {
                             console.log('API APP list tracker Update Response')
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
+                        console.error(err);
                         console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
@@ -8741,7 +8741,7 @@ exports.updateOffer = async (req, res) => {
                             console.log('API APP list tracker Update Response')
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
+                        console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
                         return;
@@ -8995,7 +8995,7 @@ exports.updateOffer = async (req, res) => {
                                             return;
                                         }
                                     }).catch(err => {
-                                        console.error(err.errors.message);
+                                        console.log(err);
                                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                         res.status(200).send(resMsg);
                                         return;
@@ -9008,7 +9008,6 @@ exports.updateOffer = async (req, res) => {
                             return;
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
                         console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
@@ -9021,7 +9020,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -9064,7 +9063,7 @@ exports.updateOffer = async (req, res) => {
                     console.log('API APP list tracker Update Response')
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.error(err);
                 console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
@@ -9096,7 +9095,6 @@ exports.updateOffer = async (req, res) => {
                                 return;
                             }
                         }).catch(err => {
-                            console.error(err.errors.message);
                             console.log(err);
                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                             res.status(200).send(resMsg);
@@ -9122,7 +9120,6 @@ exports.updateOffer = async (req, res) => {
                                 return;
                             }
                         }).catch(err => {
-                            console.error(err.errors.message);
                             console.log(err);
                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                             res.status(200).send(resMsg);
@@ -9137,10 +9134,9 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
-            console.log(err);
-            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-            res.status(200).send(resMsg);
+            console.error(err);
+            const errMsg = { "success": false, "errors": err.response.data.errors };
+            res.status(400).send(errMsg);
             return;
         });
 
@@ -9165,7 +9161,6 @@ exports.updateOffer = async (req, res) => {
                             return;
                         }
                     }).catch(err => {
-                        console.error(err.errors.message);
                         console.log(err);
                         const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                         res.status(200).send(resMsg);
@@ -9178,7 +9173,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.error(err);
             const errMsg = { "success": false, "errors": err.response.data.errors };
             res.status(400).send(errMsg);
             return;
@@ -9231,7 +9226,6 @@ exports.updateOffer = async (req, res) => {
                                                 return;
                                             }
                                         }).catch(err => {
-                                            console.error(err.errors.message);
                                             console.log(err);
                                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                             res.status(200).send(resMsg);
@@ -9245,7 +9239,7 @@ exports.updateOffer = async (req, res) => {
 
                                 }).catch(err => {
                                     //console.log(err);
-                                    console.error(err.errors.message);
+                                    console.log(err);
                                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                     res.status(200).send(resMsg);
                                     return;
@@ -9265,7 +9259,6 @@ exports.updateOffer = async (req, res) => {
                                         return;
                                     }
                                 }).catch(err => {
-                                    console.error(err.errors.message);
                                     console.log(err);
                                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                     res.status(200).send(resMsg);
@@ -9286,7 +9279,6 @@ exports.updateOffer = async (req, res) => {
                                     return;
                                 }
                             }).catch(err => {
-                                console.error(err.errors.message);
                                 console.log(err);
                                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                 res.status(200).send(resMsg);
@@ -9532,7 +9524,7 @@ exports.updateOffer = async (req, res) => {
                     return;
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -9978,7 +9970,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
@@ -10108,7 +10100,7 @@ exports.updateOffer = async (req, res) => {
                                                 return;
                                             }
                                         }).catch(err => {
-                                            console.error(err.errors.message);
+                                            console.error(err);
                                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                             res.status(200).send(resMsg);
                                             return;
@@ -10303,7 +10295,7 @@ exports.updateOffer = async (req, res) => {
                                             }
 
                                         }).catch(err => {
-                                            console.error(err.errors.message);
+                                            console.error(err);
                                             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                                             res.status(200).send(resMsg);
                                             return;
@@ -10332,7 +10324,7 @@ exports.updateOffer = async (req, res) => {
                         return;
                     }
                 }).catch(err => {
-                    console.error(err.errors.message);
+                    console.error(err);
                     const errMsg = { "success": false, "errors": err.response.data.errors };
                     res.status(400).send(errMsg);
                     return;
@@ -10533,7 +10525,7 @@ exports.updateOffer = async (req, res) => {
                     }
 
                 }).catch(err => {
-                    console.error(err.errors.message);
+                    console.error(err);
                     const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                     res.status(200).send(resMsg);
                     return;
@@ -10733,7 +10725,7 @@ exports.updateOffer = async (req, res) => {
                                     return;
                                 }
                             }).catch(err => {
-                                console.error(err.errors.message);
+                                console.log(err);
                                 const errMsg = { "success": false, "errors": err.response.data.errors };
                                 res.status(400).send(errMsg);
                                 return;
@@ -10746,7 +10738,7 @@ exports.updateOffer = async (req, res) => {
                     return;
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.error(err);
                 const errMsg = { "success": false, "errors": err.response.data.errors };
                 res.status(400).send(errMsg);
                 return;
@@ -10959,7 +10951,7 @@ exports.updateOffer = async (req, res) => {
                     });
                 }
             }).catch(err => {
-                console.error(err.errors.message);
+                console.log(err);
                 const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
                 res.status(200).send(resMsg);
                 return;
@@ -11200,7 +11192,7 @@ exports.updateOffer = async (req, res) => {
                 return;
             }
         }).catch(err => {
-            console.error(err.errors.message);
+            console.log(err);
             const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
             res.status(200).send(resMsg);
             return;
