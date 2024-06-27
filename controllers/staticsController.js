@@ -177,8 +177,8 @@ exports.staticsData = async (req, res) => {
   }).catch(error => {
     console.error(error);
   })
-  
-   // Get all placements
+
+  // Get all placements
   await Placement.find({}).sort({ _id: 1 }).exec().then((all_Placement) => {
     if (all_Placement) {
       for (let q = 0; q < all_Placement.length; q++) {
@@ -337,7 +337,7 @@ exports.staticsData = async (req, res) => {
           }
 
 
-         if ((checqueryString.indexOf("placement") !== -1)) {
+          if ((checqueryString.indexOf("placement") !== -1)) {
             if (placement_array.hasOwnProperty(val.source)) {
               var source = placement_array[val.source];
             } else {
@@ -434,10 +434,10 @@ exports.staticsData = async (req, res) => {
         res.status(200).send(response);
         return
       } else {
-		const resMsg = { "success": false, "message": "No records found" };
-		res.status(200).send(resMsg);
-		return;
-	  }
+        const resMsg = { "success": false, "message": "No records found" };
+        res.status(200).send(resMsg);
+        return;
+      }
     } else {
       const resMsg = { "success": false, "message": "No records found" };
       res.status(200).send(resMsg);
@@ -1277,7 +1277,7 @@ exports.quickViewData = async (req, res) => {
           // res.status(200).send(response);
           // return
 
-         // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=publisher_id&" + newQueryString + "&zone=Asia/Kolkata");
+          // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=publisher_id&" + newQueryString + "&zone=Asia/Kolkata");
 
           axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=publisher_id&" + newQueryString + "&zone=Asia/Kolkata", axios_header).then((staticsRes) => {
             if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
@@ -2157,7 +2157,7 @@ exports.dashboardSourceAppList = async (req, res) => {
       }
     }
   }).catch(error => {
-    console.error(error); 
+    console.error(error);
   })
 
 
@@ -2634,7 +2634,7 @@ exports.dashboardPerformanceEvent = async (req, res) => {
               const newArrDataByClickEvent = data_obj_to_arr_event.sort((a, b) => b.grossClicks - a.grossClicks).slice();
               const objFilterDataTopEvent = newArrDataByClickEvent;
 
-			  const groupedGolaName = groupBy(objFilterDataTopEvent, 'goal_name');
+              const groupedGolaName = groupBy(objFilterDataTopEvent, 'goal_name');
 
               let array1 = objFilterPData,
                 result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
@@ -2950,6 +2950,82 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
+  // RETARGETING CAMPAING START
+  var totalOffersRT = 0;
+  if (advertiserId) {
+
+    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    try {
+      let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
+      totalOffersRT = parseInt(resultRT.length);
+    } catch (err) {
+      console.log(err);
+    }
+
+  } else if (Array.isArray(adv_id) && adv_id.length > 0) {
+
+    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    try {
+      let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
+      totalOffersRT = parseInt(resultRT.length);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+
+    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    try {
+      let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { '$ne': 0 } }, { 'campaign_type': 'RETARGETING' }] }).exec();
+      //console.log(resultRT);
+      totalOffersRT = parseInt(resultRT.length);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const offStatusCurrentDataRT = await Offer.aggregate([
+    filterCurretDatasRT,
+    {
+      '$group': {
+        '_id': '$status',
+        'sum': { '$sum': 1 }
+      }
+    }
+  ]).sort({ status: -1 }).exec();
+  var totalActiveCurrentOfferRT = 0;
+  if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
+    for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
+      if (offStatusCurrentDataRT[i]._id == "active") {
+        var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
+      }
+    }
+  }
+
+  const offStatusPreviousDataRT = await Offer.aggregate([
+    filterPreviousDatasRT,
+    {
+      '$group': {
+        '_id': '$status',
+        'sum': { '$sum': 1 }
+      }
+    }
+  ]).sort({ status: -1 }).exec();
+  var totalActivePreviousOfferRT = 0;
+  if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
+    for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
+      if (offStatusPreviousDataRT[i]._id == "active") {
+        var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
+      }
+    }
+  }
+  // RETARGETING END
+
   // console.log(JSON.stringify(filterCurretDatas));
   // console.log(JSON.stringify(filterPreviousDatas));
   //process.exit();
@@ -3118,9 +3194,9 @@ exports.dashboardTopHeader = async (req, res) => {
               a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
               return a;
             }, {}));
-           //console.log(result2);
+          //console.log(result2);
 
-         if (Array.isArray(result1) && result1.length > 0) {
+          if (Array.isArray(result1) && result1.length > 0) {
 
             const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
             var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
@@ -3135,7 +3211,7 @@ exports.dashboardTopHeader = async (req, res) => {
 
 
             const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
-               if (result1[0].converionCR > 0) {
+            if (result1[0].converionCR > 0) {
               var converionCRPercentageData = (converionCRPDiff * 100) / parseInt(result1[0].converionCR);
             } else {
               var converionCRPercentageData = 0;
@@ -3151,6 +3227,15 @@ exports.dashboardTopHeader = async (req, res) => {
             } else {
               var activePercentageData = 0;
             }
+
+            const activePercentageDiffRT = (parseInt(totalActiveCurrentOfferRT) - parseInt(totalActivePreviousOfferRT));
+            if (totalActivePreviousOfferRT > 0) {
+              var activePercentageDataRT = (activePercentageDiffRT * 100) / parseInt(totalActivePreviousOfferRT);
+            } else {
+              var activePercentageDataRT = 0;
+            }
+
+
             var dataExist = true;
           } else {
             var dataExist = false;
@@ -3165,7 +3250,7 @@ exports.dashboardTopHeader = async (req, res) => {
 
 
           result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-          result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer, 'activePercentage': activePercentageData, 'reTargeting': 0, 'reTargetingPercentage': 0 });
+          result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
 
           const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
           res.status(200).send(response);
