@@ -1936,131 +1936,131 @@ exports.addOffer = async (req, res) => {
                             });
                         }
 
-                        //if (typeof source_type !== 'undefined' && source_type == "SDK") {
-                        var creativeName = [];
-                        for (let i = 0; i < creatives.length; i++) {
-                            creativeName.push(creatives[i].creative);
-                            //process.exit();
-                            const creative_data = new CreativeModel({
-                                campaign_id: DBdata._id,
+                        if (Array.isArray(creatives) && creatives.length == 0) {
+                            var creativeName = [];
+                            for (let i = 0; i < creatives.length; i++) {
+                                creativeName.push(creatives[i].creative);
+                                //process.exit();
+                                const creative_data = new CreativeModel({
+                                    campaign_id: DBdata._id,
+                                    trackier_adv_id: advertiser,
+                                    trackier_camp_id: trackier_camp_id,
+                                    creative: creatives[i].creative,
+                                    creative_type: creatives[i].creative_type,
+                                    concept_name: creatives[i].concept_name,
+                                    image_dimension: creatives[i].image_dimension,
+                                    ads_end_date: creatives[i].ads_end_date,
+                                    ads: creatives[i].ads,
+                                    user: creatives[i].user,
+                                    expired: "No"
+                                });
+
+                                //console.log(creative_data);
+                                // Save Creative in the database
+                                await creative_data.save(creative_data).then(data_c => {
+                                    console.log('Creative ok');
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                            }
+                            const final_creative_list = getCreativeLists(creativeName);
+                            // START INSERT DATA INTO DB WITH CREATIVE CTR
+                            const banner_ctr = {
+                                "300x250": "1.1348-1.4514",
+                                "320x50": "1.1348-1.4514",
+                                "320x480": "1.3514-1.7373",
+                                "480x320": "1.303-1.8345",
+                                "84x84": "1.1348-1.4514",
+                                "720x1280": "1.3514-1.7373",
+                                "540x960": "1.3514-1.7373",
+                                "1080x1920": "1.3514-1.7373",
+                                "640x640": "1.3514-1.7373",
+                                "1280x720": "1.3514-1.7373",
+                                "1200x628": "1.3514-1.7373",
+                                "960x540": "1.3514-1.7373"
+                            }
+                            var creativeArr = [];
+                            for (const [key, val] of Object.entries(banner_ctr)) {
+                                let ctrArr = val.split('-');
+                                let randCTR = generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
+                                creativeArr[key] = parseFloat(randCTR);
+                            }
+
+                            for (let i = 0; i < final_creative_list.length; i++) {
+                                let creative = final_creative_list[i];
+                                for (const [size, val] of Object.entries(creativeArr)) {
+                                    if (creative.indexOf(size) !== -1) {
+                                        const aData = new CreativeCtrModel({
+                                            trackier_adv_id: advertiser,
+                                            trackier_camp_id: trackier_camp_id,
+                                            creative_name: creative,
+                                            creative_ctr: val,
+                                        });
+                                        let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
+                                        var creative_ctr_exist_arr = [];
+                                        for (let n = 0; n < creative_ctr_exist.length; n++) {
+                                            let creative_c = creative_ctr_exist[n];
+                                            creative_ctr_exist_arr.push(creative_c.creative_name);
+                                        }
+                                        if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
+                                            await aData.save(aData).then(ctr_data => {
+                                                console.log('Creative ads ctr ok');
+                                            }).catch(err => {
+                                                console.error(err);
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                            // END INSERT DATA INTO DB WITH CREATIVE CTR              
+                            const creativeData = { "creativeNames": final_creative_list };
+                            // // STEP-11 push app lists on trackier
+                            axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
+                                console.log('Step39 Request');
+                                if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+                                    console.log('Step39 Response');
+                                } else {
+                                    const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                    res.status(200).send(resMsg);
+                                    return;
+                                }
+                            }).catch(err => {
+                                console.log(err);
+                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                res.status(200).send(resMsg);
+                                return;
+                            });
+                        } else {
+                            const creativeIconName = icon.split('.');
+                            const creativeData = { "creativeNames": [creativeIconName[0]] };
+                            const aData = new CreativeCtrModel({
                                 trackier_adv_id: advertiser,
                                 trackier_camp_id: trackier_camp_id,
-                                creative: creatives[i].creative,
-                                creative_type: creatives[i].creative_type,
-                                concept_name: creatives[i].concept_name,
-                                image_dimension: creatives[i].image_dimension,
-                                ads_end_date: creatives[i].ads_end_date,
-                                ads: creatives[i].ads,
-                                user: creatives[i].user,
-                                expired: "No"
+                                creative_name: creativeIconName[0],
+                                creative_ctr: 1.4514,
                             });
-
-                            //console.log(creative_data);
-                            // Save Creative in the database
-                            await creative_data.save(creative_data).then(data_c => {
-                                console.log('Creative ok');
+                            await aData.save(aData).then(ctr_data => {
+                                console.log('Creative icon ctr ok');
+                                // // STEP-11 push app lists on trackier
+                                axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
+                                    console.log('Step39 Request');
+                                    if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+                                        console.log('Step39 Response');
+                                    } else {
+                                        const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
+                                        res.status(200).send(resMsg);
+                                        return;
+                                    }
+                                }).catch(err => {
+                                    console.log(err);
+                                    const errMsg = { "success": false, "errors": err.response.data.errors };
+                                    res.status(400).send(errMsg);
+                                    return;
+                                });
                             }).catch(err => {
                                 console.error(err);
                             });
                         }
-                        const final_creative_list = getCreativeLists(creativeName);
-                        // START INSERT DATA INTO DB WITH CREATIVE CTR
-                        const banner_ctr = {
-                            "300x250": "1.1348-1.4514",
-                            "320x50": "1.1348-1.4514",
-                            "320x480": "1.3514-1.7373",
-                            "480x320": "1.303-1.8345",
-                            "84x84": "1.1348-1.4514",
-                            "720x1280": "1.3514-1.7373",
-                            "540x960": "1.3514-1.7373",
-                            "1080x1920": "1.3514-1.7373",
-                            "640x640": "1.3514-1.7373",
-                            "1280x720": "1.3514-1.7373",
-                            "1200x628": "1.3514-1.7373",
-                            "960x540": "1.3514-1.7373"
-                        }
-                        var creativeArr = [];
-                        for (const [key, val] of Object.entries(banner_ctr)) {
-                            let ctrArr = val.split('-');
-                            let randCTR = generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
-                            creativeArr[key] = parseFloat(randCTR);
-                        }
-
-                        for (let i = 0; i < final_creative_list.length; i++) {
-                            let creative = final_creative_list[i];
-                            for (const [size, val] of Object.entries(creativeArr)) {
-                                if (creative.indexOf(size) !== -1) {
-                                    const aData = new CreativeCtrModel({
-                                        trackier_adv_id: advertiser,
-                                        trackier_camp_id: trackier_camp_id,
-                                        creative_name: creative,
-                                        creative_ctr: val,
-                                    });
-                                    let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
-                                    var creative_ctr_exist_arr = [];
-                                    for (let n = 0; n < creative_ctr_exist.length; n++) {
-                                        let creative_c = creative_ctr_exist[n];
-                                        creative_ctr_exist_arr.push(creative_c.creative_name);
-                                    }
-                                    if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                                        await aData.save(aData).then(ctr_data => {
-                                            console.log('Creative ads ctr ok');
-                                        }).catch(err => {
-                                            console.error(err);
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                        // END INSERT DATA INTO DB WITH CREATIVE CTR              
-                        const creativeData = { "creativeNames": final_creative_list };
-                        // // STEP-11 push app lists on trackier
-                        axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
-                            console.log('Step39 Request');
-                            if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
-                                console.log('Step39 Response');
-                            } else {
-                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-                                res.status(200).send(resMsg);
-                                return;
-                            }
-                        }).catch(err => {
-                            console.log(err);
-                            const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-                            res.status(200).send(resMsg);
-                            return;
-                        });
-                        /*} else {
-                          const creativeIconName = icon.split('.');
-                          const creativeData = { "creativeNames": [creativeIconName[0]] };
-                          const aData = new CreativeCtrModel({
-                            trackier_adv_id: advertiser,
-                            trackier_camp_id: trackier_camp_id,
-                            creative_name: creativeIconName[0],
-                            creative_ctr: 1.4514,
-                          });
-                          await aData.save(aData).then(ctr_data => {
-                            console.log('Creative icon ctr ok');
-                            // // STEP-11 push app lists on trackier
-                            axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
-                              console.log('Step39 Request');
-                              if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
-                                console.log('Step39 Response');
-                              } else {
-                                const resMsg = { "success": false, "errors": [{ "statusCode": 200, "codeMsg": "VALIDATION_ERROR", "message": "Something went wrong please try again!!" }] };
-                                                    res.status(200).send(resMsg);
-                                                    return;
-                              }
-                            }).catch(err => {
-                              console.log(err);
-                              const errMsg = { "success": false, "errors": err.response.data.errors };
-                              res.status(400).send(errMsg);
-                              return;
-                            });
-                          }).catch(err => {
-                            console.error(err);
-                          });
-                        }*/
                         // CREATE OFFER ON ADKERNAL
                         // Create Xiaomi campaign on adkernal
                         var VTAExist = "No";
