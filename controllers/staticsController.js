@@ -2686,7 +2686,7 @@ exports.dashboardPerformanceEvent = async (req, res) => {
 
       }).catch(err => {
         console.log(err);
-        const errMsg = { "success": false, "errors": err.response.data.errors };
+        const errMsg = { "success": false, "errors": err };
         res.status(400).send(errMsg);
         return;
       });
@@ -2700,7 +2700,7 @@ exports.dashboardPerformanceEvent = async (req, res) => {
 
   }).catch(err => {
     console.log(err);
-    const errMsg = { "success": false, "errors": err.response.data.errors };
+    const errMsg = { "success": false, "errors": err };
     res.status(400).send(errMsg);
     return;
   });
