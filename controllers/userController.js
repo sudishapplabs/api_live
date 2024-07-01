@@ -6,7 +6,7 @@ const sgMail = require('@sendgrid/mail');
 const handlebars = require('handlebars');
 const fs = require('fs-extra');
 const path = require('path');
-const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, generateOTP,dateprint } = require('../common/helper');
+const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, generateOTP, dateprint } = require('../common/helper');
 var sprintf = require('sprintf-js').sprintf;
 
 const { addNotificationsData } = require('../common/common');
@@ -89,40 +89,40 @@ exports.addUser = async (req, res) => {
   }
 
   try {
-    const totUser = await User.count({ 'user_type': { '$ne': 'advertiser' } });
-    const totalUser = (parseInt(totUser) + 1);
+    const totUser = await User.findOne({ 'user_type': { '$ne': 'advertiser' } }).sort({ userId: -1 }).exec();
+    const totalUser = (parseInt(totUser.userId) + 1);
     const userId = sprintf('%04d', totalUser);
 
-	  let data_val = profile_pic.replace(/^data:image\/[a-z]+;base64,/, "");
-	  let data_name = profile_pic_name;
-	  let mimetype = detectMimeType(profile_pic);
-	  // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
-	  const buffer = Buffer.from(data_val, "base64");
-	  const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
-	  let s3 = new aws.S3({
-		credentials: {
-		  accessKeyId: BUCKET_ACCESS_ID,
-		  secretAccessKey: BUCKET_SECRET
-		},
-		region: BUCKET_REGION
-	  });
-	  const putobj = {
-		Bucket: "applabs2024",
-		Key: data_name,
-		Body: buffer,
-		ContentType: mimetype,
-		acl: "private"
-	  }
-	  s3.upload(putobj, function (err, data) {
-		if (err) {
-		  console.log("Error", err)
-		  const erroData = { 'success': false, 'error': err };
-		  res.status(400).send(erroData);
-		  return;
-		} else {
-		  data && console.log("Upload success", data);
-		}
-	  })
+    let data_val = profile_pic.replace(/^data:image\/[a-z]+;base64,/, "");
+    let data_name = profile_pic_name;
+    let mimetype = detectMimeType(profile_pic);
+    // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+    const buffer = Buffer.from(data_val, "base64");
+    const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+    let s3 = new aws.S3({
+      credentials: {
+        accessKeyId: BUCKET_ACCESS_ID,
+        secretAccessKey: BUCKET_SECRET
+      },
+      region: BUCKET_REGION
+    });
+    const putobj = {
+      Bucket: "applabs2024",
+      Key: data_name,
+      Body: buffer,
+      ContentType: mimetype,
+      acl: "private"
+    }
+    s3.upload(putobj, function (err, data) {
+      if (err) {
+        console.log("Error", err)
+        const erroData = { 'success': false, 'error': err };
+        res.status(400).send(erroData);
+        return;
+      } else {
+        data && console.log("Upload success", data);
+      }
+    })
 
 
     const user = new User({
@@ -157,10 +157,10 @@ exports.addUser = async (req, res) => {
           designation: designation
         };
 
-        Advertiser.findOneAndUpdate({ tid: advertiser_id }, { '$push': { 'users': advUpdateData } }, { new: true }).exec().then(async(AdvertiserData) => {
+        Advertiser.findOneAndUpdate({ tid: advertiser_id }, { '$push': { 'users': advUpdateData } }, { new: true }).exec().then(async (AdvertiserData) => {
           if (AdvertiserData) {
-			  
-			  // INSERT DATA INTO NOTIFICATIONS
+
+            // INSERT DATA INTO NOTIFICATIONS
             const notificationData = {
               advertiser_id: parseInt(advertiser_id),
               advertiser_name: ucfirst(AdvertiserData.name),
@@ -179,8 +179,8 @@ exports.addUser = async (req, res) => {
             }
             // END INSERT DATA INTO NOTIFICATIONS
             await addNotificationsData(notificationData);
-			
-			
+
+
             // Check mail preference is on or not
             const bcc_mail = process.env.BCC_EMAILS.split(",");
             if (AdvertiserData.email_preferences == true) {
@@ -189,7 +189,7 @@ exports.addUser = async (req, res) => {
               const emailUserTemplate = fs.readFileSync(path.join("templates/user_account_created.handlebars"), "utf-8");
               const templateUser = handlebars.compile(emailUserTemplate);
               const messageBodyUser = (templateUser({
-				todayDate: dateprint(),
+                todayDate: dateprint(),
                 user_id: userId,
                 adv_name: AdvertiserData.organization.toUpperCase(),
                 role: ucwords(userType),
@@ -228,7 +228,7 @@ exports.addUser = async (req, res) => {
               const emailAdvertiserTemplate = fs.readFileSync(path.join("templates/advertiser_user_account_created.handlebars"), "utf-8");
               const templateAdv = handlebars.compile(emailAdvertiserTemplate);
               const messageBodyAdv = (templateAdv({
-				todayDate: dateprint(),
+                todayDate: dateprint(),
                 adv_name: AdvertiserData.organization.toUpperCase(),
                 advertiserName: ucwords(AdvertiserData.organization),
                 role: ucwords(userType),
@@ -268,7 +268,7 @@ exports.addUser = async (req, res) => {
             const emailTemplateAdmin = fs.readFileSync(path.join("templates/user_created_admin.handlebars"), "utf-8");
             const templateAdmin = handlebars.compile(emailTemplateAdmin);
             const messageBodyAdmin = (templateAdmin({
-			  todayDate: dateprint(),
+              todayDate: dateprint(),
               adv_name: AdvertiserData.organization.toUpperCase(),
               role: ucwords(userType),
               designation: ucwords(designation),
@@ -867,35 +867,35 @@ exports.updateUserProfile = async (req, res) => {
 
     if (profile_pic) {
       let data_val = profile_pic.replace(/^data:image\/[a-z]+;base64,/, "");
-          let data_name = profile_pic_name;
-          let mimetype = detectMimeType(profile_pic);
-          // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
-          const buffer = Buffer.from(data_val, "base64");
-          const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
-          let s3 = new aws.S3({
-            credentials: {
-              accessKeyId: BUCKET_ACCESS_ID,
-              secretAccessKey: BUCKET_SECRET
-            },
-            region: BUCKET_REGION
-          });
-          const putobj = {
-            Bucket: "applabs2024",
-            Key: data_name,
-            Body: buffer,
-            ContentType: mimetype,
-            acl: "private"
-          }
-          s3.upload(putobj, function (err, data) {
-            if (err) {
-              console.log("Error", err)
-              const erroData = { 'success': false, 'error': err };
-              res.status(400).send(erroData);
-              return;
-            } else {
-              data && console.log("Upload success", data);
-            }
-          })
+      let data_name = profile_pic_name;
+      let mimetype = detectMimeType(profile_pic);
+      // Convert base64 to buffer => <Buffer ff d8 ff db 00 43 00 ...
+      const buffer = Buffer.from(data_val, "base64");
+      const { BUCKET, BUCKET_ACCESS_ID, BUCKET_SECRET, BUCKET_REGION } = process.env;
+      let s3 = new aws.S3({
+        credentials: {
+          accessKeyId: BUCKET_ACCESS_ID,
+          secretAccessKey: BUCKET_SECRET
+        },
+        region: BUCKET_REGION
+      });
+      const putobj = {
+        Bucket: "applabs2024",
+        Key: data_name,
+        Body: buffer,
+        ContentType: mimetype,
+        acl: "private"
+      }
+      s3.upload(putobj, function (err, data) {
+        if (err) {
+          console.log("Error", err)
+          const erroData = { 'success': false, 'error': err };
+          res.status(400).send(erroData);
+          return;
+        } else {
+          data && console.log("Upload success", data);
+        }
+      })
     }
 
     const advUpdateData = {
