@@ -1293,7 +1293,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
 // Update a Advertiser
 exports.updateAdvertiser = async (req, res) => {
 
-  const paramSchema = { 1: 'profile_pic', 2: 'advertiser_name', 3: 'organization', 4: 'website', 5: 'email', 6: 'mobile', 7: 'im_id', 8: 'address', 9: 'state', 10: 'country', 11: 'zip', 12: 'email_preferences', 13: 'profile_pic_name', 14: 'assigned_to' };
+  const paramSchema = { 1: 'profile_pic', 2: 'advertiser_name', 3: 'organization', 4: 'website', 5: 'email', 6: 'mobile', 7: 'im_id', 8: 'address', 9: 'state', 10: 'country', 11: 'zip', 12: 'email_preferences', 13: 'profile_pic_name' };
   var new_array = [];
   for (var key in paramSchema) {
     if (!req.body.hasOwnProperty(paramSchema[key])) {
