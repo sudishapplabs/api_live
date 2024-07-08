@@ -159,7 +159,7 @@ const offerSchema = new mongoose.Schema({
     type: String
   },
   city_details: {
-    type: String
+
   },
   city_inc_and_exc: {
     type: String
