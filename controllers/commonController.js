@@ -147,20 +147,81 @@ exports.getStateByCountry = (req, res, next) => {
 };
 
 // Search city and get 
-exports.citySearch = async (req, res, next) => {
+exports.citySearch = async (req, res) => {
   const searchVal = req.query.search;
-  const city = {};
   if (!searchVal) {
     const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "search is not allowed to be empty" } };
     res.status(400).send(reMsg);
     return;
   }
-  City.find({ "City": { $regex: `${searchVal}`, $options: 'i' } }).sort({ City: 1 }).limit(10).exec().then((city) => {
-    res.citySearch = city;
-    next();
-    const response = { 'success': true, 'results': city };
-    res.status(200).send(response);
-    return;
+
+  var filter = {};
+  filter['City'] = { $regex: `${searchVal}`, $options: 'i' };
+  await City.aggregate([
+    { '$match': filter },
+    {
+      '$addFields': {
+        'StateIdNumber': { '$toInt': '$State Id' }
+      }
+    },
+    {
+      '$lookup': {
+        'from': 'region',
+        'localField': 'StateIdNumber',
+        'foreignField': 'Id',
+        'as': 'Region'
+      }
+    },
+    { $unwind: { path: '$Region', preserveNullAndEmptyArrays: true } },
+    {
+      '$addFields': {
+        'RegionCountryIdLower': { '$toLower': '$Region.Country' }
+      }
+    },
+    {
+      '$lookup': {
+        'from': 'countries',
+        'let': { 'regionCountryId': '$RegionCountryIdLower' },
+        'pipeline': [
+          {
+            '$addFields': {
+              'IdLower': { '$toLower': '$ISO' }
+            }
+          },
+          {
+            '$match': {
+              '$expr': { '$eq': ['$IdLower', '$$regionCountryId'] }
+            }
+          }
+        ],
+        'as': 'Country'
+      }
+    },
+    { $unwind: { path: '$Country', preserveNullAndEmptyArrays: true } },
+    {
+      '$addFields': {
+        'region.Country': '$Country.Country',
+        'region.Region': '$Region.Region'
+      }
+    },
+    {
+      '$project': {
+        'Region': 0,
+        'Country': 0,
+        'StateIdNumber': 0, // Optionally remove the temporary field
+        'RegionCountryIdLower': 0 // Optionally remove the temporary field
+      }
+    }
+  ]).sort({ City: 1 }).exec().then((cityRes) => {
+    if (cityRes) {
+      const response = { 'success': true, 'results': cityRes };
+      res.status(200).send(response);
+      return;
+    } else {
+      const resMsg = { "success": false, "message": "No records found" };
+      res.status(200).send(resMsg);
+    }
+
   }).catch(error => {
     const response = { 'success': false, 'error': error };
     res.status(400).send(response);
