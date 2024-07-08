@@ -10,7 +10,7 @@ const querystring = require("querystring");
 const axios = require('axios');
 const CreativeModel = require("../models/creativeModel");
 const CreativeCtrModel = require("../models/creativectrModel");
-const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, dateprint } = require('../common/helper');
+const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, getCreativeNameLists, dateprint } = require('../common/helper');
 const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, decodeHtml, addNotificationsData, addTimelineData } = require("../common/common");
 
 const Audience = require("../models/audienceModel");
@@ -1938,8 +1938,10 @@ exports.addOffer = async (req, res) => {
 
                         if (Array.isArray(creatives) && creatives.length > 0) {
                             var creativeName = [];
+                            var creative_dimension = [];
                             for (let i = 0; i < creatives.length; i++) {
                                 creativeName.push(creatives[i].creative);
+                                creative_dimension.push(creatives[i].image_dimension);
                                 //process.exit();
                                 const creative_data = new CreativeModel({
                                     campaign_id: DBdata._id,
@@ -1963,7 +1965,7 @@ exports.addOffer = async (req, res) => {
                                     console.error(err);
                                 });
                             }
-                            const final_creative_list = getCreativeLists(creativeName);
+                            const final_creative_list = getCreativeNameLists(creativeName, creative_dimension);
                             // START INSERT DATA INTO DB WITH CREATIVE CTR
                             const banner_ctr = {
                                 "300x250": "1.1348-1.4514",
@@ -1986,10 +1988,15 @@ exports.addOffer = async (req, res) => {
                                 creativeArr[key] = parseFloat(randCTR);
                             }
 
+                            var final_creative_list_mod = [];
                             for (let i = 0; i < final_creative_list.length; i++) {
-                                let creative = final_creative_list[i];
+                                let key = Object.keys(final_creative_list[i])[0];
+                                let value = final_creative_list[i][key];
+
+                                final_creative_list_mod.push(value);
+                                let creative = value;
                                 for (const [size, val] of Object.entries(creativeArr)) {
-                                    if (creative.indexOf(size) !== -1) {
+                                    if (key.indexOf(size) !== -1) {
                                         const aData = new CreativeCtrModel({
                                             trackier_adv_id: advertiser,
                                             trackier_camp_id: trackier_camp_id,
@@ -2013,7 +2020,7 @@ exports.addOffer = async (req, res) => {
                                 }
                             }
                             // END INSERT DATA INTO DB WITH CREATIVE CTR              
-                            const creativeData = { "creativeNames": final_creative_list };
+                            const creativeData = { "creativeNames": final_creative_list_mod };
                             // // STEP-11 push app lists on trackier
                             axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
                                 console.log('Step39 Request');
@@ -10996,11 +11003,13 @@ exports.updateOffer = async (req, res) => {
 
         const creativesList = await CreativeModel.find({ campaign_id: _id }).sort({ _id: -1 }).exec();
         var creativeName = [];
+        var creative_dimension = [];
         for (let i = 0; i < creativesList.length; i++) {
             creativeName.push(creativesList[i].creative);
+            creative_dimension.push(creativesList[i].image_dimension);
         }
 
-        const final_creative_list = getCreativeLists(creativeName);
+        const final_creative_list = getCreativeNameLists(creativeName, creative_dimension);
         // START INSERT DATA INTO DB WITH CREATIVE CTR
         const banner_ctr = {
             "300x250": "1.1348-1.4514",
@@ -11021,10 +11030,15 @@ exports.updateOffer = async (req, res) => {
             creativeArr[key] = parseFloat(randCTR);
         }
 
+        var final_creative_list_mod = [];
         for (let i = 0; i < final_creative_list.length; i++) {
-            let creative = final_creative_list[i];
+            let key = Object.keys(final_creative_list[i])[0];
+            let value = final_creative_list[i][key];
+
+            final_creative_list_mod.push(value);
+            let creative = value;
             for (const [size, val] of Object.entries(creativeArr)) {
-                if (creative.indexOf(size) !== -1) {
+                if (key.indexOf(size) !== -1) {
                     const aData = new CreativeCtrModel({
                         trackier_adv_id: trackier_adv_id,
                         trackier_camp_id: trackier_camp_id,
@@ -11049,7 +11063,7 @@ exports.updateOffer = async (req, res) => {
         }
         console.log("Creative");
         // END INSERT DATA INTO DB WITH CREATIVE CTR              
-        const creativeData = { "creativeNames": final_creative_list };
+        const creativeData = { "creativeNames": final_creative_list_mod };
 
         // // STEP-11 push app lists on trackier
         await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then(async (creativeUpload) => {

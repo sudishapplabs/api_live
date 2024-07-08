@@ -40,6 +40,7 @@ function getDateBetween(Date1, Date2) {
   return array;
 }
 
+
 exports.getOfferSpent = async (req, res) => {
 
   // create offer on trackier
@@ -226,82 +227,89 @@ exports.getOfferSpent = async (req, res) => {
       dateArrayData[offerId] = getDateBetween(offerDt, todayDate);
     }
 
-
-    var offer_str_id = "";
-    var totalSpent = [];
-    var totalSpentArr = {};
+    let totalSpent = {};
     for (let n = 0; n < allOffersTodaySpentBeforeSix.length; n++) {
       let offerIdOverSixMonth = allOffersTodaySpentBeforeSix[n];
 
-      offer_str_id += ("camp_ids[]=" + offerIdOverSixMonth + "&");
+      let offer_str_id = ("camp_ids[]=" + offerIdOverSixMonth + "&");
       dateArrayData[offerIdOverSixMonth].push(todayDate);
 
       for (let p = 0; p < dateArrayData[offerIdOverSixMonth].length - 1; p += 1) {
-        if (p > 0) {
-          const fdateConst = new Date(dateArrayData[offerIdOverSixMonth][p]);
-          var dayf = 60 * 60 * 24 * 1000;
-          var fdate = new Date(fdateConst.getTime() + dayf);
-          const fyear = fdate.getUTCFullYear();
-          const fmonth = padTo2Digits(fdate.getUTCMonth() + 1);
-          const fday = padTo2Digits(fdate.getUTCDate());
-          var fromDate = [fyear, fmonth, fday].join('-');
-        } else {
-          var fromDate = dateArrayData[offerIdOverSixMonth][p];
-        }
-        if (typeof dateArrayData[offerIdOverSixMonth][p + 1] !== 'undefined' && dateArrayData[offerIdOverSixMonth][p + 1] !== "") {
-          var endDate = dateArrayData[offerIdOverSixMonth][p + 1];
-        }
-        const endpoint = "reports/custom"
-        // GET DATA FROm TRACKIER
-        console.log(fromDate + "======" + endDate);
-        await axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&kpi[]=grossClicks&kpi[]=grossRevenue&kpi[]=grossConversions&" + offer_str_id + "start=" + fromDate + "&end=" + endDate + "&zone=Asia/Kolkata", axios_header).then((totSixMonthRes) => {
-          if (typeof totSixMonthRes.statusText !== 'undefined' && totSixMonthRes.statusText == "OK") {
-            const sixMonthData = totSixMonthRes.data.records;
-            if (Array.isArray(sixMonthData) && sixMonthData.length > 0) {
-              if (offerIdOverSixMonth == sixMonthData[0].campaign_id) {
-                //console.log(sixMonthData[0].grossRevenue);
-                if (typeof sixMonthData[0].grossRevenue !== 'undefined' && sixMonthData[0].grossRevenue !== "") {
-                  totalSpent.push(sixMonthData[0].grossRevenue);
-                  totalSpentArr[offerIdOverSixMonth] = totalSpent;
+        if (typeof dateArrayData[offerIdOverSixMonth][p + 1]) {
+
+          if (p > 0) {
+            const fdateConst = new Date(dateArrayData[offerIdOverSixMonth][p]);
+            var dayf = 60 * 60 * 24 * 1000;
+            var fdate = new Date(fdateConst.getTime() + dayf);
+            const fyear = fdate.getUTCFullYear();
+            const fmonth = padTo2Digits(fdate.getUTCMonth() + 1);
+            const fday = padTo2Digits(fdate.getUTCDate());
+            var fromDate = [fyear, fmonth, fday].join('-');
+          } else {
+            var fromDate = dateArrayData[offerIdOverSixMonth][p];
+          }
+          if (typeof dateArrayData[offerIdOverSixMonth][p + 1] !== 'undefined' && dateArrayData[offerIdOverSixMonth][p + 1] !== "") {
+            var endDate = dateArrayData[offerIdOverSixMonth][p + 1];
+          }
+          const endpoint = "reports/custom"
+          // GET DATA FROm TRACKIER
+          await axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&kpi[]=grossClicks&kpi[]=grossRevenue&kpi[]=grossConversions&" + offer_str_id + "start=" + fromDate + "&end=" + endDate + "&zone=Asia/Kolkata", axios_header).then((totSixMonthRes) => {
+
+            if (typeof totSixMonthRes.statusText !== 'undefined' && totSixMonthRes.statusText == "OK") {
+              const sixMonthData = totSixMonthRes.data.records;
+
+              if (Array.isArray(sixMonthData) && sixMonthData.length > 0) {
+                if (offerIdOverSixMonth == sixMonthData[0].campaign_id) {
+                  if (sixMonthData[0].grossRevenue) {
+                    // let abc = pushValue(sixMonthData[0].campaign_id, sixMonthData[0].grossRevenue);
+                    if (!totalSpent[sixMonthData[0].campaign_id]) {
+                      totalSpent[sixMonthData[0].campaign_id] = [];
+                    }
+                    totalSpent[sixMonthData[0].campaign_id].push(sixMonthData[0].grossRevenue);
+
+                    console.log([sixMonthData[0].campaign_id]);
+                  }
                 }
               }
+            } else {
+              const resMsg = { "success": false, "message": "No records found" };
+              res.status(200).send(resMsg);
+              return;
             }
-          } else {
-            const resMsg = { "success": false, "message": "No records found" };
-            res.status(200).send(resMsg);
+
+          }).catch(err => {
+            console.log(err);
+            const errMsg = { "success": false, "errors": err };
+            res.status(400).send(errMsg);
             return;
-          }
-        }).catch(err => {
-          console.log(err);
-          const errMsg = { "success": false, "errors": err.response.data.errors };
-          res.status(400).send(errMsg);
-          return;
-        });
+          });
+        }
       }
     }
 
-    // for (const [key, val] of Object.entries(totalSpentArr)) {
-    //   let campaign_id = key;
-    //   let totalSpentVal = val;
-    //   const sum = totalSpentVal.reduce((accumulator, current) => accumulator + current);
 
-    //   const dataArr = { total_spent: parseFloat(sum) }
-    //   // UPDATE DB TODAY SPENT AND CONVERSION
-    //   await Offer.findOneAndUpdate({ trackier_camp_id: campaign_id }, dataArr, { new: true }).exec().then((recordRes) => {
-    //     console.log('TotalSpent_for_six_months Update Request');
-    //     if (!recordRes) {
-    //       console.log('TotalSpent_for_six_months Update Response');
-    //       const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-    //       res.status(200).send(resMsg);
-    //       return;
-    //     }
-    //   }).catch((error) => {
-    //     const reMsg = { "status": false, "message": error.message };
-    //     res.status(400).send(reMsg);
-    //   });
-    // }
+    // console.log(totalSpent);
 
-
+    for (const [key, val] of Object.entries(totalSpent)) {
+      let campaign_id = key;
+      let totalSpentVal = val;
+      let sum = totalSpentVal.reduce((accumulator, current) => accumulator + current);
+      let subVal = Math.round(parseFloat(sum) * 100) / 100;
+      const dataArr = { total_spent: subVal }
+      // UPDATE DB TODAY SPENT AND CONVERSION
+      // Offer.findOneAndUpdate({ trackier_camp_id: campaign_id }, dataArr, { new: true }).exec().then((recordRes) => {
+      //   console.log('TotalSpent_for_six_months Update Request');
+      //   if (!recordRes) {
+      //     console.log('TotalSpent_for_six_months Update Response');
+      //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+      //     res.status(200).send(resMsg);
+      //     return;
+      //   }
+      // }).catch((error) => {
+      //   const reMsg = { "status": false, "message": error.message };
+      //   res.status(400).send(reMsg);
+      // });
+    }
   } else {
     const errMsg = { "success": false, "message": "No records availabe" };
     res.status(200).send(errMsg);
