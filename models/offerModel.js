@@ -14,14 +14,14 @@ const offerSchema = new mongoose.Schema({
   source_type: {
     type: String
   },
-   campaign_type: {
+  campaign_type: {
     type: String
   },
   publishers: {
 
   },
-  premium_apps : {
-	  
+  premium_apps: {
+
   },
   audience_id: {
     type: String
@@ -156,6 +156,9 @@ const offerSchema = new mongoose.Schema({
     type: String
   },
   city: {
+    type: String
+  },
+  city_details: {
     type: String
   },
   city_inc_and_exc: {

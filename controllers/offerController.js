@@ -27,7 +27,7 @@ const { url } = require("inspector");
 
 // request.body
 exports.addOffer = async (req, res) => {
-    const { req_from, user_type, user_name, user_email, advertiser, offer_name, source_type, campaign_type, premium_apps, audience_id, pubs, MMP, bundle_id, app_name, preview_url, icon, description, unique_tracker_id, appmetrica_tracking_id, singular_cta_tracking_link, singular_vta_tracking_link, mytracker_tracking_id, app_link, campaign_id, operating_system, kpi, cta_link, cta_redirect_link, af_redirect_link, vta_link, goal_budget_type, payable_event_name, total_budget, daily_budget, campaign_schedule, schedule_start_date, schedule_end_date, country, include_state_city, state, state_inc_and_exc, city, city_inc_and_exc, os_version_min, os_version_max, language, interest, age_group, payable_event_price, goal_budget, creatives } = req.body; var step1 = false; var step2 = false; var step3 = false; var step4 = false; var step5 = false; var step6 = false; var step7 = false;
+    const { req_from, user_type, user_name, user_email, advertiser, offer_name, source_type, campaign_type, premium_apps, audience_id, pubs, MMP, bundle_id, app_name, preview_url, icon, description, unique_tracker_id, appmetrica_tracking_id, singular_cta_tracking_link, singular_vta_tracking_link, mytracker_tracking_id, app_link, campaign_id, operating_system, kpi, cta_link, cta_redirect_link, af_redirect_link, vta_link, goal_budget_type, payable_event_name, total_budget, daily_budget, campaign_schedule, schedule_start_date, schedule_end_date, country, include_state_city, state, state_inc_and_exc, city, city_details, city_inc_and_exc, os_version_min, os_version_max, language, interest, age_group, payable_event_price, goal_budget, creatives } = req.body; var step1 = false; var step2 = false; var step3 = false; var step4 = false; var step5 = false; var step6 = false; var step7 = false;
     // console.log(RU_erid);
     // process.exit();
     // Validate request
@@ -635,8 +635,17 @@ exports.addOffer = async (req, res) => {
         } else {
             var finalCtaLink = "";
         }
-        var VTAMacro = "";
-        var finalVtaLink = "";
+
+        if (typeof vta_link !== 'undefined' && vta_link !== "") {
+            var VTAMacro = "&ex_sub1={publisher_id}&ex_sub2={source}&ex_sub3={app_name}&ex_sub4={camp_id}&ex_sub5={publisher_id}&ex_sub6={creative_name}";
+            const vtaLink = vta_link + VTAMacro;
+
+            const search_replace_vta = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}', '{click_id}': '{imp_id}' };
+            var finalVtaLink = vtaLink.replace(/{placement_id}|{click_id}/g, matched => search_replace_vta[matched]);
+        } else {
+            var VTAMacro = "";
+            var finalVtaLink = "";
+        }
     } else if (typeof MMP !== 'undefined' && MMP == "Singular") {
 
         if (typeof cta_link !== 'undefined' && cta_link !== "") {
@@ -787,6 +796,7 @@ exports.addOffer = async (req, res) => {
         state: stateString,
         state_inc_and_exc: state_inc_and_exc,
         city: cityString,
+        city_details: city_details,
         city_inc_and_exc: city_inc_and_exc,
         os_version_min: os_version_min,
         os_version_max: os_version_max,
@@ -4879,7 +4889,7 @@ function inArray(needle, haystack) {
 exports.updateOffer = async (req, res) => {
 
 
-    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status } = req.body;
+    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_details, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status } = req.body;
 
     // Validate request
     if (!user_type || !user_name || !user_email || !trackier_adv_id || !trackier_camp_id || !offer_name || !pubs || !icon || !operating_system || !cta_link || !payable_event_name || !total_budget || !daily_budget || !country || !language || !interest || !age_group || !schedule_start_date || !bundle_id) {
@@ -5590,7 +5600,7 @@ exports.updateOffer = async (req, res) => {
         }
 
         // CITY and EXLUDE UPDATE
-        Offer.findOneAndUpdate({ _id }, { city: cityString, city_inc_and_exc: city_inc_and_exc_db }, { new: true }).exec().then(async (resOffer) => {
+        Offer.findOneAndUpdate({ _id }, { city: cityString, city_details: city_details, city_inc_and_exc: city_inc_and_exc_db }, { new: true }).exec().then(async (resOffer) => {
             console.log('city Update Request');
             if (resOffer) {
                 console.log('city Update Response');
@@ -7441,6 +7451,18 @@ exports.updateOffer = async (req, res) => {
 
                     const search_replace_vta = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}' };
                     var finalVtaLink = vtaLink.replace(/{placement_id}/g, matched => search_replace_vta[matched]);
+                } else {
+                    var VTAMacro = "";
+                    var finalVtaLink = "";
+                }
+            } else if (typeof MMP !== 'undefined' && MMP == "Appmetrica") {
+
+                if (typeof vta_link !== 'undefined' && vta_link !== "") {
+                    var VTAMacro = "&ex_sub1={publisher_id}&ex_sub2={source}&ex_sub3={app_name}&ex_sub4={camp_id}&ex_sub5={publisher_id}&ex_sub6={creative_name}";
+                    const vtaLink = vta_link + VTAMacro;
+
+                    const search_replace_vta = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}', '{click_id}': '{imp_id}' };
+                    var finalVtaLink = vtaLink.replace(/{placement_id}|{click_id}/g, matched => search_replace_vta[matched]);
                 } else {
                     var VTAMacro = "";
                     var finalVtaLink = "";
