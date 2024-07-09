@@ -483,7 +483,60 @@ exports.addOffer = async (req, res) => {
                 var CTAMacro = "&af_sub1={publisher_id}&af_sub2={source}&af_sub3={app_name}&af_sub4={camp_id}&af_sub5={publisher_id}&af_sub6={creative_name}&af_additionalpostback=1";
             }
 
-            const ctaLink = cta_link + CTAMacro;
+            var ctaLink = cta_link + CTAMacro;
+
+            const query_agid = require('url').parse(cta_link, true).query;
+            var afAdId = "&af_ad_id=";
+            if (typeof query_agid['af_sub1'] !== 'undefined' && query_agid['af_sub1'] !== "") {
+                afAdId += "{publisher_id}_";
+            }
+            if (typeof query_agid['af_sub2'] !== 'undefined' && query_agid['af_sub2'] !== "") {
+                afAdId += "{source}_";
+            }
+            if (typeof query_agid['af_sub3'] !== 'undefined' && query_agid['af_sub3'] !== "") {
+                afAdId += "{app_name}_";
+            }
+            if (typeof query_agid['af_sub4'] !== 'undefined' && query_agid['af_sub4'] !== "") {
+                afAdId += "{camp_id}_";
+            }
+            if (typeof query_agid['af_sub5'] !== 'undefined' && query_agid['af_sub5'] !== "") {
+                afAdId += "{publisher_id}_";
+            }
+            if (typeof query_agid['af_sub6'] !== 'undefined' && query_agid['af_sub6'] !== "") {
+                afAdId += "{creative_name}_";
+            }
+
+            // Start Encode ~agency_id URL
+            if (typeof query_agid['af_sub1'] !== 'undefined' && query_agid['af_sub1'] !== "") {
+                const search_replace = { '&af_sub1={publisher_id}': "" };
+                ctaLink = ctaLink.replace(/&af_sub1={publisher_id}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub2'] !== 'undefined' && query_agid['af_sub2'] !== "") {
+                const search_replace = { '&af_sub2={source}': "" };
+                ctaLink = ctaLink.replace(/&af_sub2={source}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub3'] !== 'undefined' && query_agid['af_sub3'] !== "") {
+                const search_replace = { '&af_sub3={app_name}': "" };
+                ctaLink = ctaLink.replace(/&af_sub3={app_name}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub4'] !== 'undefined' && query_agid['af_sub4'] !== "") {
+                const search_replace = { '&af_sub4={camp_id}': "" };
+                ctaLink = ctaLink.replace(/&af_sub4={camp_id}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub5'] !== 'undefined' && query_agid['af_sub5'] !== "") {
+                const search_replace = { '&af_sub5={publisher_id}': "" };
+                ctaLink = ctaLink.replace(/&af_sub5={publisher_id}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub6'] !== 'undefined' && query_agid['af_sub6'] !== "") {
+                const search_replace = { '&af_sub6={creative_name}': "" };
+                ctaLink = ctaLink.replace(/&af_sub6={creative_name}/g, matched => search_replace[matched]);
+            }
+            if (afAdId !== "&af_ad_id=") {
+                ctaLink = ctaLink + afAdId.replace(/_+$/, '');
+            } else {
+                ctaLink = ctaLink;
+            }
+
             const search_replace = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}', '__DEEPLINK__': "", '__COST__': campaignRevenue, '__CURRENCY__': 'USD', '=channel': '=AL-{publisher_id}' };
             var finalCtaLink = ctaLink.replace(/{placement_id}|__DEEPLINK__|__COST__|__CURRENCY__|USD|=channel/g, matched => search_replace[matched]);
         } else {
@@ -506,7 +559,64 @@ exports.addOffer = async (req, res) => {
                 var VTAMacro = "&af_sub1={publisher_id}&af_sub2={source}&af_sub3={app_name}&af_sub4={camp_id}&af_sub5={publisher_id}&af_sub6={creative_name}&af_additionalpostback=1";
             }
 
-            const vtaLink = removeAfdpFromVta + VTAMacro;
+            var vtaLink = removeAfdpFromVta + VTAMacro;
+
+            const query_agid = require('url').parse(vta_link, true).query;
+            var afAdId = "&af_ad_id=";
+
+            if (typeof query_agid['af_sub1'] !== 'undefined' && query_agid['af_sub1'] !== "") {
+                afAdId += "{publisher_id}_";
+            }
+            if (typeof query_agid['af_sub2'] !== 'undefined' && query_agid['af_sub2'] !== "") {
+                afAdId += "{source}_";
+            }
+
+            if (typeof query_agid['af_sub3'] !== 'undefined' && query_agid['af_sub3'] !== "") {
+                afAdId += "{app_name}_";
+            }
+
+            if (typeof query_agid['af_sub4'] !== 'undefined' && query_agid['af_sub4'] !== "") {
+                afAdId += "{camp_id}_";
+            }
+
+            if (typeof query_agid['af_sub5'] !== 'undefined' && query_agid['af_sub5'] !== "") {
+                afAdId += "{publisher_id}_";
+            }
+
+            if (typeof query_agid['af_sub6'] !== 'undefined' && query_agid['af_sub6'] !== "") {
+                afAdId += "{creative_name}_";
+            }
+
+            // Start Encode ~agency_id URL
+            if (typeof query_agid['af_sub1'] !== 'undefined' && query_agid['af_sub1'] !== "") {
+                const search_replace = { '&af_sub1={publisher_id}': "" };
+                vtaLink = vtaLink.replace(/&af_sub1={publisher_id}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub2'] !== 'undefined' && query_agid['af_sub2'] !== "") {
+                const search_replace = { '&af_sub2={source}': "" };
+                vtaLink = vtaLink.replace(/&af_sub2={source}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub3'] !== 'undefined' && query_agid['af_sub3'] !== "") {
+                const search_replace = { '&af_sub3={app_name}': "" };
+                vtaLink = vtaLink.replace(/&af_sub3={app_name}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub4'] !== 'undefined' && query_agid['af_sub4'] !== "") {
+                const search_replace = { '&af_sub4={camp_id}': "" };
+                vtaLink = vtaLink.replace(/&af_sub4={camp_id}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub5'] !== 'undefined' && query_agid['af_sub5'] !== "") {
+                const search_replace = { '&af_sub5={publisher_id}': "" };
+                vtaLink = vtaLink.replace(/&af_sub5={publisher_id}/g, matched => search_replace[matched]);
+            }
+            if (typeof query_agid['af_sub6'] !== 'undefined' && query_agid['af_sub6'] !== "") {
+                const search_replace = { '&af_sub6={creative_name}': "" };
+                vtaLink = vtaLink.replace(/&af_sub6={creative_name}/g, matched => search_replace[matched]);
+            }
+            if (afAdId !== "&af_ad_id=") {
+                vtaLink = vtaLink + afAdId.replace(/_+$/, '');
+            } else {
+                vtaLink = vtaLink;
+            }
 
             const search_replace_vta = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}', '__DEEPLINK__': "", '__COST__': campaignRevenue, '__CURRENCY__': 'USD', '=channel': '=AL-{publisher_id}', '{click_id}': '{imp_id}' };
             var finalVtaLink = vtaLink.replace(/{placement_id}|__DEEPLINK__|__COST__|__CURRENCY__|USD|=channel|{click_id}/g, matched => search_replace_vta[matched]);
