@@ -510,39 +510,31 @@ exports.addOffer = async (req, res) => {
             if (typeof query_agid['af_sub1'] !== 'undefined' && query_agid['af_sub1'] !== "") {
                 const search_replace = { '&af_sub1={publisher_id}': "" };
                 ctaLink = ctaLink.replace(/&af_sub1={publisher_id}/g, matched => search_replace[matched]);
-                CTAMacro = CTAMacro.replace(/&af_sub1={publisher_id}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub2'] !== 'undefined' && query_agid['af_sub2'] !== "") {
                 const search_replace = { '&af_sub2={source}': "" };
                 ctaLink = ctaLink.replace(/&af_sub2={source}/g, matched => search_replace[matched]);
-                CTAMacro = CTAMacro.replace(/&af_sub2={source}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub3'] !== 'undefined' && query_agid['af_sub3'] !== "") {
                 const search_replace = { '&af_sub3={app_name}': "" };
                 ctaLink = ctaLink.replace(/&af_sub3={app_name}/g, matched => search_replace[matched]);
-                CTAMacro = CTAMacro.replace(/&af_sub3={app_name}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub4'] !== 'undefined' && query_agid['af_sub4'] !== "") {
                 const search_replace = { '&af_sub4={camp_id}': "" };
                 ctaLink = ctaLink.replace(/&af_sub4={camp_id}/g, matched => search_replace[matched]);
-                CTAMacro = CTAMacro.replace(/&af_sub4={camp_id}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub5'] !== 'undefined' && query_agid['af_sub5'] !== "") {
                 const search_replace = { '&af_sub5={publisher_id}': "" };
                 ctaLink = ctaLink.replace(/&af_sub5={publisher_id}/g, matched => search_replace[matched]);
-                CTAMacro = CTAMacro.replace(/&af_sub5={publisher_id}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub6'] !== 'undefined' && query_agid['af_sub6'] !== "") {
                 const search_replace = { '&af_sub6={creative_name}': "" };
                 ctaLink = ctaLink.replace(/&af_sub6={creative_name}/g, matched => search_replace[matched]);
-                CTAMacro = CTAMacro.replace(/&af_sub6={creative_name}/g, matched => search_replace[matched]);
             }
             if (afAdId !== "&af_ad_id=") {
                 ctaLink = ctaLink + afAdId.replace(/_+$/, '');
-                CTAMacro = CTAMacro + afAdId.replace(/_+$/, '');
             } else {
                 ctaLink = ctaLink;
-                CTAMacro = CTAMacro;
             }
 
             const search_replace = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}', '__DEEPLINK__': "", '__COST__': campaignRevenue, '__CURRENCY__': 'USD', '=channel': '=AL-{publisher_id}' };
@@ -599,39 +591,31 @@ exports.addOffer = async (req, res) => {
             if (typeof query_agid['af_sub1'] !== 'undefined' && query_agid['af_sub1'] !== "") {
                 const search_replace = { '&af_sub1={publisher_id}': "" };
                 vtaLink = vtaLink.replace(/&af_sub1={publisher_id}/g, matched => search_replace[matched]);
-                VTAMacro = VTAMacro.replace(/&af_sub1={publisher_id}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub2'] !== 'undefined' && query_agid['af_sub2'] !== "") {
                 const search_replace = { '&af_sub2={source}': "" };
                 vtaLink = vtaLink.replace(/&af_sub2={source}/g, matched => search_replace[matched]);
-                VTAMacro = VTAMacro.replace(/&af_sub2={source}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub3'] !== 'undefined' && query_agid['af_sub3'] !== "") {
                 const search_replace = { '&af_sub3={app_name}': "" };
                 vtaLink = vtaLink.replace(/&af_sub3={app_name}/g, matched => search_replace[matched]);
-                VTAMacro = VTAMacro.replace(/&af_sub3={app_name}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub4'] !== 'undefined' && query_agid['af_sub4'] !== "") {
                 const search_replace = { '&af_sub4={camp_id}': "" };
                 vtaLink = vtaLink.replace(/&af_sub4={camp_id}/g, matched => search_replace[matched]);
-                VTAMacro = VTAMacro.replace(/&af_sub4={camp_id}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub5'] !== 'undefined' && query_agid['af_sub5'] !== "") {
                 const search_replace = { '&af_sub5={publisher_id}': "" };
                 vtaLink = vtaLink.replace(/&af_sub5={publisher_id}/g, matched => search_replace[matched]);
-                VTAMacro = VTAMacro.replace(/&af_sub5={publisher_id}/g, matched => search_replace[matched]);
             }
             if (typeof query_agid['af_sub6'] !== 'undefined' && query_agid['af_sub6'] !== "") {
                 const search_replace = { '&af_sub6={creative_name}': "" };
                 vtaLink = vtaLink.replace(/&af_sub6={creative_name}/g, matched => search_replace[matched]);
-                VTAMacro = VTAMacro.replace(/&af_sub6={creative_name}/g, matched => search_replace[matched]);
             }
             if (afAdId !== "&af_ad_id=") {
                 vtaLink = vtaLink + afAdId.replace(/_+$/, '');
-                VTAMacro = VTAMacro + afAdId.replace(/_+$/, '');
             } else {
                 vtaLink = vtaLink;
-                VTAMacro = VTAMacro;
             }
 
             const search_replace_vta = { '{placement_id}': 'AL_1{publisher_id}8_{camp_id}', '__DEEPLINK__': "", '__COST__': campaignRevenue, '__CURRENCY__': 'USD', '=channel': '=AL-{publisher_id}', '{click_id}': '{imp_id}' };
