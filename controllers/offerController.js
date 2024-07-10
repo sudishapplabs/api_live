@@ -6767,12 +6767,12 @@ exports.updateOffer = async (req, res) => {
 
         const campaignCTA = { "url": finalCtaLink };
         console.log('API CTA MAIN Link Update Request');
-        await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, campaignCTA, axios_header).then((offCTARes) => {
+        await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, campaignCTA, axios_header).then(async (offCTARes) => {
             if (typeof offCTARes.data.success !== 'undefined' && offCTARes.data.success == true) {
                 console.log('API CTA MAIN Link Update Response');
 
                 // FindAll landing pages
-                axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps", axios_header).then(async (getLp) => {
+                await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps", axios_header).then(async (getLp) => {
                     if (typeof getLp.statusText !== 'undefined' && getLp.statusText == "OK") {
 
                         for (let j = 0; j < getLp.data.landingPages.length; j++) {
@@ -6919,10 +6919,6 @@ exports.updateOffer = async (req, res) => {
                             }
 
                             const lpData = { "title": lp.title, "url": supportive_link, "status": lp.status, "lpType": lp.lpType, "visibility": lp.visibility };
-
-                            console.log(lpData);
-
-                            console.log(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps/" + lp._id);
                             console.log('API Edit a Landing Page Request');
                             await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps/" + lp._id, lpData, axios_header).then((resLpData) => {
                                 if (typeof resLpData.data.success !== 'undefined' && resLpData.data.success == true) {
@@ -6983,14 +6979,11 @@ exports.updateOffer = async (req, res) => {
                             } else {
                                 cta_link_basic_link = cta_link;
                             }
-
-                            console.log("cta_link_basic_link====" + cta_link_basic_link);
-
                         } else {
                             cta_link_basic_link = cta_link;
                         }
 
-                        Offer.findOneAndUpdate({ _id }, { cta_link_basic: cta_link_basic_link, cta_link: cta_link_main_link }, { new: true }).exec().then(async (updateRes) => {
+                        await Offer.findOneAndUpdate({ _id }, { cta_link_basic: cta_link_basic_link, cta_link: cta_link_main_link }, { new: true }).exec().then(async (updateRes) => {
                             console.log('DB LP Update Request');
                             if (updateRes) {
                                 console.log('DB LP Update Reponse');
