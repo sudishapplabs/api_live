@@ -11,7 +11,7 @@ const axios = require('axios');
 const CreativeModel = require("../models/creativeModel");
 const CreativeCtrModel = require("../models/creativectrModel");
 const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, getCreativeNameLists, dateprint } = require('../common/helper');
-const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, decodeHtml, addNotificationsData, addTimelineData } = require("../common/common");
+const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, getPublisherDataByPubId, decodeHtml, addNotificationsData, addTimelineData, } = require("../common/common");
 
 const Audience = require("../models/audienceModel");
 var { Timeline } = require("../models/commonModel");
@@ -6840,7 +6840,7 @@ exports.updateOffer = async (req, res) => {
                             }
 
                             let lpIds = lp.title.substring(lp.title.length - 4);
-                            let pubDt = await getpublisherPayoutByPubId(parseInt(lpIds));
+                            let pubDt = await getPublisherDataByPubId(parseInt(lpIds));
 
                             if (lpIds == 2705) {
                                 if (typeof MMP !== "undefined" && MMP == "Appsflyer") {
