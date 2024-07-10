@@ -6786,8 +6786,7 @@ exports.updateOffer = async (req, res) => {
                                     supportive_link = finalCtaLink;
                                 }
                             } else if (typeof MMP !== "undefined" && MMP == "Branch") {
-                                let parse = require('url').parse(lp.url, true);
-                                let parseQuery = decodeURIComponent(parse.search);
+                                const parseQuery = lp.url.replace(/&amp;/g, '&');
                                 if (parseQuery.indexOf("24s2s=TRUE") !== -1) {
                                     supportive_link = finalCtaLink + "&%24s2s=TRUE&device_ip={p5}&user_agent={user_agent}";
                                 } else {
