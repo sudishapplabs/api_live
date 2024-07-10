@@ -6779,8 +6779,7 @@ exports.updateOffer = async (req, res) => {
                             let lp = getLp.data.landingPages[j];
 
                             if (typeof MMP !== "undefined" && MMP == "Appsflyer") {
-                                let parse = require('url').parse(lp.url, true).query;
-                                let parseQuery = decodeURIComponent(parse.search);
+                                const parseQuery = lp.url.replace(/&amp;/g, '&');
                                 if (parseQuery.indexOf("redirect=false") !== -1) {
                                     supportive_link = finalCtaLink + "&redirect=false&af_ip={p5}&af_ua={user_agent}";
                                 } else {
@@ -6795,8 +6794,7 @@ exports.updateOffer = async (req, res) => {
                                     supportive_link = finalCtaLink;
                                 }
                             } else if (typeof MMP !== "undefined" && MMP == "Adjust") {
-                                let parse = require('url').parse(lp.url, true).query;
-                                let parseQuery = decodeURIComponent(parse.search);
+                                const parseQuery = lp.url.replace(/&amp;/g, '&');
                                 if (parseQuery.indexOf("s2s=1") !== -1) {
                                     supportive_link = finalCtaLink + "&s2s=1&ip_address={p5}&user_agent={user_agent}";
 
@@ -6813,24 +6811,21 @@ exports.updateOffer = async (req, res) => {
                                     supportive_link = finalCtaLink;
                                 }
                             } else if (typeof MMP !== "undefined" && MMP == "Appmetrica") {
-                                let parse = require('url').parse(lp.url, true).query;
-                                let parseQuery = decodeURIComponent(parse.search);
+                                const parseQuery = lp.url.replace(/&amp;/g, '&');
                                 if (parseQuery.indexOf("noredirect=1") !== -1) {
                                     supportive_link = finalCtaLink + "&device_ip={p5}&device_ua={user_agent}&click_timestamp={click_time}&noredirect=1";
                                 } else {
                                     supportive_link = finalCtaLink;
                                 }
                             } else if (typeof MMP !== "undefined" && MMP == "Singular") {
-                                let parse = require('url').parse(lp.url, true).query;
-                                let parseQuery = decodeURIComponent(parse.search);
+                                const parseQuery = lp.url.replace(/&amp;/g, '&');
                                 if (parseQuery.indexOf("redirect=FALSE") !== -1) {
                                     supportive_link = finalCtaLink + "&ve={os_version}&redirect=FALSE&ip={ip}&ua={user_agent}&p=Android&sng_ref=applabs_{click_id}";
                                 } else {
                                     supportive_link = finalCtaLink;
                                 }
                             } else if (typeof MMP !== "undefined" && MMP == "MyTracker") {
-                                let parse = require('url').parse(lp.url, true).query;
-                                let parseQuery = decodeURIComponent(parse.search);
+                                const parseQuery = lp.url.replace(/&amp;/g, '&');
                                 if (parseQuery.indexOf("mt_no_redirect=1") !== -1) {
                                     supportive_link = finalCtaLink + "&mt_s2s=1&mt_no_redirect=1";
                                 } else {
@@ -6845,8 +6840,7 @@ exports.updateOffer = async (req, res) => {
 
                             if (lpIds == 2705) {
                                 if (typeof MMP !== "undefined" && MMP == "Appsflyer") {
-                                    let parse = require('url').parse(lp.url, true).query;
-                                    let parseQuery = decodeURIComponent(parse.search);
+                                    const parseQuery = lp.url.replace(/&amp;/g, '&');
                                     if (parseQuery.indexOf("af_engagement_type=click_to_download") !== -1) {
                                         supportive_link = supportive_link + "&af_engagement_type=click_to_download&af_ad_type=installed";
 
@@ -6861,8 +6855,7 @@ exports.updateOffer = async (req, res) => {
 
                             if (lpIds == 2963) {
                                 if (typeof MMP !== "undefined" && MMP == "Appsflyer") {
-                                    let parse = require('url').parse(lp.url, true).query;
-                                    let parseQuery = decodeURIComponent(parse.search);
+                                    const parseQuery = lp.url.replace(/&amp;/g, '&');
                                     if (parseQuery.indexOf("af_engagement_type={p8}") !== -1) {
                                         supportive_link = supportive_link + "&af_engagement_type={p8}&af_ad_type={p9}&is_transfer={p10}";
                                     }
