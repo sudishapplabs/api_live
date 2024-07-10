@@ -6975,12 +6975,12 @@ exports.updateOffer = async (req, res) => {
                         if (typeof MMP !== "undefined" && MMP == "Branch") {
                             const parts_br_n = require('url').parse(normalURL, true).query;
                             if (typeof parts_br_n['~agency_id'] !== 'undefined' && parts_br_n['~agency_id'] !== "") {
-                                cta_link_basic_link = cta_link + "&~agency_id=" + parts_br_n['~agency_id'];
+                                cta_link_basic_link = ctaLink + "&~agency_id=" + parts_br_n['~agency_id'];
                             } else {
-                                cta_link_basic_link = cta_link;
+                                cta_link_basic_link = ctaLink;
                             }
                         } else {
-                            cta_link_basic_link = cta_link;
+                            cta_link_basic_link = ctaLink;
                         }
 
                         await Offer.findOneAndUpdate({ _id }, { cta_link_basic: cta_link_basic_link, cta_link: cta_link_main_link }, { new: true }).exec().then(async (updateRes) => {
