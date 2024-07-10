@@ -6983,6 +6983,9 @@ exports.updateOffer = async (req, res) => {
                             } else {
                                 cta_link_basic_link = cta_link;
                             }
+
+                            console.log("cta_link_basic_link====" + cta_link_basic_link);
+
                         } else {
                             cta_link_basic_link = cta_link;
                         }
