@@ -6801,10 +6801,10 @@ exports.updateOffer = async (req, res) => {
                                     var inArrayCountry = country.filter(function (inC) { return inC == "IN"; })
                                     if (Array.isArray(inArrayCountry) && inArrayCountry.length > 0) {
                                         const search_replace_adj = { 'app.adjust.com': 's2s.adjust.net.in', 'app.adjust.net.in': 's2s.adjust.net.in' };
-                                        supportive_link = finalCtaLink.replace(/app.adjust.com|app.adjust.net.in/g, matched => search_replace_adj[matched]);
+                                        supportive_link = supportive_link.replace(/app.adjust.com|app.adjust.net.in/g, matched => search_replace_adj[matched]);
                                     } else {
                                         const search_replace_adj = { 'app.adjust.com': 's2s.adjust.com', 'app.adjust.net.in': 's2s.adjust.com' };
-                                        supportive_link = finalCtaLink.replace(/app.adjust.com|app.adjust.net.in/g, matched => search_replace_adj[matched]);
+                                        supportive_link = supportive_link.replace(/app.adjust.com|app.adjust.net.in/g, matched => search_replace_adj[matched]);
                                     }
                                 } else {
                                     supportive_link = finalCtaLink;
