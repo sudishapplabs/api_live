@@ -6774,9 +6774,10 @@ exports.updateOffer = async (req, res) => {
                 axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps", axios_header).then(async (getLp) => {
                     if (typeof getLp.statusText !== 'undefined' && getLp.statusText == "OK") {
 
+                        var supportive_link = "";
                         for (let j = 0; j < getLp.data.landingPages.length; j++) {
                             let lp = getLp.data.landingPages[j];
-                            var supportive_link = "";
+
                             if (typeof MMP !== "undefined" && MMP == "Appsflyer") {
                                 let parse = require('url').parse(lp.url, true).query;
                                 let parseQuery = decodeURIComponent(parse.search);
