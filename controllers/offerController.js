@@ -6614,6 +6614,7 @@ exports.updateOffer = async (req, res) => {
         var cta_link_main = offData.cta_link;
         var ctaLink = cta_link;
         var normalURL = cta_link;
+        var supportive_link = "";
 
         if (typeof MMP !== "undefined" && MMP == "Branch") {
             // Start Encode ~agency_id URL
@@ -6774,7 +6775,6 @@ exports.updateOffer = async (req, res) => {
                 axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps", axios_header).then(async (getLp) => {
                     if (typeof getLp.statusText !== 'undefined' && getLp.statusText == "OK") {
 
-                        var supportive_link = "";
                         for (let j = 0; j < getLp.data.landingPages.length; j++) {
                             let lp = getLp.data.landingPages[j];
 
