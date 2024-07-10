@@ -6919,6 +6919,10 @@ exports.updateOffer = async (req, res) => {
                             }
 
                             const lpData = { "title": lp.title, "url": supportive_link, "status": lp.status, "lpType": lp.lpType, "visibility": lp.visibility };
+
+                            console.log(lpData);
+
+                            console.log(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps/" + lp._id);
                             console.log('API Edit a Landing Page Request');
                             await axios.post(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/lps/" + lp._id, lpData, axios_header).then((resLpData) => {
                                 if (typeof resLpData.data.success !== 'undefined' && resLpData.data.success == true) {
