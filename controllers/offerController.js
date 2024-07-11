@@ -2093,6 +2093,7 @@ exports.addOffer = async (req, res) => {
                                 "320x480": "1.3514-1.7373",
                                 "480x320": "1.303-1.8345",
                                 "84x84": "1.1348-1.4514",
+                                "default": "1.1348-1.4514",
                                 "720x1280": "1.3514-1.7373",
                                 "540x960": "1.3514-1.7373",
                                 "1080x1920": "1.3514-1.7373",
@@ -11306,14 +11307,17 @@ exports.updateOffer = async (req, res) => {
         // START INSERT DATA INTO DB WITH CREATIVE CTR
         const banner_ctr = {
             "300x250": "1.1348-1.4514",
+            "320x50": "1.1348-1.4514",
             "320x480": "1.3514-1.7373",
             "480x320": "1.303-1.8345",
             "84x84": "1.1348-1.4514",
+            "default": "1.1348-1.4514",
             "720x1280": "1.3514-1.7373",
             "540x960": "1.3514-1.7373",
             "1080x1920": "1.3514-1.7373",
             "640x640": "1.3514-1.7373",
             "1280x720": "1.3514-1.7373",
+            "1200x628": "1.3514-1.7373",
             "960x540": "1.3514-1.7373"
         }
         var creativeArr = [];
@@ -11322,10 +11326,6 @@ exports.updateOffer = async (req, res) => {
             let randCTR = await generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
             creativeArr[key] = parseFloat(randCTR);
         }
-        console.log("SUDISH==================STRAT========================SUDISH");
-        console.log(final_creative_list);
-        console.log("SUDISH==================END========================SUDISH");
-
         var final_creative_list_mod = [];
         for (let i = 0; i < final_creative_list.length; i++) {
             let key = Object.keys(final_creative_list[i])[0];
