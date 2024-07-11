@@ -11322,8 +11322,9 @@ exports.updateOffer = async (req, res) => {
             let randCTR = await generateRandomNumber(parseFloat(ctrArr[0]), parseFloat(ctrArr[1]));
             creativeArr[key] = parseFloat(randCTR);
         }
-
+        console.log("SUDISH==================STRAT========================SUDISH");
         console.log(final_creative_list);
+        console.log("SUDISH==================END========================SUDISH");
 
         var final_creative_list_mod = [];
         for (let i = 0; i < final_creative_list.length; i++) {
@@ -11332,10 +11333,7 @@ exports.updateOffer = async (req, res) => {
 
             final_creative_list_mod.push(value);
             let creative = value;
-
-            console.log(creativeArr);
             for (const [size, val] of Object.entries(creativeArr)) {
-
                 if (key.indexOf(size) !== -1) {
                     const aData = new CreativeCtrModel({
                         trackier_adv_id: trackier_adv_id,
@@ -11343,10 +11341,6 @@ exports.updateOffer = async (req, res) => {
                         creative_name: creative,
                         creative_ctr: val,
                     });
-
-                    console.log("SUDISH=======================");
-
-                    console.log(aData);
                     let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
                     var creative_ctr_exist_arr = [];
                     for (let n = 0; n < creative_ctr_exist.length; n++) {
