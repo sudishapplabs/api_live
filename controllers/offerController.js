@@ -11338,26 +11338,19 @@ exports.updateOffer = async (req, res) => {
                         creative_name: creative,
                         creative_ctr: val,
                     });
-
-                    await aData.save(aData).then(ctr_data => {
-                        console.log('Creative ctr ok');
-                    }).catch(err => {
-                        console.error(err);
-                    });
-
-                    // let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
-                    // var creative_ctr_exist_arr = [];
-                    // for (let n = 0; n < creative_ctr_exist.length; n++) {
-                    //     let creative_c = creative_ctr_exist[n];
-                    //     creative_ctr_exist_arr.push(creative_c.creative_name);
-                    // }
-                    // if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                    // await aData.save(aData).then(ctr_data => {
-                    //     console.log('Creative ctr ok');
-                    // }).catch(err => {
-                    //     console.error(err);
-                    // });
-                    // }
+                    let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
+                    var creative_ctr_exist_arr = [];
+                    for (let n = 0; n < creative_ctr_exist.length; n++) {
+                        let creative_c = creative_ctr_exist[n];
+                        creative_ctr_exist_arr.push(creative_c.creative_name);
+                    }
+                    if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
+                        await aData.save(aData).then(ctr_data => {
+                            console.log('Creative ctr ok');
+                        }).catch(err => {
+                            console.error(err);
+                        });
+                    }
                 }
             }
         }
