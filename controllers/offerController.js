@@ -11338,6 +11338,10 @@ exports.updateOffer = async (req, res) => {
                         creative_name: creative,
                         creative_ctr: val,
                     });
+
+                    console.log("SUDISH=======================");
+
+                    console.log(aData);
                     let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
                     var creative_ctr_exist_arr = [];
                     for (let n = 0; n < creative_ctr_exist.length; n++) {
