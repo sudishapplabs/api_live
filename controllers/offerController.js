@@ -11323,6 +11323,8 @@ exports.updateOffer = async (req, res) => {
             creativeArr[key] = parseFloat(randCTR);
         }
 
+        console.log(final_creative_list);
+
         var final_creative_list_mod = [];
         for (let i = 0; i < final_creative_list.length; i++) {
             let key = Object.keys(final_creative_list[i])[0];
@@ -11330,7 +11332,10 @@ exports.updateOffer = async (req, res) => {
 
             final_creative_list_mod.push(value);
             let creative = value;
+
+            console.log(creativeArr);
             for (const [size, val] of Object.entries(creativeArr)) {
+
                 if (key.indexOf(size) !== -1) {
                     const aData = new CreativeCtrModel({
                         trackier_adv_id: trackier_adv_id,
