@@ -1216,7 +1216,9 @@ exports.addOffer = async (req, res) => {
                                                                 pubNonTargeting.splice(3, 1);
                                                             }
                                                         }
+
                                                         var pTargetingNonAutoFltData = { "name": "AL-PSB-Targetting-NON-AUTO-" + trackier_camp_id + "-All-" + pubDt.pub_name + "-" + pubDt.pub_id, "publisherIds": [pubDt.pub_id], "condition": "and", "event": "all", 'rules': pubNonTargeting };
+                                                        pTargetingNonAutoFltData['rules'].push({ "variable": "source", "logic": "deny", "condition": "contains", "values": ["indusos_auto"] });
 
                                                         try {
                                                             console.log('Step6 Request');
