@@ -1074,7 +1074,7 @@ exports.addOffer = async (req, res) => {
 
                                 if (typeof MMP !== 'undefined' && MMP == "Appsflyer") {
                                     if (pubDt.pub_id == 2705) {
-                                        pTargetingFltData['rules'].push({ "variable": "source", "logic": "deny", "condition": "contains", "values": ["indusos_auto"] })
+                                        pTargetingFltData['rules'].push({ "variable": "source", "logic": "allow", "condition": "contains", "values": ["indusos_auto"] })
                                     }
                                 }
 
