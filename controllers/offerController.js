@@ -1051,7 +1051,7 @@ exports.addOffer = async (req, res) => {
                                     "variable": "region", "logic": state_inc_and_exc_str, "condition": "contains", "values": state
                                 }, { "variable": "city", "logic": city_inc_and_exc_str, "condition": "contains", "values": city }];
 
-                                if (typeof pubDt.enable_os_targeting !== 'undefined' && pubDt.enable_os_targeting == "Enabled") {
+                                if (typeof pubDt.enable_os_targeting !== 'undefined' && pubDt.enable_os_targeting == "Disabled") {
                                     pubTargeting.splice(1, 1);
                                     if (Array.isArray(state) && state.length == 0) {
                                         pubTargeting.splice(1, 1);
@@ -1074,7 +1074,7 @@ exports.addOffer = async (req, res) => {
 
                                 if (typeof MMP !== 'undefined' && MMP == "Appsflyer") {
                                     if (pubDt.pub_id == 2705) {
-                                        pTargetingFltData['rules'].push({ "variable": "source", "logic": "allow", "condition": "contains", "values": ["indusos_auto"] })
+                                        pTargetingFltData['rules'].push({ "variable": "source", "logic": "deny", "condition": "contains", "values": ["indusos_auto"] })
                                     }
                                 }
 
@@ -1198,7 +1198,7 @@ exports.addOffer = async (req, res) => {
                                                             "variable": "region", "logic": state_inc_and_exc_str, "condition": "contains", "values": state
                                                         }, { "variable": "city", "logic": city_inc_and_exc_str, "condition": "contains", "values": city }];
 
-                                                        if (typeof pubDt.enable_os_targeting !== 'undefined' && pubDt.enable_os_targeting == "Enabled") {
+                                                        if (typeof pubDt.enable_os_targeting !== 'undefined' && pubDt.enable_os_targeting == "Disabled") {
                                                             pubNonTargeting.splice(1, 1);
                                                             if (Array.isArray(state) && state.length == 0) {
                                                                 pubNonTargeting.splice(1, 1);
