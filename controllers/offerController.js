@@ -5578,7 +5578,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: oldAudienceName,
                         new_value: newAudienceName,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5624,7 +5624,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: oldAudienceName,
                     new_value: newAudienceName,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5888,7 +5888,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: cityOldString,
                         new_value: cityString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5934,7 +5934,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: cityOldString,
                     new_value: cityString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6163,7 +6163,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: stateOldString,
                             new_value: stateString,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6209,7 +6209,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: stateOldString,
                         new_value: stateString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6322,7 +6322,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.offer_name,
                                 new_value: differencesReq.offer_name,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6368,7 +6368,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.offer_name,
                             new_value: differencesReq.offer_name,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6515,7 +6515,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.icon,
                             new_value: differencesReq.icon,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6561,7 +6561,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: differencesOld.icon,
                         new_value: differencesReq.icon,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7078,7 +7078,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.cta_link,
                                         new_value: differencesReq.cta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7124,7 +7124,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.cta_link,
                                     new_value: differencesReq.cta_link,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7502,7 +7502,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.vta_link,
                                             new_value: differencesReq.vta_link,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7548,7 +7548,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.vta_link,
                                         new_value: differencesReq.vta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7909,7 +7909,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.vta_link,
                                             new_value: differencesReq.vta_link,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7955,7 +7955,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.vta_link,
                                         new_value: differencesReq.vta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8102,7 +8102,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: differencesOld.total_budget,
                                                     new_value: differencesReq.total_budget,
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8148,7 +8148,7 @@ exports.updateOffer = async (req, res) => {
                                                 old_value: differencesOld.total_budget,
                                                 new_value: differencesReq.total_budget,
                                                 edited_by: user_name,
-                                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                 base_url: process.env.APPLABS_URL
                                             }))
                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8297,7 +8297,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.daily_budget,
                                             new_value: differencesReq.daily_budget,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8342,7 +8342,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.daily_budget,
                                         new_value: differencesReq.daily_budget,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8485,7 +8485,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_start_date,
                                 new_value: differencesReq.schedule_start_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8530,7 +8530,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.schedule_start_date,
                             new_value: differencesReq.schedule_start_date,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8650,7 +8650,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.schedule_end_date,
                                     new_value: differencesReq.schedule_end_date,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8695,7 +8695,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_end_date,
                                 new_value: differencesReq.schedule_end_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8824,7 +8824,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.schedule_end_date,
                                     new_value: differencesReq.schedule_end_date,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8869,7 +8869,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_end_date,
                                 new_value: differencesReq.schedule_end_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8995,7 +8995,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.language,
                         new_value: language,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9041,7 +9041,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.language,
                     new_value: language,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9158,7 +9158,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.interest,
                         new_value: interest,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9204,7 +9204,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.interest,
                     new_value: interest,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9277,7 +9277,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.age_group,
                         new_value: age_group,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9323,7 +9323,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.age_group,
                     new_value: age_group,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10115,7 +10115,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.country,
                         new_value: countryString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10161,7 +10161,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.country,
                     new_value: countryString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10278,7 +10278,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: offData.payable_event_price,
                                         new_value: payable_event_price,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10324,7 +10324,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: offData.payable_event_price,
                                     new_value: payable_event_price,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10608,7 +10608,7 @@ exports.updateOffer = async (req, res) => {
                                                                                 old_value: old_event_name_array[campGoals.title],
                                                                                 new_value: new_event_name_array[campGoals.title],
                                                                                 edited_by: user_name,
-                                                                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                                                 base_url: process.env.APPLABS_URL
                                                                             }))
                                                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10654,7 +10654,7 @@ exports.updateOffer = async (req, res) => {
                                                                             old_value: old_event_name_array[campGoals.title],
                                                                             new_value: new_event_name_array[campGoals.title],
                                                                             edited_by: user_name,
-                                                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                                             base_url: process.env.APPLABS_URL
                                                                         }))
                                                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10844,7 +10844,7 @@ exports.updateOffer = async (req, res) => {
                                                         old_value: old_event_name_array[campGoals.title],
                                                         new_value: new_event_name_array[campGoals.title],
                                                         edited_by: user_name,
-                                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                         base_url: process.env.APPLABS_URL
                                                     }))
                                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10890,7 +10890,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: old_event_name_array[campGoals.title],
                                                     new_value: new_event_name_array[campGoals.title],
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11064,7 +11064,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: parseFloat(nonPayableEventPriceOld),
                                                     new_value: parseFloat(nonPayableEventPrice),
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11110,7 +11110,7 @@ exports.updateOffer = async (req, res) => {
                                                 old_value: parseFloat(nonPayableEventPriceOld),
                                                 new_value: parseFloat(nonPayableEventPrice),
                                                 edited_by: user_name,
-                                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                                 base_url: process.env.APPLABS_URL
                                             }))
                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11305,7 +11305,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: old_pub_String,
                                     new_value: new_pub_String,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11351,7 +11351,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: old_pub_String,
                                 new_value: new_pub_String,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                                url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11562,7 +11562,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: creativeNameOldString,
                         new_value: creativeNameNewString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11608,7 +11608,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: creativeNameOldString,
                     new_value: creativeNameNewString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11731,7 +11731,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: premiumPartnerNewString,
                         new_value: premiumPartnerOldString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                        url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11777,7 +11777,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: premiumPartnerNewString,
                     new_value: premiumPartnerOldString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+                    url: process.env.APPLABS_URL + 'editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
