@@ -229,7 +229,7 @@ exports.successPage = async (req, res) => {
                     adv_name: updateBalance.organization.toUpperCase(),
                     adv_id: tid,
                     name: ucwords(updateBalance.name),
-                    url: process.env.APPLABS_URL + 'support',
+                    url: process.env.APPLABS_URL,
                     base_url: process.env.APPLABS_URL
                   }))
                   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -270,7 +270,7 @@ exports.successPage = async (req, res) => {
                   adv_name: updateBalance.organization.toUpperCase(),
                   adv_id: tid,
                   name: ucwords(updateBalance.name),
-                  url: process.env.APPLABS_URL + '/funds?adv=' + tid,
+                  url: process.env.APPLABS_URL + '/fundList/' + tid,
                   base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -877,7 +877,7 @@ exports.addAdminFund = async (req, res) => {
                 adv_name: updateBalance.organization.toUpperCase(),
                 adv_id: tid,
                 name: ucwords(updateBalance.name),
-                url: process.env.APPLABS_URL + 'support',
+                url: process.env.APPLABS_URL,
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -918,7 +918,7 @@ exports.addAdminFund = async (req, res) => {
               adv_name: updateBalance.organization.toUpperCase(),
               adv_id: tid,
               name: ucwords(updateBalance.name),
-              url: process.env.APPLABS_URL + '/funds?adv=' + tid,
+              url: process.env.APPLABS_URL + '/fundList/' + tid,
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -984,7 +984,7 @@ exports.addAdminFund = async (req, res) => {
                 adv_name: updateBalance.organization.toUpperCase(),
                 adv_id: tid,
                 name: ucwords(updateBalance.name),
-                url: process.env.APPLABS_URL + 'support',
+                url: process.env.APPLABS_URL,
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -1025,7 +1025,7 @@ exports.addAdminFund = async (req, res) => {
               adv_name: updateBalance.organization.toUpperCase(),
               adv_id: tid,
               name: ucwords(updateBalance.name),
-              url: process.env.APPLABS_URL + 'funds?adv=' + tid,
+              url: process.env.APPLABS_URL + '/fundList/' + tid,
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);

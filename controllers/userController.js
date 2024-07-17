@@ -195,7 +195,7 @@ exports.addUser = async (req, res) => {
                 role: ucwords(userType),
                 designation: ucwords(designation),
                 name: ucwords(AdvertiserData.name),
-                url: process.env.APPLABS_URL + 'dashboard',
+                url: process.env.APPLABS_URL + 'DashboardPage',
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -234,7 +234,7 @@ exports.addUser = async (req, res) => {
                 role: ucwords(userType),
                 designation: ucwords(designation),
                 name: ucwords(AdvertiserData.name),
-                url: process.env.APPLABS_URL + 'dashboard',
+                url: process.env.APPLABS_URL + 'DashboardPage',
                 base_url: process.env.APPLABS_URL
               }))
 
@@ -273,7 +273,7 @@ exports.addUser = async (req, res) => {
               role: ucwords(userType),
               designation: ucwords(designation),
               name: ucwords(AdvertiserData.name),
-              url: process.env.APPLABS_URL + 'users',
+              url: process.env.APPLABS_URL + 'UserList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -694,7 +694,7 @@ exports.userStatusUpdate = async (req, res) => {
             suspended_by: ucwords(approved_by),
             suspended_by_email: approved_by_email,
             adv_name: res_user_status.company_name.toUpperCase(),
-            url: process.env.APPLABS_URL + 'users',
+            url: process.env.APPLABS_URL + 'UserList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -754,7 +754,7 @@ exports.userStatusUpdate = async (req, res) => {
             approved_by: ucwords(approved_by),
             approved_by_email: approved_by_email,
             adv_name: res_user_status.company_name.toUpperCase(),
-            url: process.env.APPLABS_URL + 'users',
+            url: process.env.APPLABS_URL + 'UserList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);

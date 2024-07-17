@@ -2370,7 +2370,7 @@ exports.addOffer = async (req, res) => {
                                             offer_id: trackier_camp_id,
                                             adv_name: ucfirst(advName),
                                             created_by: ucfirst(user_name),
-                                            url: process.env.APPLABS_URL + 'view_offer',
+                                            url: process.env.APPLABS_URL + 'CampaignListPage',
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3112,7 +3112,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         advertiserName: ucwords(advDetails.advName),
                                         offer_id: resStatus.trackier_camp_id,
                                         status: offerStatus,
-                                        url: process.env.APPLABS_URL + 'view_offer',
+                                        url: process.env.APPLABS_URL + 'CampaignListPage',
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3153,7 +3153,7 @@ exports.changeOfferStatus = async (req, res) => {
                                     status_by_user: approved_by,
                                     approved_by_email: approved_by_email,
                                     status: offerStatus,
-                                    url: process.env.APPLABS_URL + 'view_offer',
+                                    url: process.env.APPLABS_URL + 'CampaignListPage',
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5565,6 +5565,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+					const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -5576,7 +5578,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: oldAudienceName,
                         new_value: newAudienceName,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5608,6 +5610,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -5619,7 +5624,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: oldAudienceName,
                     new_value: newAudienceName,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5869,6 +5874,9 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -5880,7 +5888,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: cityOldString,
                         new_value: cityString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5912,6 +5920,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -5923,7 +5934,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: cityOldString,
                     new_value: cityString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6138,6 +6149,9 @@ exports.updateOffer = async (req, res) => {
                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+											const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                         const messageBodyAdvetiser = (templateAdvertiser({
                             todayDate: dateprint(),
                             adv_id: trackier_adv_id,
@@ -6149,7 +6163,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: stateOldString,
                             new_value: stateString,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6181,6 +6195,9 @@ exports.updateOffer = async (req, res) => {
                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdmin = (templateAdmin({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -6192,7 +6209,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: stateOldString,
                         new_value: stateString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6291,6 +6308,9 @@ exports.updateOffer = async (req, res) => {
                             var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                             const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+												const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                             const messageBodyAdvetiser = (templateAdvertiser({
                                 todayDate: dateprint(),
                                 adv_id: trackier_adv_id,
@@ -6302,7 +6322,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.offer_name,
                                 new_value: differencesReq.offer_name,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6334,6 +6354,9 @@ exports.updateOffer = async (req, res) => {
                         const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
+											const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                         const messageBodyAdmin = (templateAdmin({
                             todayDate: dateprint(),
                             adv_id: trackier_adv_id,
@@ -6345,7 +6368,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.offer_name,
                             new_value: differencesReq.offer_name,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6478,6 +6501,9 @@ exports.updateOffer = async (req, res) => {
                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+											const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                         const messageBodyAdvetiser = (templateAdvertiser({
                             todayDate: dateprint(),
                             adv_id: trackier_adv_id,
@@ -6489,7 +6515,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.icon,
                             new_value: differencesReq.icon,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6521,6 +6547,9 @@ exports.updateOffer = async (req, res) => {
                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdmin = (templateAdmin({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -6532,7 +6561,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: differencesOld.icon,
                         new_value: differencesReq.icon,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7035,6 +7064,9 @@ exports.updateOffer = async (req, res) => {
 
                                     //console.log("differencesOld.cta_link" + differencesOld.cta_link);
                                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+														const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                     const messageBodyAdvetiser = (templateAdvertiser({
                                         todayDate: dateprint(),
                                         adv_id: trackier_adv_id,
@@ -7046,7 +7078,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.cta_link,
                                         new_value: differencesReq.cta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7078,6 +7110,9 @@ exports.updateOffer = async (req, res) => {
                                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+													const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                 const messageBodyAdmin = (templateAdmin({
                                     todayDate: dateprint(),
                                     adv_id: trackier_adv_id,
@@ -7089,7 +7124,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.cta_link,
                                     new_value: differencesReq.cta_link,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7453,6 +7488,9 @@ exports.updateOffer = async (req, res) => {
                                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+															const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                         const messageBodyAdvetiser = (templateAdvertiser({
                                             todayDate: dateprint(),
                                             adv_id: trackier_adv_id,
@@ -7464,7 +7502,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.vta_link,
                                             new_value: differencesReq.vta_link,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7496,6 +7534,9 @@ exports.updateOffer = async (req, res) => {
                                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
+														const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                     const messageBodyAdmin = (templateAdmin({
                                         todayDate: dateprint(),
                                         adv_id: trackier_adv_id,
@@ -7507,7 +7548,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.vta_link,
                                         new_value: differencesReq.vta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7854,6 +7895,9 @@ exports.updateOffer = async (req, res) => {
                                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+															const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                         const messageBodyAdvetiser = (templateAdvertiser({
                                             todayDate: dateprint(),
                                             adv_id: trackier_adv_id,
@@ -7865,7 +7909,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.vta_link,
                                             new_value: differencesReq.vta_link,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7897,6 +7941,9 @@ exports.updateOffer = async (req, res) => {
                                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
+														const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                     const messageBodyAdmin = (templateAdmin({
                                         todayDate: dateprint(),
                                         adv_id: trackier_adv_id,
@@ -7908,7 +7955,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.vta_link,
                                         new_value: differencesReq.vta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8041,6 +8088,9 @@ exports.updateOffer = async (req, res) => {
                                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+																	const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                                 const messageBodyAdvetiser = (templateAdvertiser({
                                                     todayDate: dateprint(),
                                                     adv_id: trackier_adv_id,
@@ -8052,7 +8102,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: differencesOld.total_budget,
                                                     new_value: differencesReq.total_budget,
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8084,6 +8134,9 @@ exports.updateOffer = async (req, res) => {
                                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
+																const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                             const messageBodyAdmin = (templateAdmin({
                                                 todayDate: dateprint(),
                                                 adv_id: trackier_adv_id,
@@ -8095,7 +8148,7 @@ exports.updateOffer = async (req, res) => {
                                                 old_value: differencesOld.total_budget,
                                                 new_value: differencesReq.total_budget,
                                                 edited_by: user_name,
-                                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                 base_url: process.env.APPLABS_URL
                                             }))
                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8230,6 +8283,9 @@ exports.updateOffer = async (req, res) => {
                                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+															const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                         const messageBodyAdvetiser = (templateAdvertiser({
                                             todayDate: dateprint(),
                                             adv_id: trackier_adv_id,
@@ -8241,7 +8297,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.daily_budget,
                                             new_value: differencesReq.daily_budget,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8272,6 +8328,9 @@ exports.updateOffer = async (req, res) => {
                                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
+														const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                     const messageBodyAdmin = (templateAdmin({
                                         todayDate: dateprint(),
                                         adv_id: trackier_adv_id,
@@ -8283,7 +8342,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.daily_budget,
                                         new_value: differencesReq.daily_budget,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8412,6 +8471,9 @@ exports.updateOffer = async (req, res) => {
                             var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                             const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+												const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                             const messageBodyAdvetiser = (templateAdvertiser({
                                 todayDate: dateprint(),
                                 adv_id: trackier_adv_id,
@@ -8423,7 +8485,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_start_date,
                                 new_value: differencesReq.schedule_start_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8454,6 +8516,9 @@ exports.updateOffer = async (req, res) => {
                         const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
+											const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                         const messageBodyAdmin = (templateAdmin({
                             todayDate: dateprint(),
                             adv_id: trackier_adv_id,
@@ -8465,7 +8530,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.schedule_start_date,
                             new_value: differencesReq.schedule_start_date,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8571,6 +8636,9 @@ exports.updateOffer = async (req, res) => {
                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+													const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                 const messageBodyAdvetiser = (templateAdvertiser({
                                     todayDate: dateprint(),
                                     adv_id: trackier_adv_id,
@@ -8582,7 +8650,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.schedule_end_date,
                                     new_value: differencesReq.schedule_end_date,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8613,6 +8681,9 @@ exports.updateOffer = async (req, res) => {
                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
+												const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                             const messageBodyAdmin = (templateAdmin({
                                 todayDate: dateprint(),
                                 adv_id: trackier_adv_id,
@@ -8624,7 +8695,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_end_date,
                                 new_value: differencesReq.schedule_end_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8739,6 +8810,9 @@ exports.updateOffer = async (req, res) => {
                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+													const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                 const messageBodyAdvetiser = (templateAdvertiser({
                                     todayDate: dateprint(),
                                     adv_id: trackier_adv_id,
@@ -8750,7 +8824,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.schedule_end_date,
                                     new_value: differencesReq.schedule_end_date,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8781,6 +8855,9 @@ exports.updateOffer = async (req, res) => {
                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
+												const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                             const messageBodyAdmin = (templateAdmin({
                                 todayDate: dateprint(),
                                 adv_id: trackier_adv_id,
@@ -8792,7 +8869,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_end_date,
                                 new_value: differencesReq.schedule_end_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8904,6 +8981,9 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -8915,7 +8995,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.language,
                         new_value: language,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8947,6 +9027,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -8958,7 +9041,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.language,
                     new_value: language,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9061,6 +9144,9 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -9072,7 +9158,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.interest,
                         new_value: interest,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9104,6 +9190,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -9115,7 +9204,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.interest,
                     new_value: interest,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9174,6 +9263,9 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -9185,7 +9277,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.age_group,
                         new_value: age_group,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9217,6 +9309,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -9228,7 +9323,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.age_group,
                     new_value: age_group,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10006,6 +10101,9 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -10017,7 +10115,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.country,
                         new_value: countryString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10049,6 +10147,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -10060,7 +10161,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.country,
                     new_value: countryString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10163,6 +10264,9 @@ exports.updateOffer = async (req, res) => {
                                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+														const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                     const messageBodyAdvetiser = (templateAdvertiser({
                                         todayDate: dateprint(),
                                         adv_id: trackier_adv_id,
@@ -10174,7 +10278,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: offData.payable_event_price,
                                         new_value: payable_event_price,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10206,6 +10310,9 @@ exports.updateOffer = async (req, res) => {
                                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+													const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                 const messageBodyAdmin = (templateAdmin({
                                     todayDate: dateprint(),
                                     adv_id: trackier_adv_id,
@@ -10217,7 +10324,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: offData.payable_event_price,
                                     new_value: payable_event_price,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10487,6 +10594,9 @@ exports.updateOffer = async (req, res) => {
                                                                             var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                                             const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+																								const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                                                             const messageBodyAdvetiser = (templateAdvertiser({
                                                                                 todayDate: dateprint(),
                                                                                 adv_id: trackier_adv_id,
@@ -10498,7 +10608,7 @@ exports.updateOffer = async (req, res) => {
                                                                                 old_value: old_event_name_array[campGoals.title],
                                                                                 new_value: new_event_name_array[campGoals.title],
                                                                                 edited_by: user_name,
-                                                                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                                                 base_url: process.env.APPLABS_URL
                                                                             }))
                                                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10530,6 +10640,9 @@ exports.updateOffer = async (req, res) => {
                                                                         const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                                                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                                                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
+																							const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                                                         const messageBodyAdmin = (templateAdmin({
                                                                             todayDate: dateprint(),
                                                                             adv_id: trackier_adv_id,
@@ -10541,7 +10654,7 @@ exports.updateOffer = async (req, res) => {
                                                                             old_value: old_event_name_array[campGoals.title],
                                                                             new_value: new_event_name_array[campGoals.title],
                                                                             edited_by: user_name,
-                                                                            url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                                            url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                                             base_url: process.env.APPLABS_URL
                                                                         }))
                                                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10717,6 +10830,9 @@ exports.updateOffer = async (req, res) => {
                                                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+																		const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                                     const messageBodyAdvetiser = (templateAdvertiser({
                                                         todayDate: dateprint(),
                                                         adv_id: trackier_adv_id,
@@ -10728,7 +10844,7 @@ exports.updateOffer = async (req, res) => {
                                                         old_value: old_event_name_array[campGoals.title],
                                                         new_value: new_event_name_array[campGoals.title],
                                                         edited_by: user_name,
-                                                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                         base_url: process.env.APPLABS_URL
                                                     }))
                                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10760,6 +10876,9 @@ exports.updateOffer = async (req, res) => {
                                                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+																	const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                                 const messageBodyAdmin = (templateAdmin({
                                                     todayDate: dateprint(),
                                                     adv_id: trackier_adv_id,
@@ -10771,7 +10890,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: old_event_name_array[campGoals.title],
                                                     new_value: new_event_name_array[campGoals.title],
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10931,6 +11050,9 @@ exports.updateOffer = async (req, res) => {
                                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+																	const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                                 const messageBodyAdvetiser = (templateAdvertiser({
                                                     todayDate: dateprint(),
                                                     adv_id: trackier_adv_id,
@@ -10942,7 +11064,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: parseFloat(nonPayableEventPriceOld),
                                                     new_value: parseFloat(nonPayableEventPrice),
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10974,6 +11096,9 @@ exports.updateOffer = async (req, res) => {
                                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
+																const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                             const messageBodyAdmin = (templateAdmin({
                                                 todayDate: dateprint(),
                                                 adv_id: trackier_adv_id,
@@ -10985,7 +11110,7 @@ exports.updateOffer = async (req, res) => {
                                                 old_value: parseFloat(nonPayableEventPriceOld),
                                                 new_value: parseFloat(nonPayableEventPrice),
                                                 edited_by: user_name,
-                                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                                 base_url: process.env.APPLABS_URL
                                             }))
                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11166,6 +11291,9 @@ exports.updateOffer = async (req, res) => {
                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+													const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                                 const messageBodyAdvetiser = (templateAdvertiser({
                                     todayDate: dateprint(),
                                     adv_id: trackier_adv_id,
@@ -11177,7 +11305,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: old_pub_String,
                                     new_value: new_pub_String,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11209,6 +11337,9 @@ exports.updateOffer = async (req, res) => {
                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
+												const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                             const messageBodyAdmin = (templateAdmin({
                                 todayDate: dateprint(),
                                 adv_id: trackier_adv_id,
@@ -11220,7 +11351,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: old_pub_String,
                                 new_value: new_pub_String,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                                url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11417,6 +11548,9 @@ exports.updateOffer = async (req, res) => {
 
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -11428,7 +11562,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: creativeNameOldString,
                         new_value: creativeNameNewString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11460,6 +11594,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -11471,7 +11608,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: creativeNameOldString,
                     new_value: creativeNameNewString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11580,6 +11717,9 @@ exports.updateOffer = async (req, res) => {
 
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+										const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -11591,7 +11731,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: premiumPartnerNewString,
                         new_value: premiumPartnerOldString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                        url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11623,6 +11763,9 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
+									const stringNumber = trackier_camp_id.toString();
+					const encodedString = Buffer.from(stringNumber).toString('base64');
+
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
                     adv_id: trackier_adv_id,
@@ -11634,7 +11777,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: premiumPartnerNewString,
                     new_value: premiumPartnerOldString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                    url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

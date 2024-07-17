@@ -65,7 +65,7 @@ exports.getOffersLowBalance = async (req, res) => {
             offer_name: offDt.offer_name,
             adv_name: advDt.advName,
             advertiserName: ucwords(advDt.advertiserName),
-            url: process.env.APPLABS_URL + 'view_offer',
+            url: process.env.APPLABS_URL + 'CampaignListPage',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -100,6 +100,9 @@ exports.getOffersLowBalance = async (req, res) => {
         const bcc_mail = process.env.BCC_EMAILS.split(",");
         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_low_balance_admin.handlebars"), "utf-8");
         const templateAdmin = handlebars.compile(emailTemplateAdmin);
+		
+		const stringNumber = offDt.trackier_camp_id.toString();
+		const encodedString = Buffer.from(stringNumber).toString('base64');
         const messageBodyAdmin = (templateAdmin({
           todayDate: dateprint(),
           balance: avBalance,
@@ -108,7 +111,7 @@ exports.getOffersLowBalance = async (req, res) => {
           offer_name: offDt.offer_name,
           adv_name: advDt.advName,
           advertiserName: ucwords(advDt.advertiserName),
-          url: process.env.APPLABS_URL + '/edit_offer/' + offDt.trackier_camp_id,
+          url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
           base_url: process.env.APPLABS_URL
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);

@@ -101,7 +101,7 @@ exports.getOfferConversionData = async (req, res) => {
           advertiserName: ucwords(advName.advertiserName),
           offer_id: offDt.trackier_camp_id,
           offer_name: offDt.offer_name,
-          url: process.env.APPLABS_URL + 'view_offer',
+          url: process.env.APPLABS_URL + 'CampaignListPage',
           base_url: process.env.APPLABS_URL
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -140,7 +140,7 @@ exports.getOfferConversionData = async (req, res) => {
         advertiserName: ucwords(advName.advertiserName),
         offer_id: offDt.trackier_camp_id,
         offer_name: offDt.offer_name,
-        url: process.env.APPLABS_URL + 'view_offer',
+        url: process.env.APPLABS_URL + 'CampaignListPage',
         base_url: process.env.APPLABS_URL
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);

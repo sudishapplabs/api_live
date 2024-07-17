@@ -642,7 +642,7 @@ exports.getReportPresetData = async (req, res) => {
               todayDate: dateprint(),
               presetName: repDt.reportName,
               advertiserName: ucwords(repDt.company_name),
-              url: process.env.APPLABS_URL + 'view_offer',
+              url: process.env.APPLABS_URL + 'CampaignListPage',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);

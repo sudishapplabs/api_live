@@ -408,7 +408,7 @@ exports.addAdvertiser = async (req, res) => {
                         todayDate: dateprint(),
                         name: ucfirst(resAdvertiser.name),
                         adv_name: resAdvertiser.organization.toUpperCase(),
-                        url: process.env.APPLABS_URL + 'dashboard',
+                        url: process.env.APPLABS_URL + 'DashboardPage',
                         base_url: process.env.APPLABS_URL
                       }))
                       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -443,7 +443,7 @@ exports.addAdvertiser = async (req, res) => {
                         todayDate: dateprint(),
                         adv_name: resAdvertiser.organization.toUpperCase(),
                         added_by: ucwords(added_by),
-                        url: process.env.APPLABS_URL + 'all_advertiser',
+                        url: process.env.APPLABS_URL + 'advertiserList',
                         base_url: process.env.APPLABS_URL
                       }))
                       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -661,7 +661,7 @@ exports.registerAdvertiser = async (req, res) => {
       const messageBodyAdmin = (templateAdmin({
         todayDate: dateprint(),
         adv_name: DBdata.company_name.toUpperCase(),
-        url: process.env.APPLABS_URL + 'all_advertiser',
+        url: process.env.APPLABS_URL + 'advertiserList',
         base_url: process.env.APPLABS_URL
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -999,7 +999,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                     suspended_by: ucfirst(approved_by),
                     suspended_by_email: approved_by_email,
                     adv_name: ucfirst(adv_collect.company_name),
-                    url: process.env.APPLABS_URL + 'all_advertiser',
+                    url: process.env.APPLABS_URL + 'advertiserList',
                     base_url: process.env.APPLABS_URL
                   }))
                   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -1054,7 +1054,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                     approved_by: ucfirst(approved_by),
                     approved_by_email: approved_by_email,
                     adv_name: ucfirst(adv_collect.company_name),
-                    url: process.env.APPLABS_URL + 'all_advertiser',
+                    url: process.env.APPLABS_URL + 'advertiserList',
                     base_url: process.env.APPLABS_URL
                   }))
                   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -1173,7 +1173,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                           todayDate: dateprint(),
                           name: ucfirst(user_data.name),
                           adv_name: ucfirst(user_data.company_name),
-                          url: process.env.APPLABS_URL + 'signin',
+                          url: process.env.APPLABS_URL,
                           base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -1208,7 +1208,7 @@ exports.advertiserSatatusApproved = async (req, res) => {
                           approved_by: ucfirst(approved_by),
                           approved_by_email: approved_by_email,
                           adv_name: ucfirst(user_data.company_name),
-                          url: process.env.APPLABS_URL + 'all_advertiser',
+                          url: process.env.APPLABS_URL + 'advertiserList',
                           base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
