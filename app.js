@@ -21,6 +21,7 @@ const audienceRoute = require("./routes/audienceRoute");
 
 
 app.use("/images", express.static('uploads'));
+app.use("/assets/media", express.static('media'));
 
 
 
