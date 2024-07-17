@@ -52,8 +52,8 @@ exports.getOfferTrafficStart = async (req, res) => {
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msgAdvertiser = {
-            // to: advName.email,
-            to: 'sudish@applabs.ai',
+            to: advName.email,
+            //to: 'sudish@applabs.ai',
             from: {
               name: process.env.MAIL_FROM_NAME,
               email: process.env.MAIL_FROM_EMAIL,
@@ -76,7 +76,7 @@ exports.getOfferTrafficStart = async (req, res) => {
           // }
 
           // Send Mail to Admin
-          const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+          const admin_mail = process.env.ADMIN_EMAILS.split(",");
           const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_traffic_start_admin.handlebars"), "utf-8");
           const templateAdmin = handlebars.compile(emailTemplateAdmin);
           const messageBodyAdmin = (templateAdmin({

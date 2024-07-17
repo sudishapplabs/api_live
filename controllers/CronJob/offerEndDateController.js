@@ -30,7 +30,6 @@ exports.getOfferEndDate = async (req, res) => {
         const todaywithSlashes = [day, month, year].join('/');
 
         if (offDt.schedule_end_date == todaywithSlashes) {
-          console.log("equal to");
 
           // Send Mail to User
           const advName = await getAdertiseDetailsByAdvId(parseInt(offDt.trackier_adv_id));
@@ -74,8 +73,8 @@ exports.getOfferEndDate = async (req, res) => {
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msgAdvertiser = {
-              // to: advName.email,
-              to: 'sudish@applabs.ai',
+              to: advName.email,
+              // to: 'sudish@applabs.ai',
               from: {
                 name: process.env.MAIL_FROM_NAME,
                 email: process.env.MAIL_FROM_EMAIL,
@@ -98,7 +97,7 @@ exports.getOfferEndDate = async (req, res) => {
           }
 
           // Send Mail to Admin
-          const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+          const admin_mail = process.env.ADMIN_EMAILS.split(",");
           const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_end_date_admin.handlebars"), "utf-8");
           const templateAdmin = handlebars.compile(emailTemplateAdmin);
           const messageBodyAdmin = (templateAdmin({
@@ -113,6 +112,7 @@ exports.getOfferEndDate = async (req, res) => {
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msgAdmin = {
             to: admin_mail,
+            // to: 'sudish@applabs.ai',
             from: {
               name: process.env.MAIL_FROM_NAME,
               email: process.env.MAIL_FROM_EMAIL,
@@ -135,6 +135,9 @@ exports.getOfferEndDate = async (req, res) => {
         }
       }
     }
+    const errMsg = { "success": true, "message": "Offer end date cron done" };
+    res.status(200).send(errMsg);
+    return;
   } else {
     const errMsg = { "success": false, "message": "No records availabe" };
     res.status(200).send(errMsg);

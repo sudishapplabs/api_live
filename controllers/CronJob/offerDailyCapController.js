@@ -71,8 +71,8 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg_adv = {
-              //to: [user_data.email],
-              to: ["sudish@applabs.ai"],
+              to: [user_data.email],
+              //to: ["sudish@applabs.ai"],
               from: {
                 name: process.env.MAIL_FROM_NAME,
                 email: process.env.MAIL_FROM_EMAIL,
@@ -96,7 +96,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
           }
 
           // Send Mail to Admin
-          const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+          const admin_mail = process.env.ADMIN_EMAILS.split(",");
           const bcc_mail = process.env.BCC_EMAILS.split(",");
           const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_daily_limit_reach_admin.handlebars"), "utf-8");
           const templateAdmin = handlebars.compile(emailTemplateAdmin);
@@ -113,8 +113,8 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msgAdmin = {
-            //to: admin_mail,
-            to: "sudish@applabs.ai",
+            to: admin_mail,
+            //to: "sudish@applabs.ai",
             from: {
               name: process.env.MAIL_FROM_NAME,
               email: process.env.MAIL_FROM_EMAIL,
@@ -138,18 +138,18 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
 
           const dataTotArr = { multi: true }
           // UPDATE DB TOTAL SPENT
-          // await Offer.updateOne({ trackier_camp_id: offDt.trackier_camp_id }, dataTotArr, { new: true }).exec().then((recRes) => {
-          //   console.log('multi Update Request');
-          //   if (!recRes) {
-          //     console.log('multi Update Response');
-          //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-          //     res.status(200).send(resMsg);
-          //     return;
-          //   }
-          // }).catch((error) => {
-          //   const reMsg = { "status": false, "message": error.message };
-          //   res.status(400).send(reMsg);
-          // });
+          await Offer.updateOne({ trackier_camp_id: offDt.trackier_camp_id }, dataTotArr, { new: true }).exec().then((recRes) => {
+            console.log('multi Update Request');
+            if (!recRes) {
+              console.log('multi Update Response');
+              const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+              res.status(200).send(resMsg);
+              return;
+            }
+          }).catch((error) => {
+            const reMsg = { "status": false, "message": error.message };
+            res.status(400).send(reMsg);
+          });
 
         }
       }

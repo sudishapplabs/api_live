@@ -1,4 +1,4 @@
-var { Offer } = require("../../models/offerModel");
+const Offer = require("../../models/offerModel");
 const { getAllOffersByUpcommingDates, getAdertiseDetailsByAdvId, getAllCreativeByUpcommingDate, getAllCreativeByUpcommingDates, addNotificationsData } = require("../../common/common");
 const { padTo2Digits, dateprint, getCreativeLists } = require("../../common/helper");
 const { URL, parse } = require('url');
@@ -36,37 +36,37 @@ exports.getOfferConversionData = async (req, res) => {
 
       const dataArr = { "status": "paused" }
       // UPDATE DB Offer status
-      // await Offer.updateOne({ trackier_camp_id: offDt.trackier_camp_id }, dataArr, { new: true }).exec().then((recordRes) => {
-      //   console.log('Offer status Update Request');
-      //   if (!recordRes) {
-      //     console.log('Offer status  Update Response');
-      //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-      //     res.status(200).send(resMsg);
-      //     return;
-      //   }
-      // }).catch((error) => {
-      //   const reMsg = { "status": false, "message": error.message };
-      //   res.status(400).send(reMsg);
-      // });
+      await Offer.updateOne({ trackier_camp_id: offDt.trackier_camp_id }, dataArr).exec().then((recordRes) => {
+        console.log('Offer status Update Request');
+        if (!recordRes) {
+          console.log('Offer status  Update Response');
+          const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+          res.status(200).send(resMsg);
+          return;
+        }
+      }).catch((error) => {
+        const reMsg = { "status": false, "message": error.message };
+        res.status(400).send(reMsg);
+      });
 
 
       // UPDATE PAUSED STATUS ON TRACKIER             
-      // const campaignStatus = { "status": paused };
-      // console.log('Campaign status paused on trackier Request');
-      // await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id, campaignStatus, axios_header).then((resStatus) => {
-      //   if (typeof resStatus.data.success !== 'undefined' && resStatus.data.success == true) {
-      //     console.log('Campaign status paused on trackier Response');
-      //   } else {
-      //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-      //     res.status(200).send(resMsg);
-      //     return;
-      //   }
-      // }).catch(err => {
-      //   console.log(err);
-      //   const errMsg = { "success": false, "errors": err.response.data.errors };
-      //   res.status(400).send(errMsg);
-      //   return;
-      // });
+      const campaignStatus = { "status": 'paused' };
+      console.log('Campaign status paused on trackier Request');
+      await axios.post(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id, campaignStatus, axios_header).then((resStatus) => {
+        if (typeof resStatus.data.success !== 'undefined' && resStatus.data.success == true) {
+          console.log('Campaign status paused on trackier Response');
+        } else {
+          const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+          res.status(200).send(resMsg);
+          return;
+        }
+      }).catch(err => {
+        console.log(err);
+        const errMsg = { "success": false, "errors": err.response.data.errors };
+        res.status(400).send(errMsg);
+        return;
+      });
 
       // INSERT DATA INTO NOTIFICATIONS
       const notificationData = {
@@ -106,8 +106,8 @@ exports.getOfferConversionData = async (req, res) => {
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msgAdvertiser = {
-          // to: advName.email,
-          to: 'sudish@applabs.ai',
+          to: advName.email,
+          // to: 'sudish@applabs.ai',
           from: {
             name: process.env.MAIL_FROM_NAME,
             email: process.env.MAIL_FROM_EMAIL,
@@ -130,7 +130,7 @@ exports.getOfferConversionData = async (req, res) => {
       }
 
       // Send Mail to Admin
-      const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+      const admin_mail = process.env.ADMIN_EMAILS.split(",");
       const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_conversions_check_admin.handlebars"), "utf-8");
       const templateAdmin = handlebars.compile(emailTemplateAdmin);
       const messageBodyAdmin = (templateAdmin({
@@ -145,8 +145,8 @@ exports.getOfferConversionData = async (req, res) => {
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msgAdmin = {
-        //to: admin_mail,
-        to: "sudish@applabs.ai",
+        to: admin_mail,
+        // to: "sudish@applabs.ai",
         from: {
           name: process.env.MAIL_FROM_NAME,
           email: process.env.MAIL_FROM_EMAIL,
@@ -166,21 +166,6 @@ exports.getOfferConversionData = async (req, res) => {
         console.error(response);
       });
       // End Send Mail to Admin
-
-      // const dataArr = { expired: "Yes" }
-      // // UPDATE DB CREATIVE EXPIRED
-      // await Offer.findOneAndUpdate({ _id: crDt._id }, dataArr, { new: true }).exec().then((recordRes) => {
-      //   console.log('Creative expired Update Request');
-      //   if (!recordRes) {
-      //     console.log('Creative expired Update Response');
-      //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-      //     res.status(200).send(resMsg);
-      //     return;
-      //   }
-      // }).catch((error) => {
-      //   const reMsg = { "status": false, "message": error.message };
-      //   res.status(400).send(reMsg);
-      // });
     }
     const response = { 'success': true, 'message': 'Checked 500 clicks but no conversion campaign paused mail sent' };
     res.status(200).send(response);

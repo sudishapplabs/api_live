@@ -2,7 +2,7 @@ var { Offer } = require("../../models/offerModel");
 const Creative = require("../../models/creativeModel");
 const CreativeCtrModel = require("../../models/creativectrModel");
 const { getAllOffersByStatus, getAdertiseDetailsByAdvId, getAllCreativeByUpcommingDate, getAllCreativeByUpcommingDates, addNotificationsData } = require("../../common/common");
-const { padTo2Digits, dateprint, getCreativeLists, generateRandomNumber } = require("../../common/helper");
+const { padTo2Digits, dateprint, getCreativeLists, getCreativeNameLists, generateRandomNumber } = require("../../common/helper");
 const { URL, parse } = require('url');
 const querystring = require("querystring");
 const axios = require('axios');
@@ -93,8 +93,8 @@ exports.getCreativeEndDate = async (req, res) => {
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                 const msgAdvertiser = {
-                  // to: advName.email,
-                  to: 'sudish@applabs.ai',
+                  to: advName.email,
+                  // to: 'sudish@applabs.ai',
                   from: {
                     name: process.env.MAIL_FROM_NAME,
                     email: process.env.MAIL_FROM_EMAIL,
@@ -117,7 +117,7 @@ exports.getCreativeEndDate = async (req, res) => {
               }
 
               // Send Mail to Admin
-              const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+              const admin_mail = process.env.ADMIN_EMAILS.split(",");
               const emailTemplateAdmin = fs.readFileSync(path.join("templates/creative_end_date_admin.handlebars"), "utf-8");
               const templateAdmin = handlebars.compile(emailTemplateAdmin);
               const messageBodyAdmin = (templateAdmin({
@@ -133,8 +133,8 @@ exports.getCreativeEndDate = async (req, res) => {
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               const msgAdmin = {
-                //to: admin_mail,
-                to: "sudish@applabs.ai",
+                to: admin_mail,
+                // to: "sudish@applabs.ai",
                 from: {
                   name: process.env.MAIL_FROM_NAME,
                   email: process.env.MAIL_FROM_EMAIL,
@@ -157,42 +157,47 @@ exports.getCreativeEndDate = async (req, res) => {
 
               const dataArr = { expired: "Yes" }
               // UPDATE DB CREATIVE EXPIRED
-              // await Creative.findOneAndUpdate({ _id: crDt._id }, dataArr, { new: true }).exec().then((recordRes) => {
-              //   console.log('Creative expired Update Request');
-              //   if (!recordRes) {
-              //     console.log('Creative expired Update Response');
-              //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-              //     res.status(200).send(resMsg);
-              //     return;
-              //   }
-              // }).catch((error) => {
-              //   const reMsg = { "status": false, "message": error.message };
-              //   res.status(400).send(reMsg);
-              // });
+              await Creative.findOneAndUpdate({ _id: crDt._id }, dataArr, { new: true }).exec().then((recordRes) => {
+                console.log('Creative expired Update Request');
+                if (!recordRes) {
+                  console.log('Creative expired Update Response');
+                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                  res.status(200).send(resMsg);
+                  return;
+                }
+              }).catch((error) => {
+                const reMsg = { "status": false, "message": error.message };
+                res.status(400).send(reMsg);
+              });
 
 
               const creativeData = await getAllCreativeByUpcommingDates(offDt._id);
 
               if (Array.isArray(creativeData) && creativeData.length > 0) {
                 var creativeName = [];
+                var creative_dimension = [];
                 for (let k = 0; k < creativeData.length; k++) {
                   creativeName.push(creativeData[k].creative);
+                  creative_dimension.push(creativeData[i].image_dimension);
                 }
               }
 
 
-              const final_creative_list = getCreativeLists(creativeName);
+              const final_creative_list = getCreativeNameLists(creativeName, creative_dimension);
               // START INSERT DATA INTO DB WITH CREATIVE CTR
               const banner_ctr = {
                 "300x250": "1.1348-1.4514",
+                "320x50": "1.1348-1.4514",
                 "320x480": "1.3514-1.7373",
                 "480x320": "1.303-1.8345",
                 "84x84": "1.1348-1.4514",
+                "default": "1.1348-1.4514",
                 "720x1280": "1.3514-1.7373",
                 "540x960": "1.3514-1.7373",
                 "1080x1920": "1.3514-1.7373",
                 "640x640": "1.3514-1.7373",
                 "1280x720": "1.3514-1.7373",
+                "1200x628": "1.3514-1.7373",
                 "960x540": "1.3514-1.7373"
               }
               var creativeArr = [];
@@ -202,60 +207,41 @@ exports.getCreativeEndDate = async (req, res) => {
                 creativeArr[key] = parseFloat(randCTR);
               }
 
+              var final_creative_list_mod = [];
               for (let i = 0; i < final_creative_list.length; i++) {
-                let creative = final_creative_list[i];
-                for (const [size, val] of Object.entries(creativeArr)) {
-                  if (creative.indexOf(size) !== -1) {
-                    const aData = new CreativeCtrModel({
-                      trackier_adv_id: offDt.trackier_adv_id,
-                      trackier_camp_id: offDt.trackier_camp_id,
-                      creative_name: creative,
-                      creative_ctr: val,
-                    });
-                    let creative_ctr_exist = await CreativeCtrModel.find({ 'creative_name': creative });
-                    var creative_ctr_exist_arr = [];
-                    for (let n = 0; n < creative_ctr_exist.length; n++) {
-                      let creative_c = creative_ctr_exist[n];
-                      creative_ctr_exist_arr.push(creative_c.creative_name);
-                    }
-                    if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                      // await aData.save(aData).then(ctr_data => {
-                      //   console.log('Creative ctr ok');
-                      // }).catch(err => {
-                      //   console.error(err);
-                      // });
-                    }
-                  }
-                }
+                let key = Object.keys(final_creative_list[i])[0];
+                let value = final_creative_list[i][key];
+
+                final_creative_list_mod.push(value);
               }
 
               // END INSERT DATA INTO DB WITH CREATIVE CTR              
-              const creativeTData = { "creativeNames": final_creative_list };
+              const creativeTData = { "creativeNames": final_creative_list_mod };
               // // STEP-11 push app lists on trackier
               console.log('API push Cretive Push on trackier Request');
-              // await axios.put(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id + "/creative-names", creativeTData, axios_header).then((creativeUpload) => {
-              //   if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
-              //     console.log('API push Cretive Push on trackier Response');
-              //     const response = { 'success': true, 'message': 'Creative deleted successfully' };
-              //     res.status(200).send(response);
-              //     return;
-              //   } else {
-              //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-              //     res.status(200).send(resMsg);
-              //     return;
-              //   }
-              // }).catch(err => {
-              //   console.log(err);
-              //   const errMsg = { "success": false, "errors": err.response.data.errors };
-              //   res.status(400).send(errMsg);
-              //   return;
-              // });
+              await axios.put(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id + "/creative-names", creativeTData, axios_header).then((creativeUpload) => {
+                if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+                  console.log('API push Cretive Push on trackier Response');
+                } else {
+                  const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                  res.status(200).send(resMsg);
+                  return;
+                }
+              }).catch(err => {
+                console.log(err);
+                const errMsg = { "success": false, "errors": err.response.data.errors };
+                res.status(400).send(errMsg);
+                return;
+              });
             }
           }
 
         }
       }
     }
+    const errMsg = { "success": true, "message": "Creative cron run" };
+    res.status(200).send(errMsg);
+    return;
   } else {
     const errMsg = { "success": false, "message": "No records availabe" };
     res.status(200).send(errMsg);

@@ -70,8 +70,8 @@ exports.getOffersLowBalance = async (req, res) => {
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           const msg_adv = {
-            //to: [user_data.email],
-            to: ["sudish@applabs.ai"],
+            to: [user_data.email],
+            // to: ["sudish@applabs.ai"],
             from: {
               name: process.env.MAIL_FROM_NAME,
               email: process.env.MAIL_FROM_EMAIL,
@@ -96,13 +96,10 @@ exports.getOffersLowBalance = async (req, res) => {
 
 
         // Send Mail to Admin
-        const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+        const admin_mail = process.env.ADMIN_EMAILS.split(",");
         const bcc_mail = process.env.BCC_EMAILS.split(",");
         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_low_balance_admin.handlebars"), "utf-8");
         const templateAdmin = handlebars.compile(emailTemplateAdmin);
-		
-		const stringNumber = offDt.trackier_camp_id.toString();
-		const encodedString = Buffer.from(stringNumber).toString('base64');
         const messageBodyAdmin = (templateAdmin({
           todayDate: dateprint(),
           balance: avBalance,
@@ -111,13 +108,13 @@ exports.getOffersLowBalance = async (req, res) => {
           offer_name: offDt.offer_name,
           adv_name: advDt.advName,
           advertiserName: ucwords(advDt.advertiserName),
-          url: process.env.APPLABS_URL + '/editCampaignPage/' + stringNumber,
+          url: process.env.APPLABS_URL + '/CampaignListPage',
           base_url: process.env.APPLABS_URL
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msgAdmin = {
-          //to: admin_mail,
-          to: "sudish@applabs.ai",
+          to: admin_mail,
+          // to: "sudish@applabs.ai",
           from: {
             name: process.env.MAIL_FROM_NAME,
             email: process.env.MAIL_FROM_EMAIL,

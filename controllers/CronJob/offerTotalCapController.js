@@ -31,40 +31,39 @@ exports.getTotalCapOffers = async (req, res) => {
         if (avBalance <= 1) {
           if (offDt.status == 'active' || offDt.status == 'paused') {
 
+            const dataTotArr = { status: 'disabled' }
+            // UPDATE DB TOTAL SPENT
+            await Offer.updateOne({ trackier_camp_id: offDt.trackier_camp_id }, dataTotArr, { new: true }).exec().then((recRes) => {
+              console.log('Status Update Request');
+              if (!recRes) {
+                console.log('Status Update Response');
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
+              }
+            }).catch((error) => {
+              const reMsg = { "status": false, "message": error.message };
+              res.status(400).send(reMsg);
+            });
 
-            // const dataTotArr = { status: 'disabled' }
-            // // UPDATE DB TOTAL SPENT
-            // await Offer.updateOne({ trackier_camp_id: offDt.trackier_camp_id }, dataTotArr, { new: true }).exec().then((recRes) => {
-            //   console.log('Status Update Request');
-            //   if (!recRes) {
-            //     console.log('Status Update Response');
-            //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-            //     res.status(200).send(resMsg);
-            //     return;
-            //   }
-            // }).catch((error) => {
-            //   const reMsg = { "status": false, "message": error.message };
-            //   res.status(400).send(reMsg);
-            // });
 
-
-            // STATUS DISABLED ON TRACKIER WHEN TOTAL BALANCE IS 1           
-            // const campaignStatus = { "status": 'disabled' };
-            // console.log('API Update Status  on trackier Request');
-            // await axios.put(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id, campaignStatus, axios_header).then((creativeUpload) => {
-            //   if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
-            //     console.log('API Update Status on trackier Response');
-            //   } else {
-            //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-            //     res.status(200).send(resMsg);
-            //     return;
-            //   }
-            // }).catch(err => {
-            //   console.log(err);
-            //   const errMsg = { "success": false, "errors": err.response.data.errors };
-            //   res.status(400).send(errMsg);
-            //   return;
-            // });
+            // STATUS DISABLED ON TRACKIER WHEN TOTAL BALANCE IS 1
+            const campaignStatus = { "status": 'disabled' };
+            console.log('API Update Status  on trackier Request');
+            await axios.put(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id, campaignStatus, axios_header).then((creativeUpload) => {
+              if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+                console.log('API Update Status on trackier Response');
+              } else {
+                const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+                res.status(200).send(resMsg);
+                return;
+              }
+            }).catch(err => {
+              console.log(err);
+              const errMsg = { "success": false, "errors": err.response.data.errors };
+              res.status(400).send(errMsg);
+              return;
+            });
 
             const advDt = await getAdertiseDetailsByAdvId(parseInt(offDt.trackier_adv_id));
 
@@ -102,13 +101,13 @@ exports.getTotalCapOffers = async (req, res) => {
                 offer_name: offDt.offer_name,
                 adv_name: advDt.advName,
                 advertiserName: ucwords(advDt.advertiserName),
-                url: process.env.APPLABS_URL + 'view_offer',
+                url: process.env.APPLABS_URL + 'CampaignListPage',
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               const msg_adv = {
-                //to: [user_data.email],
-                to: ["sudish@applabs.ai"],
+                to: [user_data.email],
+                // to: ["sudish@applabs.ai"],
                 from: {
                   name: process.env.MAIL_FROM_NAME,
                   email: process.env.MAIL_FROM_EMAIL,
@@ -132,7 +131,7 @@ exports.getTotalCapOffers = async (req, res) => {
             }
 
             //Send Mail to Admin
-            const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
+            const admin_mail = process.env.ADMIN_EMAILS.split(",");
             const bcc_mail = process.env.BCC_EMAILS.split(",");
             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_status_disabled_admin.handlebars"), "utf-8");
             const templateAdmin = handlebars.compile(emailTemplateAdmin);
@@ -145,13 +144,13 @@ exports.getTotalCapOffers = async (req, res) => {
               offer_name: offDt.offer_name,
               adv_name: advDt.advName,
               advertiserName: ucwords(advDt.advertiserName),
-              url: process.env.APPLABS_URL + 'view_offer',
+              url: process.env.APPLABS_URL + 'CampaignListPage',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msgAdmin = {
-              //to: admin_mail,
-              to: "sudish@applabs.ai",
+              to: admin_mail,
+              //to: "sudish@applabs.ai",
               from: {
                 name: process.env.MAIL_FROM_NAME,
                 email: process.env.MAIL_FROM_EMAIL,

@@ -36,45 +36,43 @@ exports.getAllOffersLowBalance = async (req, res) => {
       }
     }
 
-    console.log(dataArr)
+    if (Array.isArray(dataArr) && dataArr.length > 0) {
 
-    // if (Array.isArray(dataArr) && dataArr.length > 0) {
-
-    //   // Send Mail to Admin
-    //   const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
-    //   const bcc_mail = process.env.BCC_EMAILS.split(",");
-    //   const emailTemplateAdmin = fs.readFileSync(path.join("templates/all_offer_low_balance_admin.handlebars"), "utf-8");
-    //   const templateAdmin = handlebars.compile(emailTemplateAdmin);
-    //   const messageBodyAdmin = (templateAdmin({
-    //     todayDate: dateprint(),
-    //     data: dataArr,
-    //     base_url: process.env.APPLABS_URL
-    //   }))
-    //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    //   const msgAdmin = {
-    //     // to: admin_mail,
-    //     to: "sudish@applabs.ai",
-    //     from: {
-    //       name: process.env.MAIL_FROM_NAME,
-    //       email: process.env.MAIL_FROM_EMAIL,
-    //     },
-    //     bcc: bcc_mail,
-    //     subject: 'Applabs Alert - Offers Consumed > 80% Budget - ' + dateprint(),
-    //     html: messageBodyAdmin
-    //   };
-    //   //ES6
-    //   sgMail.send(msgAdmin).then(() => { }, error => {
-    //     console.error(error);
-    //     if (error.response) {
-    //       console.error(error.response.body)
-    //     }
-    //   }).catch((error) => {
-    //     const response = { 'success': false, 'message': error };
-    //     res.status(200).send(response);
-    //     return;
-    //   });
-    //   // EMAIlL SENT END
-    // }
+      // Send Mail to Admin
+      const admin_mail = process.env.ADMIN_EMAILS.split(",");
+      const bcc_mail = process.env.BCC_EMAILS.split(",");
+      const emailTemplateAdmin = fs.readFileSync(path.join("templates/all_offer_low_balance_admin.handlebars"), "utf-8");
+      const templateAdmin = handlebars.compile(emailTemplateAdmin);
+      const messageBodyAdmin = (templateAdmin({
+        todayDate: dateprint(),
+        data: dataArr,
+        base_url: process.env.APPLABS_URL
+      }))
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      const msgAdmin = {
+        to: admin_mail,
+        // to: "sudish@applabs.ai",
+        from: {
+          name: process.env.MAIL_FROM_NAME,
+          email: process.env.MAIL_FROM_EMAIL,
+        },
+        bcc: bcc_mail,
+        subject: 'Applabs Alert - Offers Consumed > 80% Budget - ' + dateprint(),
+        html: messageBodyAdmin
+      };
+      //ES6
+      sgMail.send(msgAdmin).then(() => { }, error => {
+        console.error(error);
+        if (error.response) {
+          console.error(error.response.body)
+        }
+      }).catch((error) => {
+        const response = { 'success': false, 'message': error };
+        res.status(200).send(response);
+        return;
+      });
+      // EMAIlL SENT END
+    }
     const response = { 'success': true, 'message': 'All offer Low balance mail sent' };
     res.status(200).send(response);
     return;

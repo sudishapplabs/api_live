@@ -15,43 +15,26 @@ const { Type } = require("@aws-sdk/client-s3");
 
 
 exports.multiReset = async (req, res) => {
-
   try {
     const dataMulArr = { 'multi': false, 'today_spent': 0, 'today_conversion': 0 }
     // UPDATE DB TODAY SPENT AND CONVERSION
-    // await Offer.findOneAndUpdate({ trackier_camp_id: campaign_id }, dataMulArr, { new: true }).exec().then((recordRes) => {
-    //   console.log('Multi Reset Update Request');
-    //   if (!recordRes) {
-    //     console.log('Multi Reset Update Response');
-    //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-    //     res.status(200).send(resMsg);
-    //     return;
-    //   }
-    // }).catch((error) => {
-    //   const reMsg = { "status": false, "message": error.message };
-    //   res.status(400).send(reMsg);
-    // });
+    await Offer.updateMany({}, dataMulArr).exec().then((recordRes) => {
+      console.log('Multi Reset Update Request');
+      if (recordRes) {
+        console.log('Multi Reset Update Response');
+        const resMsg = { "success": true, "message": "Multi reset successfully!!" };
+        res.status(200).send(resMsg);
+        return;
+      } else {
+        const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+        res.status(200).send(resMsg);
+        return;
+      }
+    }).catch((error) => {
+      const reMsg = { "status": false, "message": error.message };
+      res.status(400).send(reMsg);
+    });
   } catch (err) {
     console.log(err);
   }
-
-  try {
-    const dataTotArr = { 'totCap': false, 'today_spent': 0, 'today_conversion': 0 }
-    // UPDATE DB TODAY SPENT AND CONVERSION
-    // await Offer.findOneAndUpdate({ trackier_camp_id: campaign_id }, dataTotArr, { new: true }).exec().then((recordRes) => {
-    //   console.log('total cap Update Request');
-    //   if (!recordRes) {
-    //     console.log('total cap Reset Update Response');
-    //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-    //     res.status(200).send(resMsg);
-    //     return;
-    //   }
-    // }).catch((error) => {
-    //   const reMsg = { "status": false, "message": error.message };
-    //   res.status(400).send(reMsg);
-    // });
-  } catch (err) {
-    console.log(err);
-  }
-
 }

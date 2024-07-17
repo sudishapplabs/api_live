@@ -21,7 +21,6 @@ exports.getUpdatedCampaignStatus = async (req, res) => {
     var endpoint = "reports/custom"
     // GET OFFER DATA  FROM TREACKIER
 
-    console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_id&group[]=campaign_status&" + offer_str + "zone=Asia/Kolkata");
 
     await axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_id&group[]=campaign_status&" + offer_str + "zone=Asia/Kolkata", axios_header).then(async (staticsAppRes) => {
 
@@ -30,19 +29,22 @@ exports.getUpdatedCampaignStatus = async (req, res) => {
         for (let j = 0; j < staticsAppRes.data.records.length; j++) {
           let offStatus = staticsAppRes.data.records[j];
           const offStatusData = { 'status': offStatus.campaign_status };
-          console.log(offStatusData);
-          // Offer.updateOne({ trackier_camp_id: offStatus.campaign_id }, { '$set': offStatusData }).exec().then((offerRes) => {
-          //   if (!offerRes) {
-          //     const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
-          //     res.status(200).send(resMsg);
-          //     return;
-          //   }
-          // }).catch(error => {
-          //   const errMsg = { "success": false, "message": error.message };
-          //   res.status(400).send(errMsg);
-          //   return;
-          // })
+          // console.log(offStatusData);
+          await Offer.updateOne({ trackier_camp_id: offStatus.campaign_id }, { '$set': offStatusData }).exec().then((offerRes) => {
+            if (!offerRes) {
+              const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
+              res.status(200).send(resMsg);
+              return;
+            }
+          }).catch(error => {
+            const errMsg = { "success": false, "message": error.message };
+            res.status(400).send(errMsg);
+            return;
+          })
         }
+        const resMsg = { "success": true, "message": "Offer Status updated!!" };
+        res.status(200).send(resMsg);
+        return;
       } else {
         const resMsg = { "success": false, "message": "No records found" };
         res.status(200).send(resMsg);
@@ -50,7 +52,7 @@ exports.getUpdatedCampaignStatus = async (req, res) => {
       }
     }).catch(err => {
       console.log(err);
-      const errMsg = { "success": false, "errors": err.response.data.errors };
+      const errMsg = { "success": false, "errors": err };
       res.status(400).send(errMsg);
       return;
     });
