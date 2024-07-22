@@ -5565,8 +5565,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-					const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
                         adv_id: trackier_adv_id,
@@ -5610,8 +5610,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -5874,8 +5874,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -5920,8 +5920,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -6149,8 +6149,8 @@ exports.updateOffer = async (req, res) => {
                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-											const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                        const stringNumber = trackier_camp_id.toString();
+                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                         const messageBodyAdvetiser = (templateAdvertiser({
                             todayDate: dateprint(),
@@ -6195,8 +6195,8 @@ exports.updateOffer = async (req, res) => {
                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdmin = (templateAdmin({
                         todayDate: dateprint(),
@@ -6308,8 +6308,8 @@ exports.updateOffer = async (req, res) => {
                             var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                             const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-												const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                            const stringNumber = trackier_camp_id.toString();
+                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                             const messageBodyAdvetiser = (templateAdvertiser({
                                 todayDate: dateprint(),
@@ -6354,8 +6354,8 @@ exports.updateOffer = async (req, res) => {
                         const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
-											const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                        const stringNumber = trackier_camp_id.toString();
+                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                         const messageBodyAdmin = (templateAdmin({
                             todayDate: dateprint(),
@@ -6501,8 +6501,8 @@ exports.updateOffer = async (req, res) => {
                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-											const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                        const stringNumber = trackier_camp_id.toString();
+                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                         const messageBodyAdvetiser = (templateAdvertiser({
                             todayDate: dateprint(),
@@ -6547,8 +6547,8 @@ exports.updateOffer = async (req, res) => {
                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdmin = (templateAdmin({
                         todayDate: dateprint(),
@@ -7064,8 +7064,8 @@ exports.updateOffer = async (req, res) => {
 
                                     //console.log("differencesOld.cta_link" + differencesOld.cta_link);
                                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-														const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                    const stringNumber = trackier_camp_id.toString();
+                                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                     const messageBodyAdvetiser = (templateAdvertiser({
                                         todayDate: dateprint(),
@@ -7110,8 +7110,8 @@ exports.updateOffer = async (req, res) => {
                                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-													const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                const stringNumber = trackier_camp_id.toString();
+                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                 const messageBodyAdmin = (templateAdmin({
                                     todayDate: dateprint(),
@@ -7488,8 +7488,8 @@ exports.updateOffer = async (req, res) => {
                                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-															const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                        const stringNumber = trackier_camp_id.toString();
+                                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                         const messageBodyAdvetiser = (templateAdvertiser({
                                             todayDate: dateprint(),
@@ -7534,8 +7534,8 @@ exports.updateOffer = async (req, res) => {
                                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
-														const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                    const stringNumber = trackier_camp_id.toString();
+                                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                     const messageBodyAdmin = (templateAdmin({
                                         todayDate: dateprint(),
@@ -7895,8 +7895,8 @@ exports.updateOffer = async (req, res) => {
                                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-															const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                        const stringNumber = trackier_camp_id.toString();
+                                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                         const messageBodyAdvetiser = (templateAdvertiser({
                                             todayDate: dateprint(),
@@ -7941,8 +7941,8 @@ exports.updateOffer = async (req, res) => {
                                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
-														const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                    const stringNumber = trackier_camp_id.toString();
+                                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                     const messageBodyAdmin = (templateAdmin({
                                         todayDate: dateprint(),
@@ -8088,8 +8088,8 @@ exports.updateOffer = async (req, res) => {
                                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-																	const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                                const stringNumber = trackier_camp_id.toString();
+                                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                                 const messageBodyAdvetiser = (templateAdvertiser({
                                                     todayDate: dateprint(),
@@ -8134,8 +8134,8 @@ exports.updateOffer = async (req, res) => {
                                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
-																const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                            const stringNumber = trackier_camp_id.toString();
+                                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                             const messageBodyAdmin = (templateAdmin({
                                                 todayDate: dateprint(),
@@ -8283,8 +8283,8 @@ exports.updateOffer = async (req, res) => {
                                         var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                         const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-															const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                        const stringNumber = trackier_camp_id.toString();
+                                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                         const messageBodyAdvetiser = (templateAdvertiser({
                                             todayDate: dateprint(),
@@ -8328,8 +8328,8 @@ exports.updateOffer = async (req, res) => {
                                     const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                     const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                     const templateAdmin = handlebars.compile(emailTemplateAdmin);
-														const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                    const stringNumber = trackier_camp_id.toString();
+                                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                     const messageBodyAdmin = (templateAdmin({
                                         todayDate: dateprint(),
@@ -8471,8 +8471,8 @@ exports.updateOffer = async (req, res) => {
                             var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                             const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-												const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                            const stringNumber = trackier_camp_id.toString();
+                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                             const messageBodyAdvetiser = (templateAdvertiser({
                                 todayDate: dateprint(),
@@ -8516,8 +8516,8 @@ exports.updateOffer = async (req, res) => {
                         const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
-											const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                        const stringNumber = trackier_camp_id.toString();
+                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                         const messageBodyAdmin = (templateAdmin({
                             todayDate: dateprint(),
@@ -8636,8 +8636,8 @@ exports.updateOffer = async (req, res) => {
                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-													const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                const stringNumber = trackier_camp_id.toString();
+                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                 const messageBodyAdvetiser = (templateAdvertiser({
                                     todayDate: dateprint(),
@@ -8681,8 +8681,8 @@ exports.updateOffer = async (req, res) => {
                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
-												const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                            const stringNumber = trackier_camp_id.toString();
+                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                             const messageBodyAdmin = (templateAdmin({
                                 todayDate: dateprint(),
@@ -8810,8 +8810,8 @@ exports.updateOffer = async (req, res) => {
                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-													const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                const stringNumber = trackier_camp_id.toString();
+                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                 const messageBodyAdvetiser = (templateAdvertiser({
                                     todayDate: dateprint(),
@@ -8855,8 +8855,8 @@ exports.updateOffer = async (req, res) => {
                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
-												const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                            const stringNumber = trackier_camp_id.toString();
+                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                             const messageBodyAdmin = (templateAdmin({
                                 todayDate: dateprint(),
@@ -8981,8 +8981,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -9027,8 +9027,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -9144,8 +9144,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -9190,8 +9190,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -9263,8 +9263,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -9309,8 +9309,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -10101,8 +10101,8 @@ exports.updateOffer = async (req, res) => {
                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -10147,8 +10147,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -10264,8 +10264,8 @@ exports.updateOffer = async (req, res) => {
                                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-														const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                    const stringNumber = trackier_camp_id.toString();
+                                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                     const messageBodyAdvetiser = (templateAdvertiser({
                                         todayDate: dateprint(),
@@ -10310,8 +10310,8 @@ exports.updateOffer = async (req, res) => {
                                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-													const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                const stringNumber = trackier_camp_id.toString();
+                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                 const messageBodyAdmin = (templateAdmin({
                                     todayDate: dateprint(),
@@ -10594,8 +10594,8 @@ exports.updateOffer = async (req, res) => {
                                                                             var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                                             const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-																								const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                                                            const stringNumber = trackier_camp_id.toString();
+                                                                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                                                             const messageBodyAdvetiser = (templateAdvertiser({
                                                                                 todayDate: dateprint(),
@@ -10640,8 +10640,8 @@ exports.updateOffer = async (req, res) => {
                                                                         const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                                                         const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                                                         const templateAdmin = handlebars.compile(emailTemplateAdmin);
-																							const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                                                        const stringNumber = trackier_camp_id.toString();
+                                                                        const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                                                         const messageBodyAdmin = (templateAdmin({
                                                                             todayDate: dateprint(),
@@ -10830,8 +10830,8 @@ exports.updateOffer = async (req, res) => {
                                                     var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-																		const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                                    const stringNumber = trackier_camp_id.toString();
+                                                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                                     const messageBodyAdvetiser = (templateAdvertiser({
                                                         todayDate: dateprint(),
@@ -10876,8 +10876,8 @@ exports.updateOffer = async (req, res) => {
                                                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-																	const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                                const stringNumber = trackier_camp_id.toString();
+                                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                                 const messageBodyAdmin = (templateAdmin({
                                                     todayDate: dateprint(),
@@ -11050,8 +11050,8 @@ exports.updateOffer = async (req, res) => {
                                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-																	const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                                const stringNumber = trackier_camp_id.toString();
+                                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                                 const messageBodyAdvetiser = (templateAdvertiser({
                                                     todayDate: dateprint(),
@@ -11096,8 +11096,8 @@ exports.updateOffer = async (req, res) => {
                                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
-																const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                            const stringNumber = trackier_camp_id.toString();
+                                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                             const messageBodyAdmin = (templateAdmin({
                                                 todayDate: dateprint(),
@@ -11291,8 +11291,8 @@ exports.updateOffer = async (req, res) => {
                                 var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
 
                                 const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-													const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                                const stringNumber = trackier_camp_id.toString();
+                                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                                 const messageBodyAdvetiser = (templateAdvertiser({
                                     todayDate: dateprint(),
@@ -11337,8 +11337,8 @@ exports.updateOffer = async (req, res) => {
                             const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                             const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                             const templateAdmin = handlebars.compile(emailTemplateAdmin);
-												const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                            const stringNumber = trackier_camp_id.toString();
+                            const encodedString = Buffer.from(stringNumber).toString('base64');
 
                             const messageBodyAdmin = (templateAdmin({
                                 todayDate: dateprint(),
@@ -11548,8 +11548,8 @@ exports.updateOffer = async (req, res) => {
 
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -11594,8 +11594,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),
@@ -11717,8 +11717,8 @@ exports.updateOffer = async (req, res) => {
 
 
                     const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
-										const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                    const stringNumber = trackier_camp_id.toString();
+                    const encodedString = Buffer.from(stringNumber).toString('base64');
 
                     const messageBodyAdvetiser = (templateAdvertiser({
                         todayDate: dateprint(),
@@ -11763,8 +11763,8 @@ exports.updateOffer = async (req, res) => {
                 const admin_mail = process.env.NOTIFICATION_ADMIN_EMAILS.split(",");
                 const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
                 const templateAdmin = handlebars.compile(emailTemplateAdmin);
-									const stringNumber = trackier_camp_id.toString();
-					const encodedString = Buffer.from(stringNumber).toString('base64');
+                const stringNumber = trackier_camp_id.toString();
+                const encodedString = Buffer.from(stringNumber).toString('base64');
 
                 const messageBodyAdmin = (templateAdmin({
                     todayDate: dateprint(),

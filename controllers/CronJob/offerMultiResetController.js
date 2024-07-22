@@ -15,6 +15,8 @@ const { Type } = require("@aws-sdk/client-s3");
 
 
 exports.multiReset = async (req, res) => {
+  console.log("ACTIVE");
+  process.exit();
   try {
     const dataMulArr = { 'multi': false, 'today_spent': 0, 'today_conversion': 0 }
     // UPDATE DB TODAY SPENT AND CONVERSION

@@ -23,6 +23,7 @@ const { url } = require("inspector");
 const { isArray } = require("util");
 
 exports.getReportPresetData = async (req, res) => {
+  process.exit();
 
   const date = new Date();
   const year = date.getUTCFullYear();
