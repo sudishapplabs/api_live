@@ -4030,7 +4030,9 @@ exports.getDashboardTopOffers = async (req, res) => {
                                 newAppData[superKey]['total_budget'] = "";
                             }
                             if (off_icon_array.hasOwnProperty(r.campaign_id)) {
-                                newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+                                if (off_icon_array[r.campaign_id]) {
+                                    newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+                                }
                             } else {
                                 newData[superKey]['camp_icon'] = "";
                             }
