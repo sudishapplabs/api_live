@@ -3745,12 +3745,15 @@ exports.getDashboardTopOffers = async (req, res) => {
                     } else {
                         newData[superKey]['total_budget'] = "";
                     }
+                    const regex = /camp_ids\[\]=/;
+                    const exists = regex.test(newQueryStrings);
+                    if (exists) {
 
-
-                    if (off_icon_array.hasOwnProperty(r.campaign_id)) {
-                        newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
-                    } else {
-                        newData[superKey]['camp_icon'] = "";
+                        if (off_icon_array.hasOwnProperty(r.campaign_id)) {
+                            newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+                        } else {
+                            newData[superKey]['camp_icon'] = "";
+                        }
                     }
                 }
 
@@ -4029,12 +4032,14 @@ exports.getDashboardTopOffers = async (req, res) => {
                             } else {
                                 newAppData[superKey]['total_budget'] = "";
                             }
-                            if (off_icon_array.hasOwnProperty(r.campaign_id)) {
-                                if (off_icon_array[r.campaign_id]) {
+                            const regex = /camp_ids\[\]=/;
+                            const exists = regex.test(newQueryAppStrings);
+                            if (exists) {
+                                if (off_icon_array.hasOwnProperty(r.campaign_id)) {
                                     newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+                                } else {
+                                    newData[superKey]['camp_icon'] = "";
                                 }
-                            } else {
-                                newData[superKey]['camp_icon'] = "";
                             }
                         }
 
