@@ -1,4 +1,4 @@
-var { Offer } = require("../../models/offerModel");
+const Offer = require("../../models/offerModel");
 const { getAllOffersByTodaySpent } = require("../../common/common");
 const axios = require('axios');
 
