@@ -266,7 +266,7 @@ exports.getOfferSpent = async (req, res) => {
                     }
                     totalSpent[sixMonthData[0].campaign_id].push(sixMonthData[0].grossRevenue);
 
-                    console.log([sixMonthData[0].campaign_id]);
+                    //console.log([sixMonthData[0].campaign_id]);
                   }
                 }
               }
