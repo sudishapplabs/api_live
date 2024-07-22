@@ -10438,10 +10438,10 @@ exports.updateOffer = async (req, res) => {
                                 const quotedAndCommaSeparated = regexArrData.join("|");
                                 const regexData = new RegExp("" + quotedAndCommaSeparated + "", "g");
 
-                                const mainCTAURL = getMainLink.data.campaign.url.replace(regexData, matched => search_replace_cta[matched]);
+                                const mainCTAURL = getMainLink.data.campaign.url.replace(quotedAndCommaSeparated, search_replace_cta[[quotedAndCommaSeparated]]);
 
                                 if (typeof getMainLink.data.campaign.iurl !== 'undefined' && getMainLink.data.campaign.iurl !== '') {
-                                    const mainVTAURL = getMainLink.data.campaign.iurl.replace(regexData, matched => search_replace_cta[matched]);
+                                    const mainVTAURL = getMainLink.data.campaign.iurl.replace(quotedAndCommaSeparated, search_replace_cta[[quotedAndCommaSeparated]]);
 
                                     var campaignCTAVTA = { "url": mainCTAURL, "iurl": mainVTAURL };
                                 } else {
@@ -10453,9 +10453,9 @@ exports.updateOffer = async (req, res) => {
                                     console.log('CTA VTA OR VAT link Update Request');
                                     if (typeof CTAVTAMainRes.data.success !== 'undefined' && CTAVTAMainRes.data.success == true) {
                                         //   console.log('CTA VTA OR VAT link Update Response');
-                                        const campaignCTA = "https://abc.com?i=1" + old_ctalink.replace(regexData, matched => search_replace_cta[matched]);
+                                        const campaignCTA = "https://abc.com?i=1" + old_ctalink.replace(quotedAndCommaSeparated, search_replace_cta[[quotedAndCommaSeparated]]);
                                         if (typeof old_vtaLink !== 'undefined' && old_vtaLink !== '') {
-                                            const campaignVTA = "https://abc.com?i=1" + old_vtaLink.replace(regexData, matched => search_replace_cta[matched]);
+                                            const campaignVTA = "https://abc.com?i=1" + old_vtaLink.replace(quotedAndCommaSeparated, search_replace_cta[[quotedAndCommaSeparated]]);
 
                                             var cta_link = campaignCTA.replace('https://abc.com?i=1', "");
                                             var vta_link = campaignVTA.replace('https://abc.com?i=1', "");
@@ -10474,10 +10474,10 @@ exports.updateOffer = async (req, res) => {
 
                                                     if (LpURL.indexOf('%26goal_value%3D') !== false) {
 
-                                                        const lpCTAReplaceEventyName = LpURL.replace(regexData, matched => search_replace_cta[matched]);
+                                                        const lpCTAReplaceEventyName = LpURL.replace(quotedAndCommaSeparated, search_replace_cta[[quotedAndCommaSeparated]]);
 
                                                         if (typeof getMainLink.data.campaign.iurl !== 'undefined' && getMainLink.data.campaign.iurl !== '') {
-                                                            const lpVTAReplaceEventName = getMainLink.data.campaign.iurl.replace(regexData, matched => search_replace_cta[matched]);
+                                                            const lpVTAReplaceEventName = getMainLink.data.campaign.iurl.replace(quotedAndCommaSeparated, search_replace_cta[[quotedAndCommaSeparated]]);
 
                                                             var lpData = {
                                                                 title: lp.title,
