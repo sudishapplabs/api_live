@@ -13,7 +13,6 @@ const { isArray } = require("util");
 
 
 exports.getOffersLowBalance = async (req, res) => {
-  process.exit();
   const offerData = await getAllOffersByStatus();
 
   if (Array.isArray(offerData) && offerData.length > 0) {
