@@ -2644,7 +2644,8 @@ exports.dashboardPerformanceEvent = async (req, res) => {
               const newArrDataByClickEvent = data_obj_to_arr_event.sort((a, b) => b.grossConversions - a.grossConversions).slice();
               const objFilterDataTopEvent = newArrDataByClickEvent;
 
-              const groupedGolaName = groupBy(objFilterDataTopEvent, 'goal_name');
+              const groupedGolaNamse = groupBy(objFilterDataTopEvent, 'goal_name');
+
               const groupedGolaName = sortGoalWithOffersByConversions(groupedGolaNamse);
 
 
