@@ -45,17 +45,17 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
-app.use("/v2", advertiserRoute);
-app.use("/v2", userRoute);
-app.use("/v2", xiomiRoute);
-app.use("/v2", vivoRoute);
-app.use("/v2", oppoRoute);
-app.use("/v2", offerRoute);
-app.use("/v2", creativeRoute);
-app.use("/v2", commonRoute);
-app.use("/v2", staticsData);
-app.use("/v2", fundRoute);
-app.use("/v2", audienceRoute);
+app.use("/stage", advertiserRoute);
+app.use("/stage", userRoute);
+app.use("/stage", xiomiRoute);
+app.use("/stage", vivoRoute);
+app.use("/stage", oppoRoute);
+app.use("/stage", offerRoute);
+app.use("/stage", creativeRoute);
+app.use("/stage", commonRoute);
+app.use("/stage", staticsData);
+app.use("/stage", fundRoute);
+app.use("/stage", audienceRoute);
 
 
 // Middleware for Errors
