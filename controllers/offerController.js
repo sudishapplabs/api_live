@@ -16,7 +16,6 @@ const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByA
 const Audience = require("../models/audienceModel");
 var { Timeline } = require("../models/commonModel");
 
-
 const ucfirst = require('ucfirst');
 const ucwords = require('ucwords');
 const sgMail = require('@sendgrid/mail');
