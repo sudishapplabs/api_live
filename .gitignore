@@ -1,0 +1,5 @@
+node_modules
+config
+uploads
+api_new
+*.log

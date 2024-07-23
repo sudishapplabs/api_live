@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PayPal Node App</title>
+</head>
+
+<body>
+  <h1> Applabs - Funds/Pay Online </h1>
+  <h2>Pay For $25</h2>
+  <form action="/v2/fund/pay?apiKey=62c6ac1406beddc3835cdf4cf1362c6ac1406c16" method="post">
+    <input type="hidden" name="tid" value="3894">
+    <input type="hidden" name="email" value="ada@applabs.ai">
+    <input type="hidden" name="amount" value="10">
+    <input type="hidden" name="comment" value="test">
+    <input type="hidden" name="description" value="Added By ada digital">
+    <input type="hidden" name="payment_id" value="1715169204">
+    <input type="hidden" name="paypal_payment_id" value="">
+    <input type="hidden" name="action" value="credited">
+    <input type="hidden" name="payment_status" value="">
+    <input type="hidden" name="mode" value="paypal">
+    <input type="hidden" name="added_by_name" value="ada digital">
+    <input type="hidden" name="added_by_email" value="ada@applabs.ai">
+    <input name="submit" type="submit" value="Pay Via Paypal">
+  </form>
+</body>
+
+</html>
