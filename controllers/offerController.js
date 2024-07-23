@@ -4756,41 +4756,42 @@ exports.getDashboardTopOffers = async (req, res) => {
                         }
 
 
-
-                        reportData.push({
-                            "campaign_name": offer_name,
-                            "campaign_id": advTrkData.campaign_id,
-                            "campaign_status": advTrkData.campaign_status,
-                            "campaign_type": "",
-                            "campaign_geo": "",
-                            "camp_icon": "",
-                            "campaign_os": "Android",
-                            "advertiser": advertiser_name,
-                            "advertiser_id": advTrkData.advertiser_id,
-                            "goal_name": advTrkData.goal_name,
-                            app_id,
-                            source,
-                            "publisher_id": advTrkData.publisher_id,
-                            publisher_name,
-                            app_name,
-                            "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
-                            impression,
-                            audienc_interest,
-                            "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
-                            "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
-                            "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
-                            "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
-                            "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
-                            "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
-                            "currency": advTrkData.currency,
-                            "campaign_payout": advTrkData.campaign_payout,
-                            "grossClicks": advTrkData.grossClicks,
-                            "grossConversions": advTrkData.grossConversions,
-                            "grossRevenue": advTrkData.grossRevenue,
-                            "grossPayableConversions": 0,
-                            "custInstall": 0,
-                            "total_budget": 0
-                        });
+                        if (advTrkData.campaign_status == "active") {
+                            reportData.push({
+                                "campaign_name": offer_name,
+                                "campaign_id": advTrkData.campaign_id,
+                                "campaign_status": advTrkData.campaign_status,
+                                "campaign_type": "",
+                                "campaign_geo": "",
+                                "camp_icon": "",
+                                "campaign_os": "Android",
+                                "advertiser": advertiser_name,
+                                "advertiser_id": advTrkData.advertiser_id,
+                                "goal_name": advTrkData.goal_name,
+                                app_id,
+                                source,
+                                "publisher_id": advTrkData.publisher_id,
+                                publisher_name,
+                                app_name,
+                                "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+                                impression,
+                                audienc_interest,
+                                "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+                                "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+                                "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+                                "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+                                "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+                                "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+                                "currency": advTrkData.currency,
+                                "campaign_payout": advTrkData.campaign_payout,
+                                "grossClicks": advTrkData.grossClicks,
+                                "grossConversions": advTrkData.grossConversions,
+                                "grossRevenue": advTrkData.grossRevenue,
+                                "grossPayableConversions": 0,
+                                "custInstall": 0,
+                                "total_budget": 0
+                            });
+                        }
                     }
                 }
 
