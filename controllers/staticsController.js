@@ -2279,6 +2279,16 @@ function groupBy(objectArray, property) {
   }, {});
 }
 
+function sortGoalWithOffersByConversions(goalWithOffers) {
+  const sortedGoalWithOffers = {};
+
+  for (const key in goalWithOffers) {
+    sortedGoalWithOffers[key] = goalWithOffers[key].sort((a, b) => b.grossConversions - a.grossConversions);
+  }
+
+  return sortedGoalWithOffers;
+}
+
 
 exports.dashboardPerformanceEvent = async (req, res) => {
   var adv_array = {};
@@ -2635,6 +2645,8 @@ exports.dashboardPerformanceEvent = async (req, res) => {
               const objFilterDataTopEvent = newArrDataByClickEvent;
 
               const groupedGolaName = groupBy(objFilterDataTopEvent, 'goal_name');
+              const groupedGolaName = sortGoalWithOffersByConversions(groupedGolaNamse);
+
 
               let array1 = objFilterPData,
                 result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
