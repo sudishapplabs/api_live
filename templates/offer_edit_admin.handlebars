@@ -2,18 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body
-    style="display: block; padding: 100px 20px; margin: 0; font-family: &#39;Inter&#39;,sans-serif; background-color: #F5F7F9; width: 100%; box-sizing: border-box;">
+    style="display: block; padding: 100px 20px; margin: 0; font-family: 'Inter',sans-serif; background-color: #F5F7F9; width: 100%; box-sizing: border-box;">
     <div style="max-width: 650px; margin: 0 auto;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-            <a href="{{ base_url }}" style="width: 50%;"><img src="{{ base_url }}assets/media/logo.png"
-                    style="width: 145.694px; height: auto; display: block;" alt=""></a>
-            <span style="color:#898989; width: 50%;text-align:end; font-size: 13px;font-weight: 400;line-height: 130%;     display: flex;
-    justify-content: end;">{{todayDate}}</span>
+            <a href="{{ base_url }}" style="width: 50%;"><img src="https://console.applabs.ai/assets/media/logo.png"
+                    style="width: 145.694px; height: auto; display: block;" alt></a>
+            <span
+                style="color:#898989; width: 50%;text-align: end; font-size: 13px; font-weight: 400; line-height: 130%;">
+                {{todayDate}}</span>
         </div>
         <div style="height: auto; background-color: #fff; padding: 30px">
             <h1
@@ -22,7 +25,7 @@
             </h1>
             <p
                 style="color:#3B3B3B; font-size: 15px; font-weight: 400; line-height: 140%; margin: 0; padding: 0 0 20px;">
-                Changes have been made to offer <span style="font-weight: 700;">
+                Changes have been made to campaign <span style="font-weight: 700;">
                     {{offer_name}} [{{offer_id}}]</span> by the Advertiser {{adv_name}}. Please review the details
                 here <a href={{url}} target="_blank">Link.</a></p>
             <table style="width: 100%; margin-bottom: 20px;  padding: 0;  border-collapse: collapse;">
