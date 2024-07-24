@@ -3154,9 +3154,8 @@ exports.dashboardTopHeader = async (req, res) => {
 
       axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&group[]=goal_name&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then(async (staticsRes) => {
         if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
-
-          var reportData = [];
           if (Array.isArray(staticsRes.data.records) && staticsRes.data.records.length > 0) {
+            var reportData = [];
             const advArrData = staticsRes.data.records;
             for (let j = 0; j < advArrData.length; j++) {
               let advTrkData = advArrData[j];
@@ -3169,142 +3168,147 @@ exports.dashboardTopHeader = async (req, res) => {
                 "grossInstall": 0
               });
             }
-          }
-
-          var newData = {};
-
-          for (let i = 0; i < reportData.length; i++) {
-            let r = reportData[i];
 
 
-            var superKey = "";
-            if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
-              superKey += r.campaign_name;
-            }
-            if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
-              superKey += r.advertiser;
-            }
-            if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
-              superKey += r.advertiser_id;
-            }
-            if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
-              superKey += r.campaign_status;
-            }
-            if (typeof r.date !== 'undefined' && r.date !== "") {
-              superKey += r.date;
-            }
-            superKey += i + 1;
+            var newData = {};
 
-            if (newData[superKey]) {
-              newData[superKey]['grossClicks'] += r.grossClicks;
-              newData[superKey]['grossConversions'] += r.grossConversions;
-              newData[superKey]['grossRevenue'] += r.grossRevenue;
+            for (let i = 0; i < reportData.length; i++) {
+              let r = reportData[i];
+
+
+              var superKey = "";
+              if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+                superKey += r.campaign_name;
+              }
+              if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+                superKey += r.advertiser;
+              }
+              if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+                superKey += r.advertiser_id;
+              }
+              if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+                superKey += r.campaign_status;
+              }
+              if (typeof r.date !== 'undefined' && r.date !== "") {
+                superKey += r.date;
+              }
+              superKey += i + 1;
+
+              if (newData[superKey]) {
+                newData[superKey]['grossClicks'] += r.grossClicks;
+                newData[superKey]['grossConversions'] += r.grossConversions;
+                newData[superKey]['grossRevenue'] += r.grossRevenue;
+              } else {
+                newData[superKey] = r;
+              }
+              if (r.grossClicks == 0) {
+                newData[superKey]['converionCR'] += 0;
+              } else {
+                let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
+                newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
+              }
+              if (r.goal_name == 'install') {
+                newData[superKey]['grossInstall'] += r.grossConversions;
+              } else {
+                newData[superKey]['grossInstall'] += 0;
+              }
+            }
+
+            const data_obj_to_arr = Object.values(newData);
+            const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+            const objFilterDataPerformance = newArrDataByClick;
+
+
+
+            let array1 = objFilterPData,
+              result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
+                a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
+                a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
+                a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
+                a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
+                a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
+                a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
+                return a;
+              }, {}));
+
+            //console.log(result1);
+
+            let array2 = objFilterDataPerformance,
+              result2 = Object.values(array2.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
+                a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
+                a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
+                a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
+                a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
+                a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
+                a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
+                return a;
+              }, {}));
+            //console.log(result2);
+
+            if (Array.isArray(result1) && result1.length > 0) {
+
+              const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
+              var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
+
+
+              const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
+              var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
+
+
+              const grossRevenueDiff = (parseInt(result2[0].grossRevenue) - parseInt(result1[0].grossRevenue));
+              var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
+
+
+              const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
+              if (result1[0].converionCR > 0) {
+                var converionCRPercentageData = (converionCRPDiff * 100) / parseInt(result1[0].converionCR);
+              } else {
+                var converionCRPercentageData = 0;
+              }
+
+              const grossInstallDiff = (parseInt(result2[0].grossInstall) - parseInt(result1[0].grossInstall));
+              var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
+
+
+              const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
+              if (totalActivePreviousOffer > 0) {
+                var activePercentageData = (activePercentageDiff * 100) / parseInt(totalActivePreviousOffer);
+              } else {
+                var activePercentageData = 0;
+              }
+
+              const activePercentageDiffRT = (parseInt(totalActiveCurrentOfferRT) - parseInt(totalActivePreviousOfferRT));
+              if (totalActivePreviousOfferRT > 0) {
+                var activePercentageDataRT = (activePercentageDiffRT * 100) / parseInt(totalActivePreviousOfferRT);
+              } else {
+                var activePercentageDataRT = 0;
+              }
+
+
+              var dataExist = true;
             } else {
-              newData[superKey] = r;
-            }
-            if (r.grossClicks == 0) {
-              newData[superKey]['converionCR'] += 0;
-            } else {
-              let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
-              newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
-            }
-            if (r.goal_name == 'install') {
-              newData[superKey]['grossInstall'] += r.grossConversions;
-            } else {
-              newData[superKey]['grossInstall'] += 0;
-            }
-          }
-
-          const data_obj_to_arr = Object.values(newData);
-          const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
-          const objFilterDataPerformance = newArrDataByClick;
-
-
-
-          let array1 = objFilterPData,
-            result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
-              a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
-              a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
-              a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
-              a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
-              a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
-              a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
-              return a;
-            }, {}));
-
-          //console.log(result1);
-
-          let array2 = objFilterDataPerformance,
-            result2 = Object.values(array2.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
-              a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
-              a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
-              a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
-              a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
-              a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
-              a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
-              return a;
-            }, {}));
-          //console.log(result2);
-
-          if (Array.isArray(result1) && result1.length > 0) {
-
-            const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
-            var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
-
-
-            const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
-            var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
-
-
-            const grossRevenueDiff = (parseInt(result2[0].grossRevenue) - parseInt(result1[0].grossRevenue));
-            var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
-
-
-            const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
-            if (result1[0].converionCR > 0) {
-              var converionCRPercentageData = (converionCRPDiff * 100) / parseInt(result1[0].converionCR);
-            } else {
+              var dataExist = false;
+              var grossClicksPercentageData = 0;
+              var grossConversionsPercentageData = 0;
+              var grossRevenuePercentageData = 0;
               var converionCRPercentageData = 0;
-            }
-
-            const grossInstallDiff = (parseInt(result2[0].grossInstall) - parseInt(result1[0].grossInstall));
-            var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
-
-
-            const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
-            if (totalActivePreviousOffer > 0) {
-              var activePercentageData = (activePercentageDiff * 100) / parseInt(totalActivePreviousOffer);
-            } else {
+              var grossInstallPercentageData = 0;
               var activePercentageData = 0;
-            }
-
-            const activePercentageDiffRT = (parseInt(totalActiveCurrentOfferRT) - parseInt(totalActivePreviousOfferRT));
-            if (totalActivePreviousOfferRT > 0) {
-              var activePercentageDataRT = (activePercentageDiffRT * 100) / parseInt(totalActivePreviousOfferRT);
-            } else {
-              var activePercentageDataRT = 0;
+              result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
             }
 
 
-            var dataExist = true;
+            result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
+            result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
+
+            const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
+            res.status(200).send(response);
+            return;
           } else {
-            var dataExist = false;
-            var grossClicksPercentageData = 0;
-            var grossConversionsPercentageData = 0;
-            var grossRevenuePercentageData = 0;
-            var converionCRPercentageData = 0;
-            var grossInstallPercentageData = 0;
-            var activePercentageData = 0;
-            result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
+            const resMsg = { "success": false, "message": "No records found" };
+            res.status(200).send(resMsg);
+            return;
           }
-
-
-          result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-          result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-          const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
-          res.status(200).send(response);
-          return;
         } else {
           const resMsg = { "success": false, "message": "No records found" };
           res.status(200).send(resMsg);
