@@ -41,10 +41,10 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
             offer_name: ucfirst(offDt.offer_name),
             category: "Campaign",
 
-            subject_adv: 'Applabs Alert - Offer ' + offDt.offer_name + ' Limit Reached',
+            subject_adv: 'Applabs Alert - Campaign ' + offDt.offer_name + ' Limit Reached',
             message_adv: "Your Offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has reached its current daily cap limit. For an uninterrupted delivery please sign in to your account and review the offer.",
 
-            subject_sa: 'Applabs Alert - Offer ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Daily Limit Reached',
+            subject_sa: 'Applabs Alert - Campaign ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Daily Limit Reached',
             message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> offer <span class='text_primary'> " + ucfirst(offDt.offer_name) + "[" + offDt.trackier_camp_id + "]</span> has reached its current daily cap limit and the current balance is USD <span class='text_primary'> " + avBalance + "</span>",
 
             read: 0,
@@ -66,7 +66,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
               offer_name: offDt.offer_name,
               adv_name: advDt.advName,
               advertiserName: ucwords(advDt.advertiserName),
-              url: process.env.APPLABS_URL + 'CampaignListPage',
+              url: process.env.APPLABS_URL + 'CampaignList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -78,7 +78,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
                 email: process.env.MAIL_FROM_EMAIL,
               },
               bcc: bcc_mail,
-              subject: 'Applabs Alert - Offer ' + offDt.offer_name + ' Limit Reached',
+              subject: 'Applabs Alert - Campaign ' + offDt.offer_name + ' Limit Reached',
               html: messageBodyAdv
             };
             //ES6
@@ -108,7 +108,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
             offer_name: offDt.offer_name,
             adv_name: advDt.advName,
             advertiserName: ucwords(advDt.advertiserName),
-            url: process.env.APPLABS_URL + 'CampaignListPage',
+            url: process.env.APPLABS_URL + 'CampaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -120,7 +120,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
               email: process.env.MAIL_FROM_EMAIL,
             },
             bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Daily Limit Reached',
+            subject: 'Applabs Alert - Campaign ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Daily Limit Reached',
             html: messageBodyAdmin
           };
           //ES6

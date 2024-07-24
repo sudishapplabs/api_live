@@ -59,7 +59,7 @@ exports.getOfferTrafficStart = async (req, res) => {
               email: process.env.MAIL_FROM_EMAIL,
             },
             bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer is live',
+            subject: 'Applabs Alert - Campaign is live',
             html: messageBodyAdvetiser
           };
           //ES6
@@ -96,7 +96,7 @@ exports.getOfferTrafficStart = async (req, res) => {
               email: process.env.MAIL_FROM_EMAIL,
             },
             //bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer ' + offDt.offer_name + ' is live',
+            subject: 'Applabs Alert - Campaign ' + offDt.offer_name + ' is live',
             html: messageBodyAdmin
           };
           //ES6

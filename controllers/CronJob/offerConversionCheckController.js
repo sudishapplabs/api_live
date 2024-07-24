@@ -77,11 +77,11 @@ exports.getOfferConversionData = async (req, res) => {
         offer_name: ucfirst(offDt.offer_name),
         category: "Campaign",
 
-        subject_adv: 'Applabs Alert - Your offer ' + ucfirst(offDt.offer_name) + ' is Paused',
-        message_adv: "During an automated content screening the system has found a few violations of our Terms & Conditions. As a preventive measure your Offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> is paused.",
+        subject_adv: 'Applabs Alert - Your campaign ' + ucfirst(offDt.offer_name) + ' is Paused',
+        message_adv: "During an automated content screening the system has found a few violations of our Terms & Conditions. As a preventive measure your campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> is paused.",
 
-        subject_sa: 'Applabs Alert - Offer ' + ucfirst(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Paused',
-        message_sa: "Account <span class='text_primary'> " + ucfirst(advName.advName) + "</span> offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been paused during the screening process.",
+        subject_sa: 'Applabs Alert - Campaign ' + ucfirst(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Paused',
+        message_sa: "Account <span class='text_primary'> " + ucfirst(advName.advName) + "</span> campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been paused during the screening process.",
 
         read: 0,
       }
@@ -101,7 +101,7 @@ exports.getOfferConversionData = async (req, res) => {
           advertiserName: ucwords(advName.advertiserName),
           offer_id: offDt.trackier_camp_id,
           offer_name: offDt.offer_name,
-          url: process.env.APPLABS_URL + 'CampaignListPage',
+          url: process.env.APPLABS_URL + 'CampaignList',
           base_url: process.env.APPLABS_URL
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -140,7 +140,7 @@ exports.getOfferConversionData = async (req, res) => {
         advertiserName: ucwords(advName.advertiserName),
         offer_id: offDt.trackier_camp_id,
         offer_name: offDt.offer_name,
-        url: process.env.APPLABS_URL + 'CampaignListPage',
+        url: process.env.APPLABS_URL + 'CampaignList',
         base_url: process.env.APPLABS_URL
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -152,7 +152,7 @@ exports.getOfferConversionData = async (req, res) => {
           email: process.env.MAIL_FROM_EMAIL,
         },
         //bcc: bcc_mail,
-        subject: 'Applabs Alert - Offer ' + ucfirst(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Paused',
+        subject: 'Applabs Alert - Campaign ' + ucfirst(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Paused',
         html: messageBodyAdmin
       };
       //ES6

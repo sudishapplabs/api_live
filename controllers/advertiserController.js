@@ -408,7 +408,7 @@ exports.addAdvertiser = async (req, res) => {
                         todayDate: dateprint(),
                         name: ucfirst(resAdvertiser.name),
                         adv_name: resAdvertiser.organization.toUpperCase(),
-                        url: process.env.APPLABS_URL + 'DashboardPage',
+                        url: process.env.APPLABS_URL + 'Dashboard',
                         base_url: process.env.APPLABS_URL
                       }))
                       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
