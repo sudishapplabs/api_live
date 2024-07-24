@@ -2634,7 +2634,19 @@ exports.dashboardPerformanceEvent = async (req, res) => {
               const newArrDataByClickEvent = data_obj_to_arr_event.sort((a, b) => b.grossConversions - a.grossConversions).slice();
               const objFilterDataTopEvent = newArrDataByClickEvent;
 
-              const groupedGolaName = groupBy(objFilterDataTopEvent, 'goal_name');
+              // const groupedGolaName = groupBy(objFilterDataTopEvent, 'goal_name');
+
+              const groupedGolaName = objFilterDataTopEvent.reduce((acc, campaign) => {
+                if (!acc[campaign.goal_name]) {
+                  acc[campaign.goal_name] = [];
+                }
+                acc[campaign.goal_name].push(campaign);
+                return acc;
+              }, {});
+
+              for (const key in groupedGolaName) {
+                groupedGolaName[key].sort((a, b) => b.grossConversions - a.grossConversions);
+              }
 
               let array1 = objFilterPData,
                 result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
