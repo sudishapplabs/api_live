@@ -2879,14 +2879,14 @@ exports.dashboardTopHeader = async (req, res) => {
   var totalOffers = 0;
   if (advertiserId) {
 
-    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] } };
 
 
-    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
-      let result = Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] }).exec();
+      let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffers = parseInt(result.length);
     } catch (err) {
       console.log(err);
@@ -2894,26 +2894,26 @@ exports.dashboardTopHeader = async (req, res) => {
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
 
-    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] } };
 
-    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
-      let result = Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] }).exec();
+      let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffers = parseInt(result.length);
     } catch (err) {
       console.log(err);
     }
   } else {
-    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }] } };
 
 
-    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
-      let result = Offer.find({ 'trackier_camp_id': { '$ne': 0 } }).exec();
+      let result = await Offer.find({ 'trackier_camp_id': { '$ne': 0 } }).exec();
       //console.log(result);
       totalOffers = parseInt(result.length);
     } catch (err) {
@@ -2943,7 +2943,7 @@ exports.dashboardTopHeader = async (req, res) => {
   // }
 
   // COUNT ALL ACTIVE OFFER
-  const offStatusCurrentData2 = Offer.aggregate([
+  const offStatusCurrentData2 = await Offer.aggregate([
     filterCurretDatas2,
     {
       '$group': {
@@ -2984,13 +2984,13 @@ exports.dashboardTopHeader = async (req, res) => {
   var totalOffersRT = 0;
   if (advertiserId) {
 
-    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] } };
 
-    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
-      let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
+      let resultRT = Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
     } catch (err) {
       console.log(err);
@@ -2998,11 +2998,11 @@ exports.dashboardTopHeader = async (req, res) => {
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
 
-    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] } };
 
-    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -3010,11 +3010,11 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }] } };
 
-    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { '$ne': 0 } }, { 'campaign_type': 'RETARGETING' }] }).exec();
       //console.log(resultRT);
