@@ -3279,7 +3279,11 @@ exports.dashboardTopHeader = async (req, res) => {
               }
 
               const grossInstallDiff = (parseInt(result2[0].grossInstall) - parseInt(result1[0].grossInstall));
-              var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
+              if (result1[0].grossInstall > 0) {
+                var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
+              } else {
+                var grossInstallPercentageData = 0;
+              }
 
 
               const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
