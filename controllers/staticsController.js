@@ -3291,6 +3291,7 @@ exports.dashboardTopHeader = async (req, res) => {
                 var activePercentageDataRT = 0;
               }
 
+
               var dataExist = true;
             } else {
               var dataExist = false;
@@ -3311,39 +3312,13 @@ exports.dashboardTopHeader = async (req, res) => {
             res.status(200).send(response);
             return;
           } else {
-            let result2 = [];
-            const dataExist = false;
-            const grossClicksPercentageData = 0;
-            const grossConversionsPercentageData = 0;
-            const grossRevenuePercentageData = 0;
-            const converionCRPercentageData = 0;
-            const grossInstallPercentageData = 0;
-            const activePercentageData = 0;
-            result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
-
-            result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-            result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-            const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
-            res.status(200).send(response);
+            const resMsg = { "success": false, "message": "No records found" };
+            res.status(200).send(resMsg);
             return;
           }
         } else {
-          let result2 = [];
-          const dataExist = false;
-          const grossClicksPercentageData = 0;
-          const grossConversionsPercentageData = 0;
-          const grossRevenuePercentageData = 0;
-          const converionCRPercentageData = 0;
-          const grossInstallPercentageData = 0;
-          const activePercentageData = 0;
-          result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
-
-          result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-          result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-          const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
-          res.status(200).send(response);
+          const resMsg = { "success": false, "message": "No records found" };
+          res.status(200).send(resMsg);
           return;
         }
 
@@ -3356,21 +3331,8 @@ exports.dashboardTopHeader = async (req, res) => {
       // End PERFOMANCE FIRST
 
     } else {
-      let result2 = [];
-      const dataExist = false;
-      const grossClicksPercentageData = 0;
-      const grossConversionsPercentageData = 0;
-      const grossRevenuePercentageData = 0;
-      const converionCRPercentageData = 0;
-      const grossInstallPercentageData = 0;
-      const activePercentageData = 0;
-      result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
-
-      result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-      result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-      const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
-      res.status(200).send(response);
+      const resMsg = { "success": false, "message": "No records found" };
+      res.status(200).send(resMsg);
       return;
     }
 
