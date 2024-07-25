@@ -3248,15 +3248,27 @@ exports.dashboardTopHeader = async (req, res) => {
             if (Array.isArray(result1) && result1.length > 0) {
 
               const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
-              var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
+              if (result1[0].grossClicks > 0) {
+                var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
+              } else {
+                var grossClicksPercentageData = 0;
+              }
 
 
               const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
-              var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
+              if (result1[0].grossConversions > 0) {
+                var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
+              } else {
+                var grossConversionsPercentageData = 0;
+              }
 
 
               const grossRevenueDiff = (parseInt(result2[0].grossRevenue) - parseInt(result1[0].grossRevenue));
-              var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
+              if (result1[0].grossRevenue > 0) {
+                var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
+              } else {
+                var grossRevenuePercentageData = 0;
+              }
 
 
               const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
