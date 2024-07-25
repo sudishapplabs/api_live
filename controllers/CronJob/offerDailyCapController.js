@@ -42,10 +42,10 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
             category: "Campaign",
 
             subject_adv: 'Applabs Alert - Campaign ' + offDt.offer_name + ' Limit Reached',
-            message_adv: "Your Offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has reached its current daily cap limit. For an uninterrupted delivery please sign in to your account and review the offer.",
+            message_adv: "Your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has reached its current daily cap limit. For an uninterrupted delivery please sign in to your account and review the campaign.",
 
             subject_sa: 'Applabs Alert - Campaign ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Daily Limit Reached',
-            message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> offer <span class='text_primary'> " + ucfirst(offDt.offer_name) + "[" + offDt.trackier_camp_id + "]</span> has reached its current daily cap limit and the current balance is USD <span class='text_primary'> " + avBalance + "</span>",
+            message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> campaign <span class='text_primary'> " + ucfirst(offDt.offer_name) + "[" + offDt.trackier_camp_id + "]</span> has reached its current daily cap limit and the current balance is USD <span class='text_primary'> " + avBalance + "</span>",
 
             read: 0,
           }

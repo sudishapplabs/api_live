@@ -2842,35 +2842,35 @@ exports.dashboardTopHeader = async (req, res) => {
   // GET DATA BY TOP OFFER STATUS TOTAL ACTIVE PENDING ETC
 
   if (process.env.TIMESTAMP_DIGITS == 10) {
-    const currentDateStart = new Date(start + "T23:59:59.053Z");
-    const currentDateEnd = new Date(end + "T23:59:59.053Z");
+    // const currentDateStart = new Date(start + "T23:59:59.053Z");
+    // const currentDateEnd = new Date(end + "T23:59:59.053Z");
 
-    var currentDateStartVal = parseInt(currentDateStart.getTime() / 1000);
-    var currentDateEndVal = parseInt(currentDateEnd.getTime() / 1000);
-
-
-    const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
-    const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+    // var currentDateStartVal = parseInt(currentDateStart.getTime() / 1000);
+    // var currentDateEndVal = parseInt(currentDateEnd.getTime() / 1000);
 
 
-    var newDatesPrevStartVal = parseInt(newDatesPrevStart.getTime() / 1000);
-    var newDatesPrevPEndVal = parseInt(newDatesPrevPEnd.getTime() / 1000);
+    // const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
+    // const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+
+
+    // var newDatesPrevStartVal = parseInt(newDatesPrevStart.getTime() / 1000);
+    // var newDatesPrevPEndVal = parseInt(newDatesPrevPEnd.getTime() / 1000);
   } else {
 
-    const currentDateStart = new Date(start + "T23:59:59.053Z");
-    const currentDateEnd = new Date(end + "T23:59:59.053Z");
+    // const currentDateStart = new Date(start + "T23:59:59.053Z");
+    // const currentDateEnd = new Date(end + "T23:59:59.053Z");
 
 
-    var currentDateStartVal = currentDateStart.getTime();
-    var currentDateEndVal = currentDateEnd.getTime();
+    // var currentDateStartVal = currentDateStart.getTime();
+    // var currentDateEndVal = currentDateEnd.getTime();
 
 
-    const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
-    const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+    // const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
+    // const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
 
 
-    var newDatesPrevStartVal = newDatesPrevStart.getTime();
-    var newDatesPrevPEndVal = newDatesPrevPEnd.getTime();
+    // var newDatesPrevStartVal = newDatesPrevStart.getTime();
+    // var newDatesPrevPEndVal = newDatesPrevPEnd.getTime();
   }
 
 
@@ -2879,12 +2879,12 @@ exports.dashboardTopHeader = async (req, res) => {
   var totalOffers = 0;
   if (advertiserId) {
 
-    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] } };
 
 
-    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffers = parseInt(result.length);
@@ -2894,11 +2894,11 @@ exports.dashboardTopHeader = async (req, res) => {
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
 
-    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] } };
 
-    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffers = parseInt(result.length);
@@ -2906,12 +2906,12 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }] } };
 
 
-    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ 'trackier_camp_id': { '$ne': 0 } }).exec();
       //console.log(result);
@@ -2921,23 +2921,24 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  const offStatusCurrentData = await Offer.aggregate([
-    filterCurretDatas,
-    {
-      '$group': {
-        '_id': '$status',
-        'sum': { '$sum': 1 }
-      }
-    }
-  ]).sort({ status: -1 }).exec();
-  var totalActiveCurrentOffer = 0;
-  if (Array.isArray(offStatusCurrentData) && offStatusCurrentData.length > 0) {
-    for (let i = 0; i < offStatusCurrentData.length; i++) {
-      if (offStatusCurrentData[i]._id == "active") {
-        var totalActiveCurrentOffer = offStatusCurrentData[i].sum;
-      }
-    }
-  }
+  const totalActiveCurrentOffer = 0;
+  // const offStatusCurrentData = await Offer.aggregate([
+  //   filterCurretDatas,
+  //   {
+  //     '$group': {
+  //       '_id': '$status',
+  //       'sum': { '$sum': 1 }
+  //     }
+  //   }
+  // ]).sort({ status: -1 }).exec();
+  // var totalActiveCurrentOffer = 0;
+  // if (Array.isArray(offStatusCurrentData) && offStatusCurrentData.length > 0) {
+  //   for (let i = 0; i < offStatusCurrentData.length; i++) {
+  //     if (offStatusCurrentData[i]._id == "active") {
+  //       var totalActiveCurrentOffer = offStatusCurrentData[i].sum;
+  //     }
+  //   }
+  // }
 
   // COUNT ALL ACTIVE OFFER
   const offStatusCurrentData2 = await Offer.aggregate([
@@ -2958,33 +2959,35 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  const offStatusPreviousData = await Offer.aggregate([
-    filterPreviousDatas,
-    {
-      '$group': {
-        '_id': '$status',
-        'sum': { '$sum': 1 }
-      }
-    }
-  ]).sort({ status: -1 }).exec();
-  var totalActivePreviousOffer = 0;
-  if (Array.isArray(offStatusPreviousData) && offStatusPreviousData.length > 0) {
-    for (let i = 0; i < offStatusPreviousData.length; i++) {
-      if (offStatusPreviousData[i]._id == "active") {
-        var totalActivePreviousOffer = offStatusPreviousData[i].sum;
-      }
-    }
-  }
+  const totalActivePreviousOffer = 0;
+
+  // const offStatusPreviousData = await Offer.aggregate([
+  //   filterPreviousDatas,
+  //   {
+  //     '$group': {
+  //       '_id': '$status',
+  //       'sum': { '$sum': 1 }
+  //     }
+  //   }
+  // ]).sort({ status: -1 }).exec();
+  // var totalActivePreviousOffer = 0;
+  // if (Array.isArray(offStatusPreviousData) && offStatusPreviousData.length > 0) {
+  //   for (let i = 0; i < offStatusPreviousData.length; i++) {
+  //     if (offStatusPreviousData[i]._id == "active") {
+  //       var totalActivePreviousOffer = offStatusPreviousData[i].sum;
+  //     }
+  //   }
+  // }
 
   // RETARGETING CAMPAING START
   var totalOffersRT = 0;
   if (advertiserId) {
 
-    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] } };
 
-    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -2994,11 +2997,11 @@ exports.dashboardTopHeader = async (req, res) => {
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
 
-    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] } };
 
-    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -3006,11 +3009,11 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }] } };
 
-    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { '$ne': 0 } }, { 'campaign_type': 'RETARGETING' }] }).exec();
       //console.log(resultRT);
@@ -3020,26 +3023,28 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  const offStatusCurrentDataRT = await Offer.aggregate([
-    filterCurretDatasRT,
-    {
-      '$group': {
-        '_id': '$status',
-        'sum': { '$sum': 1 }
-      }
-    }
-  ]).sort({ status: -1 }).exec();
-  var totalActiveCurrentOfferRT = 0;
-  if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
-    for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
-      if (offStatusCurrentDataRT[i]._id == "active") {
-        var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
-      }
-    }
-  }
+
+  const totalActiveCurrentOfferRT = 0;
+  // const offStatusCurrentDataRT = await Offer.aggregate([
+  //   filterCurretDatasRT,
+  //   {
+  //     '$group': {
+  //       '_id': '$status',
+  //       'sum': { '$sum': 1 }
+  //     }
+  //   }
+  // ]).sort({ status: -1 }).exec();
+  // var totalActiveCurrentOfferRT = 0;
+  // if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
+  //   for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
+  //     if (offStatusCurrentDataRT[i]._id == "active") {
+  //       var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
+  //     }
+  //   }
+  // }
 
   // COUNT ALL TOTAL RE-TARGETING ACTIVE OFFER
-  const offStatusCurrentDataRT2 = await Offer.aggregate([
+  const offStatusCurrentDataRT2 = Offer.aggregate([
     filterCurretDatasRT2,
     {
       '$group': {
@@ -3057,23 +3062,26 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  const offStatusPreviousDataRT = await Offer.aggregate([
-    filterPreviousDatasRT,
-    {
-      '$group': {
-        '_id': '$status',
-        'sum': { '$sum': 1 }
-      }
-    }
-  ]).sort({ status: -1 }).exec();
-  var totalActivePreviousOfferRT = 0;
-  if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
-    for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
-      if (offStatusPreviousDataRT[i]._id == "active") {
-        var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
-      }
-    }
-  }
+
+  const totalActivePreviousOfferRT = 0;
+
+  // const offStatusPreviousDataRT = await Offer.aggregate([
+  //   filterPreviousDatasRT,
+  //   {
+  //     '$group': {
+  //       '_id': '$status',
+  //       'sum': { '$sum': 1 }
+  //     }
+  //   }
+  // ]).sort({ status: -1 }).exec();
+  // var totalActivePreviousOfferRT = 0;
+  // if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
+  //   for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
+  //     if (offStatusPreviousDataRT[i]._id == "active") {
+  //       var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
+  //     }
+  //   }
+  // }
   // RETARGETING END
 
   // console.log(JSON.stringify(filterCurretDatas));

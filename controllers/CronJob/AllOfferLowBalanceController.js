@@ -57,7 +57,7 @@ exports.getAllOffersLowBalance = async (req, res) => {
           email: process.env.MAIL_FROM_EMAIL,
         },
         bcc: bcc_mail,
-        subject: 'Applabs Alert - Offers Consumed > 80% Budget - ' + dateprint(),
+        subject: 'Applabs Alert - Campaigns Consumed > 80% Budget - ' + dateprint(),
         html: messageBodyAdmin
       };
       //ES6

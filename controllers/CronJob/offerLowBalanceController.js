@@ -40,10 +40,10 @@ exports.getOffersLowBalance = async (req, res) => {
           category: "Campaign",
 
           subject_adv: 'Applabs Alert - Campaign ' + offDt.offer_name + ' Limit Utilized 80%',
-          message_adv: "Your Offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> reached 80% of total caps. For an uninterrupted delivery please sign in to your account and review the offer.",
+          message_adv: "Your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> reached 80% of total caps. For an uninterrupted delivery please sign in to your account and review the campaign.",
 
           subject_sa: 'Applabs Alert - Campaign ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Balance',
-          message_sa: "Offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has reached to 80% of total caps. The current balance is USD <span class='text_primary'> " + avBalance + "</span>",
+          message_sa: "Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has reached to 80% of total caps. The current balance is USD <span class='text_primary'> " + avBalance + "</span>",
 
           read: 0,
         }

@@ -43,12 +43,12 @@ exports.getOfferEndDate = async (req, res) => {
             offer_name: ucfirst(offDt.offer_name,),
             category: "Campaign",
 
-            subject_adv: 'Applabs Alert - Your offer ' + offDt.trackier_camp_id + ' is about to end',
-            message_adv: "Today is the end date for your offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> and it will be paused. For an uninterrupted delivery please sign in to your account and review the offer.",
+            subject_adv: 'Applabs Alert - Your Campaign ' + offDt.trackier_camp_id + ' is about to end',
+            message_adv: "Today is the end date for your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> and it will be paused. For an uninterrupted delivery please sign in to your account and review the offer.",
 
 
             subject_sa: 'Applabs Alert - Campaign ' + offDt.offer_name + '[' + offDt.trackier_camp_id + '] is about to end',
-            message_sa: "The offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> by the Advertiser <span class='text_primary'> " + ucfirst(advName.advName) + "</span> is about to end and will be paused today.",
+            message_sa: "The Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> by the Advertiser <span class='text_primary'> " + ucfirst(advName.advName) + "</span> is about to end and will be paused today.",
 
             read: 0,
           }
