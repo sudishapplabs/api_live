@@ -76,11 +76,11 @@ exports.getTotalCapOffers = async (req, res) => {
               offer_name: ucfirst(offDt.offer_name,),
               category: "Campaign",
 
-              subject_adv: 'Applabs Alert - New Offer Disabled',
-              message_adv: "This is to inform you that your offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been  <span class='text_primary'> disabled </span>",
+              subject_adv: 'Applabs Alert - New Campaign Disabled',
+              message_adv: "This is to inform you that your campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been  <span class='text_primary'> disabled </span>",
 
-              subject_sa: 'Applabs Alert - Offer  ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Disabled',
-              message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been <span class='text_primary'> disabled </span> By <span class='text_primary'> Admin </span>",
+              subject_sa: 'Applabs Alert - Campaign  ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Disabled',
+              message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been <span class='text_primary'> disabled </span> By <span class='text_primary'> Admin </span>",
 
               read: 0,
             }
@@ -101,7 +101,7 @@ exports.getTotalCapOffers = async (req, res) => {
                 offer_name: offDt.offer_name,
                 adv_name: advDt.advName,
                 advertiserName: ucwords(advDt.advertiserName),
-                url: process.env.APPLABS_URL + 'CampaignListPage',
+                url: process.env.APPLABS_URL + 'CampaignList',
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -144,7 +144,7 @@ exports.getTotalCapOffers = async (req, res) => {
               offer_name: offDt.offer_name,
               adv_name: advDt.advName,
               advertiserName: ucwords(advDt.advertiserName),
-              url: process.env.APPLABS_URL + 'CampaignListPage',
+              url: process.env.APPLABS_URL + 'CampaignList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -156,7 +156,7 @@ exports.getTotalCapOffers = async (req, res) => {
                 email: process.env.MAIL_FROM_EMAIL,
               },
               bcc: bcc_mail,
-              subject: 'Applabs Alert - Offer  ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Disabled',
+              subject: 'Applabs Alert - Campaign  ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Disabled',
               html: messageBodyAdmin
             };
             //ES6

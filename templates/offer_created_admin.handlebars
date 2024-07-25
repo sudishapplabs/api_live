@@ -9,15 +9,14 @@
 </head>
 
 <body
-    style="display: block; padding: 20px 20px; font-family: 'Inter',sans-serif; background-color: #F5F7F9; width: 100%; box-sizing: border-box;">
+    style="display: block; padding: 100px 20px; margin: 0; font-family: 'Inter',sans-serif; background-color: #F5F7F9; width: 100%; box-sizing: border-box;">
     <div style="max-width: 650px; margin: 0 auto;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-            <a href="{{ base_url }}" style="width: 145.694px; height: auto; display: block;" rel="noopener"
-                target="_blank">
-                <img src="{{ base_url }}assets/media/logo.png" alt="AppLabs" title="AppLabs" style="display:block"
-                    width="146" height="25">
+            <a href="{{ base_url }}" style="width: 50%;" rel="noopener" target="_blank">
+                <img src="{{ base_url }}assets/media/logo.png" style="width: 145.694px; height: auto; display: block;"
+                    alt="AppLabs" title="AppLabs" />
             </a>
-            <span style="color:#898989; font-size: 13px; font-weight: 400; line-height: 130%;">{{todayDate}}</span>
+
         </div>
         <div style="height: auto; background-color: #fff; padding: 30px">
             <h1
@@ -28,7 +27,7 @@
                 style="color:#3B3B3B; font-size: 15px; font-weight: 400; line-height: 140%; margin: 0; padding: 0 0 10px;">
                 A new Campaign <span style="font-weight: 700;">
                     {{offer_name}} [{{offer_id}}]</span> has been created for the advertiser {{adv_name}} by
-                {{created_by}}. Please review the details and activate the offer</p>
+                {{created_by}}. Please review the details and activate the campaign</p>
 
             <a href="{{url}}" target="_new"><button type="button"
                     style="cursor: pointer; background-color: #3373F3; width: 130px; font-weight: 400; font-size: 13px; color: #FFF; border-radius: 3px; padding: 10px 0; margin-bottom: 20px; border: 1px solid #3373F3; display: inline;">Activate

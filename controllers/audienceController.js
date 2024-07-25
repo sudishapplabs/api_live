@@ -114,7 +114,7 @@ exports.addAudience = async (req, res) => {
     audience_type: audience_type,
     audience_name: audience_name,
     bundle_id: bundle_id,
-	app_name:app_name,
+    app_name: app_name,
     os_version: os_version,
     audience_api_key: audience_api_key,
     csv_file_name: csv_file_name,
@@ -161,8 +161,8 @@ exports.addAudience = async (req, res) => {
         }
       })
     }
-	
-	 const advDt = await getAdertiseDetailsByAdvId(tid);
+
+    const advDt = await getAdertiseDetailsByAdvId(tid);
 
     // INSERT DATA INTO NOTIFICATIONS
     const notificationData = {
@@ -193,7 +193,7 @@ exports.addAudience = async (req, res) => {
       audience_name: ucfirst(DBdata.audience_name),
       adv_name: advDt.advName.toUpperCase(),
       //added_by: ucwords(added_by),
-      url: process.env.APPLABS_URL + 'CreateAudiencePage',
+      url: process.env.APPLABS_URL + 'CreateAudience',
       base_url: process.env.APPLABS_URL
     }))
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -553,8 +553,8 @@ exports.updateAudience = (req, res) => {
           }
         })
       }
-	  
-	  const advDt = await getAdertiseDetailsByAdvId(tid);
+
+      const advDt = await getAdertiseDetailsByAdvId(tid);
 
       // INSERT DATA INTO NOTIFICATIONS
       const notificationData = {
@@ -575,7 +575,7 @@ exports.updateAudience = (req, res) => {
       }
       // END INSERT DATA INTO NOTIFICATIONS
       await addNotificationsData(notificationData);
-	  
+
       const bcc_mail = process.env.BCC_EMAILS.split(",");
       // Send Mail to Admin
       const admin_mail = process.env.ADMIN_EMAILS.split(",");
@@ -586,7 +586,7 @@ exports.updateAudience = (req, res) => {
         audience_name: ucfirst(audience_name),
         adv_name: advDt.advName.toUpperCase(),
         //added_by: ucwords(added_by),
-        url: process.env.APPLABS_URL + 'CreateAudiencePage',
+        url: process.env.APPLABS_URL + 'CreateAudience',
         base_url: process.env.APPLABS_URL
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);

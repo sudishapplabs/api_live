@@ -59,7 +59,7 @@ exports.getOfferTrafficStart = async (req, res) => {
               email: process.env.MAIL_FROM_EMAIL,
             },
             bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer is live',
+            subject: 'Applabs Alert - Campaign is live',
             html: messageBodyAdvetiser
           };
           //ES6
@@ -85,7 +85,7 @@ exports.getOfferTrafficStart = async (req, res) => {
             advertiserName: ucwords(advName.advName),
             offer_id: offDt.trackier_camp_id,
             offer_name: ucwords(offDt.offer_name),
-            url: process.env.APPLABS_URL + 'CampaignListPage',
+            url: process.env.APPLABS_URL + 'CampaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -96,7 +96,7 @@ exports.getOfferTrafficStart = async (req, res) => {
               email: process.env.MAIL_FROM_EMAIL,
             },
             //bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer ' + offDt.offer_name + ' is live',
+            subject: 'Applabs Alert - Campaign ' + offDt.offer_name + ' is live',
             html: messageBodyAdmin
           };
           //ES6

@@ -2370,7 +2370,7 @@ exports.addOffer = async (req, res) => {
                                             offer_id: trackier_camp_id,
                                             adv_name: ucfirst(advName),
                                             created_by: ucfirst(user_name),
-                                            url: process.env.APPLABS_URL + 'CampaignListPage',
+                                            url: process.env.APPLABS_URL + 'CampaignList',
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3024,7 +3024,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
                                         message_adv: " Congratulations! Your new offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> is approved and live.",
 
-                                        subject_sa: 'Applabs Alert - Offer ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
+                                        subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
                                         message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
@@ -3046,7 +3046,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
                                         message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been created but is pending for approval.",
 
-                                        subject_sa: 'Applabs Alert - Offer ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
+                                        subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
                                         message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
@@ -3069,7 +3069,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
                                         message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
 
-                                        subject_sa: 'Applabs Alert - Offer ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
+                                        subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
                                         message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
@@ -3091,7 +3091,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
                                         message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
 
-                                        subject_sa: 'Applabs Alert - Offer ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
+                                        subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
                                         message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
@@ -3112,7 +3112,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         advertiserName: ucwords(advDetails.advName),
                                         offer_id: resStatus.trackier_camp_id,
                                         status: offerStatus,
-                                        url: process.env.APPLABS_URL + 'CampaignListPage',
+                                        url: process.env.APPLABS_URL + 'CampaignList',
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3153,7 +3153,7 @@ exports.changeOfferStatus = async (req, res) => {
                                     status_by_user: approved_by,
                                     approved_by_email: approved_by_email,
                                     status: offerStatus,
-                                    url: process.env.APPLABS_URL + 'CampaignListPage',
+                                    url: process.env.APPLABS_URL + 'CampaignList',
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3165,7 +3165,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         email: process.env.MAIL_FROM_EMAIL,
                                     },
                                     bcc: bcc_mail,
-                                    subject: 'Applabs Alert - Offer ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
+                                    subject: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
                                     html: messageBodyAdmin
                                 };
                                 //ES6
@@ -4757,41 +4757,42 @@ exports.getDashboardTopOffers = async (req, res) => {
                         }
 
 
-
-                        reportData.push({
-                            "campaign_name": offer_name,
-                            "campaign_id": advTrkData.campaign_id,
-                            "campaign_status": advTrkData.campaign_status,
-                            "campaign_type": "",
-                            "campaign_geo": "",
-                            "camp_icon": "",
-                            "campaign_os": "Android",
-                            "advertiser": advertiser_name,
-                            "advertiser_id": advTrkData.advertiser_id,
-                            "goal_name": advTrkData.goal_name,
-                            app_id,
-                            source,
-                            "publisher_id": advTrkData.publisher_id,
-                            publisher_name,
-                            app_name,
-                            "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
-                            impression,
-                            audienc_interest,
-                            "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
-                            "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
-                            "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
-                            "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
-                            "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
-                            "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
-                            "currency": advTrkData.currency,
-                            "campaign_payout": advTrkData.campaign_payout,
-                            "grossClicks": advTrkData.grossClicks,
-                            "grossConversions": advTrkData.grossConversions,
-                            "grossRevenue": advTrkData.grossRevenue,
-                            "grossPayableConversions": 0,
-                            "custInstall": 0,
-                            "total_budget": 0
-                        });
+                        if (advTrkData.campaign_status == "active") {
+                            reportData.push({
+                                "campaign_name": offer_name,
+                                "campaign_id": advTrkData.campaign_id,
+                                "campaign_status": advTrkData.campaign_status,
+                                "campaign_type": "",
+                                "campaign_geo": "",
+                                "camp_icon": "",
+                                "campaign_os": "Android",
+                                "advertiser": advertiser_name,
+                                "advertiser_id": advTrkData.advertiser_id,
+                                "goal_name": advTrkData.goal_name,
+                                app_id,
+                                source,
+                                "publisher_id": advTrkData.publisher_id,
+                                publisher_name,
+                                app_name,
+                                "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+                                impression,
+                                audienc_interest,
+                                "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+                                "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+                                "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+                                "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+                                "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+                                "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+                                "currency": advTrkData.currency,
+                                "campaign_payout": advTrkData.campaign_payout,
+                                "grossClicks": advTrkData.grossClicks,
+                                "grossConversions": advTrkData.grossConversions,
+                                "grossRevenue": advTrkData.grossRevenue,
+                                "grossPayableConversions": 0,
+                                "custInstall": 0,
+                                "total_budget": 0
+                            });
+                        }
                     }
                 }
 
@@ -5585,7 +5586,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: oldAudienceName,
                         new_value: newAudienceName,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5597,7 +5598,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -5631,7 +5632,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: oldAudienceName,
                     new_value: newAudienceName,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5895,7 +5896,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: cityOldString,
                         new_value: cityString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -5907,7 +5908,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -5941,7 +5942,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: cityOldString,
                     new_value: cityString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6170,7 +6171,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: stateOldString,
                             new_value: stateString,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6182,7 +6183,7 @@ exports.updateOffer = async (req, res) => {
                                 email: process.env.MAIL_FROM_EMAIL,
                             },
                             bcc: bcc_mail,
-                            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                            subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                             html: messageBodyAdvetiser
                         };
                         //ES6
@@ -6216,7 +6217,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: stateOldString,
                         new_value: stateString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6329,7 +6330,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.offer_name,
                                 new_value: differencesReq.offer_name,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6341,7 +6342,7 @@ exports.updateOffer = async (req, res) => {
                                     email: process.env.MAIL_FROM_EMAIL,
                                 },
                                 bcc: bcc_mail,
-                                subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                 html: messageBodyAdvetiser
                             };
                             //ES6
@@ -6375,7 +6376,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.offer_name,
                             new_value: differencesReq.offer_name,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6522,7 +6523,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.icon,
                             new_value: differencesReq.icon,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6534,7 +6535,7 @@ exports.updateOffer = async (req, res) => {
                                 email: process.env.MAIL_FROM_EMAIL,
                             },
                             bcc: bcc_mail,
-                            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                            subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                             html: messageBodyAdvetiser
                         };
                         //ES6
@@ -6568,7 +6569,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: differencesOld.icon,
                         new_value: differencesReq.icon,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7085,7 +7086,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.cta_link,
                                         new_value: differencesReq.cta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7097,7 +7098,7 @@ exports.updateOffer = async (req, res) => {
                                             email: process.env.MAIL_FROM_EMAIL,
                                         },
                                         bcc: bcc_mail,
-                                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                         html: messageBodyAdvetiser
                                     };
                                     //ES6
@@ -7131,7 +7132,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.cta_link,
                                     new_value: differencesReq.cta_link,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7509,7 +7510,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.vta_link,
                                             new_value: differencesReq.vta_link,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7521,7 +7522,7 @@ exports.updateOffer = async (req, res) => {
                                                 email: process.env.MAIL_FROM_EMAIL,
                                             },
                                             bcc: bcc_mail,
-                                            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                            subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                             html: messageBodyAdvetiser
                                         };
                                         //ES6
@@ -7555,7 +7556,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.vta_link,
                                         new_value: differencesReq.vta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7916,7 +7917,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.vta_link,
                                             new_value: differencesReq.vta_link,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -7928,7 +7929,7 @@ exports.updateOffer = async (req, res) => {
                                                 email: process.env.MAIL_FROM_EMAIL,
                                             },
                                             bcc: bcc_mail,
-                                            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                            subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                             html: messageBodyAdvetiser
                                         };
                                         //ES6
@@ -7962,7 +7963,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.vta_link,
                                         new_value: differencesReq.vta_link,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8109,7 +8110,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: differencesOld.total_budget,
                                                     new_value: differencesReq.total_budget,
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8121,7 +8122,7 @@ exports.updateOffer = async (req, res) => {
                                                         email: process.env.MAIL_FROM_EMAIL,
                                                     },
                                                     bcc: bcc_mail,
-                                                    subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                    subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                                     html: messageBodyAdvetiser
                                                 };
                                                 //ES6
@@ -8155,7 +8156,7 @@ exports.updateOffer = async (req, res) => {
                                                 old_value: differencesOld.total_budget,
                                                 new_value: differencesReq.total_budget,
                                                 edited_by: user_name,
-                                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                 base_url: process.env.APPLABS_URL
                                             }))
                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8304,7 +8305,7 @@ exports.updateOffer = async (req, res) => {
                                             old_value: differencesOld.daily_budget,
                                             new_value: differencesReq.daily_budget,
                                             edited_by: user_name,
-                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8316,7 +8317,7 @@ exports.updateOffer = async (req, res) => {
                                                 email: process.env.MAIL_FROM_EMAIL,
                                             },
                                             bcc: bcc_mail,
-                                            subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                            subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                             html: messageBodyAdvetiser
                                         };
                                         //ES6
@@ -8349,7 +8350,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: differencesOld.daily_budget,
                                         new_value: differencesReq.daily_budget,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8492,7 +8493,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_start_date,
                                 new_value: differencesReq.schedule_start_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8504,7 +8505,7 @@ exports.updateOffer = async (req, res) => {
                                     email: process.env.MAIL_FROM_EMAIL,
                                 },
                                 bcc: bcc_mail,
-                                subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                 html: messageBodyAdvetiser
                             };
                             //ES6
@@ -8537,7 +8538,7 @@ exports.updateOffer = async (req, res) => {
                             old_value: differencesOld.schedule_start_date,
                             new_value: differencesReq.schedule_start_date,
                             edited_by: user_name,
-                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                             base_url: process.env.APPLABS_URL
                         }))
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8657,7 +8658,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.schedule_end_date,
                                     new_value: differencesReq.schedule_end_date,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8669,7 +8670,7 @@ exports.updateOffer = async (req, res) => {
                                         email: process.env.MAIL_FROM_EMAIL,
                                     },
                                     bcc: bcc_mail,
-                                    subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                    subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                     html: messageBodyAdvetiser
                                 };
                                 //ES6
@@ -8702,7 +8703,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_end_date,
                                 new_value: differencesReq.schedule_end_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8831,7 +8832,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: differencesOld.schedule_end_date,
                                     new_value: differencesReq.schedule_end_date,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -8843,7 +8844,7 @@ exports.updateOffer = async (req, res) => {
                                         email: process.env.MAIL_FROM_EMAIL,
                                     },
                                     bcc: bcc_mail,
-                                    subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                    subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                     html: messageBodyAdvetiser
                                 };
                                 //ES6
@@ -8876,7 +8877,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: differencesOld.schedule_end_date,
                                 new_value: differencesReq.schedule_end_date,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9002,7 +9003,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.language,
                         new_value: language,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9014,7 +9015,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -9048,7 +9049,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.language,
                     new_value: language,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9165,7 +9166,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.interest,
                         new_value: interest,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9177,7 +9178,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -9211,7 +9212,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.interest,
                     new_value: interest,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9284,7 +9285,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.age_group,
                         new_value: age_group,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -9296,7 +9297,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -9330,7 +9331,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.age_group,
                     new_value: age_group,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10122,7 +10123,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: offData.country,
                         new_value: countryString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10134,7 +10135,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -10168,7 +10169,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: offData.country,
                     new_value: countryString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10285,7 +10286,7 @@ exports.updateOffer = async (req, res) => {
                                         old_value: offData.payable_event_price,
                                         new_value: payable_event_price,
                                         edited_by: user_name,
-                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10297,7 +10298,7 @@ exports.updateOffer = async (req, res) => {
                                             email: process.env.MAIL_FROM_EMAIL,
                                         },
                                         bcc: bcc_mail,
-                                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                         html: messageBodyAdvetiser
                                     };
                                     //ES6
@@ -10331,7 +10332,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: offData.payable_event_price,
                                     new_value: payable_event_price,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10615,7 +10616,7 @@ exports.updateOffer = async (req, res) => {
                                                                                 old_value: old_event_name_array[campGoals.title],
                                                                                 new_value: new_event_name_array[campGoals.title],
                                                                                 edited_by: user_name,
-                                                                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                                                 base_url: process.env.APPLABS_URL
                                                                             }))
                                                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10627,7 +10628,7 @@ exports.updateOffer = async (req, res) => {
                                                                                     email: process.env.MAIL_FROM_EMAIL,
                                                                                 },
                                                                                 bcc: bcc_mail,
-                                                                                subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                                                subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                                                                 html: messageBodyAdvetiser
                                                                             };
                                                                             //ES6
@@ -10661,7 +10662,7 @@ exports.updateOffer = async (req, res) => {
                                                                             old_value: old_event_name_array[campGoals.title],
                                                                             new_value: new_event_name_array[campGoals.title],
                                                                             edited_by: user_name,
-                                                                            url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                                            url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                                             base_url: process.env.APPLABS_URL
                                                                         }))
                                                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10851,7 +10852,7 @@ exports.updateOffer = async (req, res) => {
                                                         old_value: old_event_name_array[campGoals.title],
                                                         new_value: new_event_name_array[campGoals.title],
                                                         edited_by: user_name,
-                                                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                         base_url: process.env.APPLABS_URL
                                                     }))
                                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -10863,7 +10864,7 @@ exports.updateOffer = async (req, res) => {
                                                             email: process.env.MAIL_FROM_EMAIL,
                                                         },
                                                         bcc: bcc_mail,
-                                                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                                         html: messageBodyAdvetiser
                                                     };
                                                     //ES6
@@ -10897,7 +10898,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: old_event_name_array[campGoals.title],
                                                     new_value: new_event_name_array[campGoals.title],
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11071,7 +11072,7 @@ exports.updateOffer = async (req, res) => {
                                                     old_value: parseFloat(nonPayableEventPriceOld),
                                                     new_value: parseFloat(nonPayableEventPrice),
                                                     edited_by: user_name,
-                                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                     base_url: process.env.APPLABS_URL
                                                 }))
                                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11083,7 +11084,7 @@ exports.updateOffer = async (req, res) => {
                                                         email: process.env.MAIL_FROM_EMAIL,
                                                     },
                                                     bcc: bcc_mail,
-                                                    subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                                    subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                                     html: messageBodyAdvetiser
                                                 };
                                                 //ES6
@@ -11117,7 +11118,7 @@ exports.updateOffer = async (req, res) => {
                                                 old_value: parseFloat(nonPayableEventPriceOld),
                                                 new_value: parseFloat(nonPayableEventPrice),
                                                 edited_by: user_name,
-                                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                                 base_url: process.env.APPLABS_URL
                                             }))
                                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11312,7 +11313,7 @@ exports.updateOffer = async (req, res) => {
                                     old_value: old_pub_String,
                                     new_value: new_pub_String,
                                     edited_by: user_name,
-                                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11324,7 +11325,7 @@ exports.updateOffer = async (req, res) => {
                                         email: process.env.MAIL_FROM_EMAIL,
                                     },
                                     bcc: bcc_mail,
-                                    subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                                    subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                                     html: messageBodyAdvetiser
                                 };
                                 //ES6
@@ -11358,7 +11359,7 @@ exports.updateOffer = async (req, res) => {
                                 old_value: old_pub_String,
                                 new_value: new_pub_String,
                                 edited_by: user_name,
-                                url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                                url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                                 base_url: process.env.APPLABS_URL
                             }))
                             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11569,7 +11570,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: creativeNameOldString,
                         new_value: creativeNameNewString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11581,7 +11582,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -11615,7 +11616,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: creativeNameOldString,
                     new_value: creativeNameNewString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11738,7 +11739,7 @@ exports.updateOffer = async (req, res) => {
                         old_value: premiumPartnerNewString,
                         new_value: premiumPartnerOldString,
                         edited_by: user_name,
-                        url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                        url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                         base_url: process.env.APPLABS_URL
                     }))
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -11750,7 +11751,7 @@ exports.updateOffer = async (req, res) => {
                             email: process.env.MAIL_FROM_EMAIL,
                         },
                         bcc: bcc_mail,
-                        subject: 'Applabs Alert - Offer ' + offer_name + ' has been edited',
+                        subject: 'Applabs Alert - Campaign ' + offer_name + ' has been edited',
                         html: messageBodyAdvetiser
                     };
                     //ES6
@@ -11784,7 +11785,7 @@ exports.updateOffer = async (req, res) => {
                     old_value: premiumPartnerNewString,
                     new_value: premiumPartnerOldString,
                     edited_by: user_name,
-                    url: process.env.APPLABS_URL + 'editCampaignPage/' + encodedString,
+                    url: process.env.APPLABS_URL + 'editCampaign/' + encodedString,
                     base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

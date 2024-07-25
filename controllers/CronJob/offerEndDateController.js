@@ -47,7 +47,7 @@ exports.getOfferEndDate = async (req, res) => {
             message_adv: "Today is the end date for your offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> and it will be paused. For an uninterrupted delivery please sign in to your account and review the offer.",
 
 
-            subject_sa: 'Applabs Alert - Offer ' + offDt.offer_name + '[' + offDt.trackier_camp_id + '] is about to end',
+            subject_sa: 'Applabs Alert - Campaign ' + offDt.offer_name + '[' + offDt.trackier_camp_id + '] is about to end',
             message_sa: "The offer <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> by the Advertiser <span class='text_primary'> " + ucfirst(advName.advName) + "</span> is about to end and will be paused today.",
 
             read: 0,
@@ -68,7 +68,7 @@ exports.getOfferEndDate = async (req, res) => {
               advertiserName: ucwords(advName.advName),
               offer_id: offDt.trackier_camp_id,
               offer_name: offDt.offer_name,
-              url: process.env.APPLABS_URL + 'CampaignListPage',
+              url: process.env.APPLABS_URL + 'CampaignList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -106,7 +106,7 @@ exports.getOfferEndDate = async (req, res) => {
             advertiserName: ucwords(advName.advName),
             offer_id: offDt.trackier_camp_id,
             offer_name: offDt.offer_name,
-            url: process.env.APPLABS_URL + 'CampaignListPage',
+            url: process.env.APPLABS_URL + 'CampaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -118,7 +118,7 @@ exports.getOfferEndDate = async (req, res) => {
               email: process.env.MAIL_FROM_EMAIL,
             },
             //bcc: bcc_mail,
-            subject: 'Applabs Alert - Offer ' + offDt.offer_name + '[' + offDt.trackier_camp_id + '] is about to end',
+            subject: 'Applabs Alert - Campaign ' + offDt.offer_name + '[' + offDt.trackier_camp_id + '] is about to end',
             html: messageBodyAdmin
           };
           //ES6
