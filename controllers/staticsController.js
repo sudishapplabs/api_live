@@ -2842,35 +2842,35 @@ exports.dashboardTopHeader = async (req, res) => {
   // GET DATA BY TOP OFFER STATUS TOTAL ACTIVE PENDING ETC
 
   if (process.env.TIMESTAMP_DIGITS == 10) {
-    // const currentDateStart = new Date(start + "T23:59:59.053Z");
-    // const currentDateEnd = new Date(end + "T23:59:59.053Z");
+    const currentDateStart = new Date(start + "T23:59:59.053Z");
+    const currentDateEnd = new Date(end + "T23:59:59.053Z");
 
-    // var currentDateStartVal = parseInt(currentDateStart.getTime() / 1000);
-    // var currentDateEndVal = parseInt(currentDateEnd.getTime() / 1000);
-
-
-    // const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
-    // const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+    var currentDateStartVal = parseInt(currentDateStart.getTime() / 1000);
+    var currentDateEndVal = parseInt(currentDateEnd.getTime() / 1000);
 
 
-    // var newDatesPrevStartVal = parseInt(newDatesPrevStart.getTime() / 1000);
-    // var newDatesPrevPEndVal = parseInt(newDatesPrevPEnd.getTime() / 1000);
+    const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
+    const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+
+
+    var newDatesPrevStartVal = parseInt(newDatesPrevStart.getTime() / 1000);
+    var newDatesPrevPEndVal = parseInt(newDatesPrevPEnd.getTime() / 1000);
   } else {
 
-    // const currentDateStart = new Date(start + "T23:59:59.053Z");
-    // const currentDateEnd = new Date(end + "T23:59:59.053Z");
+    const currentDateStart = new Date(start + "T23:59:59.053Z");
+    const currentDateEnd = new Date(end + "T23:59:59.053Z");
 
 
-    // var currentDateStartVal = currentDateStart.getTime();
-    // var currentDateEndVal = currentDateEnd.getTime();
+    var currentDateStartVal = currentDateStart.getTime();
+    var currentDateEndVal = currentDateEnd.getTime();
 
 
-    // const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
-    // const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+    const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
+    const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
 
 
-    // var newDatesPrevStartVal = newDatesPrevStart.getTime();
-    // var newDatesPrevPEndVal = newDatesPrevPEnd.getTime();
+    var newDatesPrevStartVal = newDatesPrevStart.getTime();
+    var newDatesPrevPEndVal = newDatesPrevPEnd.getTime();
   }
 
 
@@ -2879,12 +2879,12 @@ exports.dashboardTopHeader = async (req, res) => {
   var totalOffers = 0;
   if (advertiserId) {
 
-    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] } };
 
 
-    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffers = parseInt(result.length);
@@ -2894,11 +2894,11 @@ exports.dashboardTopHeader = async (req, res) => {
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
 
-    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] } };
 
-    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffers = parseInt(result.length);
@@ -2906,12 +2906,12 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }] } };
 
 
-    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ 'trackier_camp_id': { '$ne': 0 } }).exec();
       //console.log(result);
@@ -2921,24 +2921,23 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  const totalActiveCurrentOffer = 0;
-  // const offStatusCurrentData = await Offer.aggregate([
-  //   filterCurretDatas,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActiveCurrentOffer = 0;
-  // if (Array.isArray(offStatusCurrentData) && offStatusCurrentData.length > 0) {
-  //   for (let i = 0; i < offStatusCurrentData.length; i++) {
-  //     if (offStatusCurrentData[i]._id == "active") {
-  //       var totalActiveCurrentOffer = offStatusCurrentData[i].sum;
-  //     }
-  //   }
-  // }
+  const offStatusCurrentData = await Offer.aggregate([
+    filterCurretDatas,
+    {
+      '$group': {
+        '_id': '$status',
+        'sum': { '$sum': 1 }
+      }
+    }
+  ]).sort({ status: -1 }).exec();
+  var totalActiveCurrentOffer = 0;
+  if (Array.isArray(offStatusCurrentData) && offStatusCurrentData.length > 0) {
+    for (let i = 0; i < offStatusCurrentData.length; i++) {
+      if (offStatusCurrentData[i]._id == "active") {
+        var totalActiveCurrentOffer = offStatusCurrentData[i].sum;
+      }
+    }
+  }
 
   // COUNT ALL ACTIVE OFFER
   const offStatusCurrentData2 = await Offer.aggregate([
@@ -2959,35 +2958,33 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  const totalActivePreviousOffer = 0;
-
-  // const offStatusPreviousData = await Offer.aggregate([
-  //   filterPreviousDatas,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActivePreviousOffer = 0;
-  // if (Array.isArray(offStatusPreviousData) && offStatusPreviousData.length > 0) {
-  //   for (let i = 0; i < offStatusPreviousData.length; i++) {
-  //     if (offStatusPreviousData[i]._id == "active") {
-  //       var totalActivePreviousOffer = offStatusPreviousData[i].sum;
-  //     }
-  //   }
-  // }
+  const offStatusPreviousData = await Offer.aggregate([
+    filterPreviousDatas,
+    {
+      '$group': {
+        '_id': '$status',
+        'sum': { '$sum': 1 }
+      }
+    }
+  ]).sort({ status: -1 }).exec();
+  var totalActivePreviousOffer = 0;
+  if (Array.isArray(offStatusPreviousData) && offStatusPreviousData.length > 0) {
+    for (let i = 0; i < offStatusPreviousData.length; i++) {
+      if (offStatusPreviousData[i]._id == "active") {
+        var totalActivePreviousOffer = offStatusPreviousData[i].sum;
+      }
+    }
+  }
 
   // RETARGETING CAMPAING START
   var totalOffersRT = 0;
   if (advertiserId) {
 
-    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] } };
 
-    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -2997,11 +2994,11 @@ exports.dashboardTopHeader = async (req, res) => {
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
 
-    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] } };
 
-    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -3009,11 +3006,11 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+    var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }] } };
 
-    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+    var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { '$ne': 0 } }, { 'campaign_type': 'RETARGETING' }] }).exec();
       //console.log(resultRT);
@@ -3023,28 +3020,26 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-
-  const totalActiveCurrentOfferRT = 0;
-  // const offStatusCurrentDataRT = await Offer.aggregate([
-  //   filterCurretDatasRT,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActiveCurrentOfferRT = 0;
-  // if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
-  //   for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
-  //     if (offStatusCurrentDataRT[i]._id == "active") {
-  //       var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
-  //     }
-  //   }
-  // }
+  const offStatusCurrentDataRT = await Offer.aggregate([
+    filterCurretDatasRT,
+    {
+      '$group': {
+        '_id': '$status',
+        'sum': { '$sum': 1 }
+      }
+    }
+  ]).sort({ status: -1 }).exec();
+  var totalActiveCurrentOfferRT = 0;
+  if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
+    for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
+      if (offStatusCurrentDataRT[i]._id == "active") {
+        var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
+      }
+    }
+  }
 
   // COUNT ALL TOTAL RE-TARGETING ACTIVE OFFER
-  const offStatusCurrentDataRT2 = Offer.aggregate([
+  const offStatusCurrentDataRT2 = await Offer.aggregate([
     filterCurretDatasRT2,
     {
       '$group': {
@@ -3062,26 +3057,23 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-
-  const totalActivePreviousOfferRT = 0;
-
-  // const offStatusPreviousDataRT = await Offer.aggregate([
-  //   filterPreviousDatasRT,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActivePreviousOfferRT = 0;
-  // if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
-  //   for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
-  //     if (offStatusPreviousDataRT[i]._id == "active") {
-  //       var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
-  //     }
-  //   }
-  // }
+  const offStatusPreviousDataRT = await Offer.aggregate([
+    filterPreviousDatasRT,
+    {
+      '$group': {
+        '_id': '$status',
+        'sum': { '$sum': 1 }
+      }
+    }
+  ]).sort({ status: -1 }).exec();
+  var totalActivePreviousOfferRT = 0;
+  if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
+    for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
+      if (offStatusPreviousDataRT[i]._id == "active") {
+        var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
+      }
+    }
+  }
   // RETARGETING END
 
   // console.log(JSON.stringify(filterCurretDatas));
@@ -3345,211 +3337,211 @@ exports.dashboardTopHeader = async (req, res) => {
   });
 }
 
-// exports.dashboardTopCreatives = async (req, res) => {
-//   // check body key
-//   const paramSchema = { 1: 'offer_id', 2: 'adv_id', 3: 'start', 4: 'end' };
-//   var new_array = [];
-//   for (var key in paramSchema) {
-//     if (!req.body.hasOwnProperty(paramSchema[key])) {
-//       new_array.push(paramSchema[key]);
-//     }
-//   }
+exports.dashboardTopCreatives = async (req, res) => {
+  // check body key
+  const paramSchema = { 1: 'offer_id', 2: 'adv_id', 3: 'start', 4: 'end' };
+  var new_array = [];
+  for (var key in paramSchema) {
+    if (!req.body.hasOwnProperty(paramSchema[key])) {
+      new_array.push(paramSchema[key]);
+    }
+  }
 
-//   if (new_array.length !== 0) {
-//     let text = new_array.toString();
-//     const response = { "status": false, "message": `${text} is missing!` };
-//     res.status(200).send(response);
-//     return;
-//   }
-//   const { offer_id, adv_id, start, end } = req.body;
+  if (new_array.length !== 0) {
+    let text = new_array.toString();
+    const response = { "status": false, "message": `${text} is missing!` };
+    res.status(200).send(response);
+    return;
+  }
+  const { offer_id, adv_id, start, end } = req.body;
 
-//   // Validate request
-//   if (!start || !end) {
-//     var requestVal = "";
-//     if (!start) {
-//       var requestVal = "start date";
-//     } else if (!end) {
-//       var requestVal = "end date";
-//     }
-//     // console.log(requestVal);
-//     const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": requestVal + " is not allowed to be empty" } };
-//     res.status(400).send(reMsg);
-//     return;
-//   }
+  // Validate request
+  if (!start || !end) {
+    var requestVal = "";
+    if (!start) {
+      var requestVal = "start date";
+    } else if (!end) {
+      var requestVal = "end date";
+    }
+    // console.log(requestVal);
+    const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": requestVal + " is not allowed to be empty" } };
+    res.status(400).send(reMsg);
+    return;
+  }
 
-//   // create offer on trackier
-//   const axios_header = {
-//     headers: {
-//       'x-api-key': process.env.API_KEY,
-//       'Content-Type': 'application/json'
-//     }
-//   };
-//   var newQueryString = querystring.stringify(req.body);
-//   const endpoint = "reports/custom";
-
-
-//   var adv_str = "";
-//   if (Array.isArray(offer_id) && offer_id.length > 0) {
-//     newQueryString = newQueryString.replace("adv_id=&", "");
-//     newQueryString = newQueryString.replaceAll("offer_id", "camp_ids[]");
-//   } else {
-//     if (adv_id) {
-//       newQueryString = newQueryString.replaceAll("adv_id", "adv_ids[]");
-//     } else {
-//       newQueryString = newQueryString.replace("adv_id=&", "");
-//       await Advertiser.find().sort({ _id: 1 }).exec().then((advertisers) => {
-//         if (advertisers) {
-//           for (let i = 0; i < advertisers.length; i++) {
-//             let adv = advertisers[i];
-//             if (adv.tid > 0) {
-//               adv_str += ("adv_ids[]=" + adv.tid + "&");
-//             }
-//           }
-//         }
-//       }).catch(error => {
-//         console.error(error);
-//       });
-//     }
-//   }
-
-//   // console.log(adv_str);
-//   // console.log(newQueryString);
-//   // process.exit();
-
-//   var adv_array = {};
-//   var CTR_array = {}
-//   // get all advertisers
-//   Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
-//     if (all_adv) {
-//       for (let k = 0; k < all_adv.length; k++) {
-//         let adv = all_adv[k];
-//         adv_array[adv.tid] = ucfirst(adv.organization);
-//       }
-//     }
-//   }).catch(error => {
-//     console.error(error);
-//   });
-
-//   var impression = '';
-//   // get creative CTR
-//   await CreativeCtrModel.find({}).sort({ _id: 1 }).exec().then((all_CreativeCTR) => {
-//     if (all_CreativeCTR) {
-//       for (let n = 0; n < all_CreativeCTR.length; n++) {
-//         let CTR = all_CreativeCTR[n];
-//         CTR_array[CTR.creative_name] = CTR.creative_ctr;
-//       }
-//     }
-//   }).catch(error => {
-//     console.error(error);
-//   })
+  // create offer on trackier
+  const axios_header = {
+    headers: {
+      'x-api-key': process.env.API_KEY,
+      'Content-Type': 'application/json'
+    }
+  };
+  var newQueryString = querystring.stringify(req.body);
+  const endpoint = "reports/custom";
 
 
-//   //console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
+  var adv_str = "";
+  if (Array.isArray(offer_id) && offer_id.length > 0) {
+    newQueryString = newQueryString.replace("adv_id=&", "");
+    newQueryString = newQueryString.replaceAll("offer_id", "camp_ids[]");
+  } else {
+    if (adv_id) {
+      newQueryString = newQueryString.replaceAll("adv_id", "adv_ids[]");
+    } else {
+      newQueryString = newQueryString.replace("adv_id=&", "");
+      await Advertiser.find().sort({ _id: 1 }).exec().then((advertisers) => {
+        if (advertisers) {
+          for (let i = 0; i < advertisers.length; i++) {
+            let adv = advertisers[i];
+            if (adv.tid > 0) {
+              adv_str += ("adv_ids[]=" + adv.tid + "&");
+            }
+          }
+        }
+      }).catch(error => {
+        console.error(error);
+      });
+    }
+  }
 
-//   axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
-//     if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
+  // console.log(adv_str);
+  // console.log(newQueryString);
+  // process.exit();
 
-//       var reportData = [];
-//       if (Array.isArray(staticsRes.data.records) && staticsRes.data.records.length > 0) {
-//         const advArrData = staticsRes.data.records;
-//         for (let j = 0; j < advArrData.length; j++) {
-//           let advTrkData = advArrData[j];
+  var adv_array = {};
+  var CTR_array = {}
+  // get all advertisers
+  Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
+    if (all_adv) {
+      for (let k = 0; k < all_adv.length; k++) {
+        let adv = all_adv[k];
+        adv_array[adv.tid] = ucfirst(adv.organization);
+      }
+    }
+  }).catch(error => {
+    console.error(error);
+  });
 
-
-//           let offer_name = advTrkData.campaign_name.replace("AL-", "");
-
-//           if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
-//             var advertiser_name = adv_array[advTrkData.advertiser_id];
-//           } else {
-//             var advertiser_name = advTrkData.advertiser;
-//           }
-
-//           impression = 0;
-//           if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
-//             let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
-//             impression = Math.round(cretiveImpC);
-//           } else {
-//             impression = 0;
-//           }
-
-
-//           reportData.push({
-//             "campaign_name": offer_name,
-//             "campaign_id": advTrkData.campaign_id,
-//             "advertiser": advertiser_name,
-//             "advertiser_id": advTrkData.advertiser_id,
-//             "cr_name": advTrkData.cr_name,
-//             impression,
-//             "grossClicks": advTrkData.grossClicks,
-//             "grossConversions": advTrkData.grossConversions,
-//             "grossRevenue": advTrkData.grossRevenue,
-//             "converionCR": 0,
-//             "grossInstall": 0
-//           });
+  var impression = '';
+  // get creative CTR
+  await CreativeCtrModel.find({}).sort({ _id: 1 }).exec().then((all_CreativeCTR) => {
+    if (all_CreativeCTR) {
+      for (let n = 0; n < all_CreativeCTR.length; n++) {
+        let CTR = all_CreativeCTR[n];
+        CTR_array[CTR.creative_name] = CTR.creative_ctr;
+      }
+    }
+  }).catch(error => {
+    console.error(error);
+  })
 
 
-//         }
-//       }
+  //console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
 
-//       var newData = {};
-//       for (let i = 0; i < reportData.length; i++) {
-//         let r = reportData[i];
+  axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
+    if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
 
-//         var superKey = "";
-//         if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
-//           superKey += r.campaign_name;
-//         }
-//         if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
-//           superKey += r.advertiser;
-//         }
-//         if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
-//           superKey += r.advertiser_id;
-//         }
-//         if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
-//           superKey += r.campaign_status;
-//         }
-//         if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
-//           superKey += r.app_name;
-//         }
-//         superKey += i + 1;
+      var reportData = [];
+      if (Array.isArray(staticsRes.data.records) && staticsRes.data.records.length > 0) {
+        const advArrData = staticsRes.data.records;
+        for (let j = 0; j < advArrData.length; j++) {
+          let advTrkData = advArrData[j];
 
-//         if (newData[superKey]) {
-//           newData[superKey]['grossClicks'] += r.grossClicks;
-//           newData[superKey]['grossConversions'] += r.grossConversions;
-//           newData[superKey]['grossRevenue'] += r.grossRevenue;
-//         } else {
-//           newData[superKey] = r;
-//         }
-//         if (r.grossClicks == 0) {
-//           newData[superKey]['converionCR'] += 0;
-//         } else {
-//           let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
-//           newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
-//         }
-//         newData[superKey]['grossInstall'] += r.grossConversions;
-//       }
 
-//       const data_obj_to_arr = Object.values(newData);
-//       const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice(0, 10);
-//       const objFilterDataTopsourceApp = newArrDataByClick;
+          let offer_name = advTrkData.campaign_name.replace("AL-", "");
 
-//       const response = { 'success': true, 'topsourceapp': objFilterDataTopsourceApp };
-//       res.status(200).send(response);
-//       return
+          if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+            var advertiser_name = adv_array[advTrkData.advertiser_id];
+          } else {
+            var advertiser_name = advTrkData.advertiser;
+          }
 
-//     } else {
-//       const resMsg = { "success": false, "message": "No records found" };
-//       res.status(200).send(resMsg);
-//       return;
-//     }
+          impression = 0;
+          if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+            let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+            impression = Math.round(cretiveImpC);
+          } else {
+            impression = 0;
+          }
 
-//   }).catch(err => {
-//     console.log(err);
-//     const errMsg = { "success": false, "errors": err.response.data.errors };
-//     res.status(400).send(errMsg);
-//     return;
-//   });
-// }
+
+          reportData.push({
+            "campaign_name": offer_name,
+            "campaign_id": advTrkData.campaign_id,
+            "advertiser": advertiser_name,
+            "advertiser_id": advTrkData.advertiser_id,
+            "cr_name": advTrkData.cr_name,
+            impression,
+            "grossClicks": advTrkData.grossClicks,
+            "grossConversions": advTrkData.grossConversions,
+            "grossRevenue": advTrkData.grossRevenue,
+            "converionCR": 0,
+            "grossInstall": 0
+          });
+
+
+        }
+      }
+
+      var newData = {};
+      for (let i = 0; i < reportData.length; i++) {
+        let r = reportData[i];
+
+        var superKey = "";
+        if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+          superKey += r.campaign_name;
+        }
+        if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+          superKey += r.advertiser;
+        }
+        if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+          superKey += r.advertiser_id;
+        }
+        if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+          superKey += r.campaign_status;
+        }
+        if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+          superKey += r.app_name;
+        }
+        superKey += i + 1;
+
+        if (newData[superKey]) {
+          newData[superKey]['grossClicks'] += r.grossClicks;
+          newData[superKey]['grossConversions'] += r.grossConversions;
+          newData[superKey]['grossRevenue'] += r.grossRevenue;
+        } else {
+          newData[superKey] = r;
+        }
+        if (r.grossClicks == 0) {
+          newData[superKey]['converionCR'] += 0;
+        } else {
+          let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
+          newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
+        }
+        newData[superKey]['grossInstall'] += r.grossConversions;
+      }
+
+      const data_obj_to_arr = Object.values(newData);
+      const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice(0, 10);
+      const objFilterDataTopsourceApp = newArrDataByClick;
+
+      const response = { 'success': true, 'topsourceapp': objFilterDataTopsourceApp };
+      res.status(200).send(response);
+      return
+
+    } else {
+      const resMsg = { "success": false, "message": "No records found" };
+      res.status(200).send(resMsg);
+      return;
+    }
+
+  }).catch(err => {
+    console.log(err);
+    const errMsg = { "success": false, "errors": err.response.data.errors };
+    res.status(400).send(errMsg);
+    return;
+  });
+}
 
 
 
