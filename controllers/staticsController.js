@@ -2677,6 +2677,7 @@ exports.dashboardPerformanceEvent = async (req, res) => {
             res.status(400).send(errMsg);
             return;
           });
+          // END GET DATA BY GEO
         } else {
           const resMsg = { "success": false, "message": "No records found" };
           res.status(200).send(resMsg);
