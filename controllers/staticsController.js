@@ -2905,6 +2905,14 @@ exports.dashboardTopHeader = async (req, res) => {
     } catch (err) {
       console.log(err);
     }
+  } else if (Array.isArray(offer_id) && offer_id.length > 0) {
+    var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_camp_id: { $in: offer_id } }] } };
+    try {
+      let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_camp_id: { $in: offer_id } }] }).exec();
+      totalOffers = parseInt(result.length);
+    } catch (err) {
+      console.log(err);
+    }
   } else {
     // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
 
@@ -2920,6 +2928,7 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   }
+
 
   const totalActiveCurrentOffer = 0;
 
@@ -2960,6 +2969,9 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
+  // console.log("totalActiveCurrentOffer2=== " + totalActiveCurrentOffer2);
+
+  // console.log("totalOffers=== " + totalOffers);
   const totalActivePreviousOffer = 0;
   // const offStatusPreviousData = await Offer.aggregate([
   //   filterPreviousDatas,
@@ -3004,6 +3016,14 @@ exports.dashboardTopHeader = async (req, res) => {
     // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
+      totalOffersRT = parseInt(resultRT.length);
+    } catch (err) {
+      console.log(err);
+    }
+  } else if (Array.isArray(offer_id) && offer_id.length > 0) {
+    var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_camp_id: { $in: offer_id } }] } };
+    try {
+      let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_camp_id: { $in: offer_id } }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
     } catch (err) {
       console.log(err);
@@ -3086,8 +3106,8 @@ exports.dashboardTopHeader = async (req, res) => {
   // console.log(JSON.stringify(filterPreviousDatas));
   //process.exit();
 
-
-  //console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + datePData + "zone=Asia/Kolkata");
+  // console.log("SUDISH");
+  // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + datePData + "zone=Asia/Kolkata");
 
   axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + "&" + datePData + "zone=Asia/Kolkata", axios_header).then((staticsPRes) => {
     if (typeof staticsPRes.statusText !== 'undefined' && staticsPRes.statusText == "OK") {
@@ -3157,6 +3177,11 @@ exports.dashboardTopHeader = async (req, res) => {
       const data_obj_p_to_arr = Object.values(newpData);
       const newArrPDataByClick = data_obj_p_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
       const objFilterPData = newArrPDataByClick;
+
+
+      // console.log("MOHAN");
+
+      // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&group[]=goal_name&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
 
       axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&group[]=goal_name&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then(async (staticsRes) => {
         if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
@@ -3260,7 +3285,6 @@ exports.dashboardTopHeader = async (req, res) => {
                 var grossClicksPercentageData = 0;
               }
 
-
               const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
               if (result1[0].grossConversions > 0) {
                 var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
@@ -3290,7 +3314,6 @@ exports.dashboardTopHeader = async (req, res) => {
               } else {
                 var grossInstallPercentageData = 0;
               }
-
 
               const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
               if (totalActivePreviousOffer > 0) {
@@ -3327,12 +3350,47 @@ exports.dashboardTopHeader = async (req, res) => {
             res.status(200).send(response);
             return;
           } else {
-            const resMsg = { "success": false, "message": "No records found" };
+
+            let dashboardData = [
+              {
+                "grossClicks": 0,
+                "grossConversions": 0,
+                "grossRevenue": 0,
+                "converionCR": 0,
+                "grossInstall": 0
+              },
+              {
+                "grossClicksPercentage": 0,
+                "grossConversionsPercentage": 0,
+                "grossRevenuePercentage": 0,
+                "converionCRPercentage": 0,
+                "grossInstallPercentage": 0
+              },
+              { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
+            ];
+            const resMsg = { 'success': true, 'dataExist': true, dashboardData };
             res.status(200).send(resMsg);
             return;
           }
         } else {
-          const resMsg = { "success": false, "message": "No records found" };
+          let dashboardData = [
+            {
+              "grossClicks": 0,
+              "grossConversions": 0,
+              "grossRevenue": 0,
+              "converionCR": 0,
+              "grossInstall": 0
+            },
+            {
+              "grossClicksPercentage": 0,
+              "grossConversionsPercentage": 0,
+              "grossRevenuePercentage": 0,
+              "converionCRPercentage": 0,
+              "grossInstallPercentage": 0
+            },
+            { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
+          ];
+          const resMsg = { 'success': true, 'dataExist': true, dashboardData };
           res.status(200).send(resMsg);
           return;
         }
@@ -3346,7 +3404,24 @@ exports.dashboardTopHeader = async (req, res) => {
       // End PERFOMANCE FIRST
 
     } else {
-      const resMsg = { "success": false, "message": "No records found" };
+      let dashboardData = [
+        {
+          "grossClicks": 0,
+          "grossConversions": 0,
+          "grossRevenue": 0,
+          "converionCR": 0,
+          "grossInstall": 0
+        },
+        {
+          "grossClicksPercentage": 0,
+          "grossConversionsPercentage": 0,
+          "grossRevenuePercentage": 0,
+          "converionCRPercentage": 0,
+          "grossInstallPercentage": 0
+        },
+        { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
+      ];
+      const resMsg = { 'success': true, 'dataExist': true, dashboardData };
       res.status(200).send(resMsg);
       return;
     }
