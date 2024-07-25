@@ -3336,7 +3336,7 @@ exports.dashboardTopHeader = async (req, res) => {
                 "reTargeting": 0
               }
             ];
-            const resMsg = { 'success': true, 'dataExist': false, dashboardData };
+            const resMsg = { 'success': true, 'dataExist': true, dashboardData };
             res.status(200).send(resMsg);
             return;
           }
@@ -3364,7 +3364,7 @@ exports.dashboardTopHeader = async (req, res) => {
               "reTargeting": 0
             }
           ];
-          const resMsg = { 'success': true, 'dataExist': false, dashboardData };
+          const resMsg = { 'success': true, 'dataExist': true, dashboardData };
           res.status(200).send(resMsg);
           return;
         }
@@ -3401,7 +3401,7 @@ exports.dashboardTopHeader = async (req, res) => {
           "reTargeting": 0
         }
       ];
-      const resMsg = { 'success': true, 'dataExist': false, dashboardData };
+      const resMsg = { 'success': true, 'dataExist': true, dashboardData };
       res.status(200).send(resMsg);
       return;
     }
