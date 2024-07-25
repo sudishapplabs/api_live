@@ -106,7 +106,7 @@ exports.getTotalCapOffers = async (req, res) => {
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               const msg_adv = {
-                to: [user_data.email],
+                to: [advDt.email],
                 // to: ["sudish@applabs.ai"],
                 from: {
                   name: process.env.MAIL_FROM_NAME,
