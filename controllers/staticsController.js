@@ -3312,12 +3312,59 @@ exports.dashboardTopHeader = async (req, res) => {
             res.status(200).send(response);
             return;
           } else {
-            const resMsg = { "success": false, "message": "No records found" };
+
+            let dashboardData = [
+              {
+                "grossClicks": 0,
+                "grossConversions": 0,
+                "grossRevenue": 0,
+                "converionCR": 0,
+                "grossInstall": 0
+              },
+              {
+                "grossClicksPercentage": 0,
+                "grossConversionsPercentage": 0,
+                "grossRevenuePercentage": 0,
+                "converionCRPercentage": 0,
+                "grossInstallPercentage": 0
+              },
+              {
+                "totalOffers": 0,
+                "active": 0,
+                "activePercentage": 0,
+                "activeRT": 0,
+                "reTargeting": 0
+              }
+            ];
+            const resMsg = { 'success': true, 'dataExist': false, dashboardData };
             res.status(200).send(resMsg);
             return;
           }
         } else {
-          const resMsg = { "success": false, "message": "No records found" };
+          let dashboardData = [
+            {
+              "grossClicks": 0,
+              "grossConversions": 0,
+              "grossRevenue": 0,
+              "converionCR": 0,
+              "grossInstall": 0
+            },
+            {
+              "grossClicksPercentage": 0,
+              "grossConversionsPercentage": 0,
+              "grossRevenuePercentage": 0,
+              "converionCRPercentage": 0,
+              "grossInstallPercentage": 0
+            },
+            {
+              "totalOffers": 0,
+              "active": 0,
+              "activePercentage": 0,
+              "activeRT": 0,
+              "reTargeting": 0
+            }
+          ];
+          const resMsg = { 'success': true, 'dataExist': false, dashboardData };
           res.status(200).send(resMsg);
           return;
         }
@@ -3331,7 +3378,30 @@ exports.dashboardTopHeader = async (req, res) => {
       // End PERFOMANCE FIRST
 
     } else {
-      const resMsg = { "success": false, "message": "No records found" };
+      let dashboardData = [
+        {
+          "grossClicks": 0,
+          "grossConversions": 0,
+          "grossRevenue": 0,
+          "converionCR": 0,
+          "grossInstall": 0
+        },
+        {
+          "grossClicksPercentage": 0,
+          "grossConversionsPercentage": 0,
+          "grossRevenuePercentage": 0,
+          "converionCRPercentage": 0,
+          "grossInstallPercentage": 0
+        },
+        {
+          "totalOffers": 0,
+          "active": 0,
+          "activePercentage": 0,
+          "activeRT": 0,
+          "reTargeting": 0
+        }
+      ];
+      const resMsg = { 'success': true, 'dataExist': false, dashboardData };
       res.status(200).send(resMsg);
       return;
     }
