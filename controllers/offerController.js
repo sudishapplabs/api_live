@@ -4668,9 +4668,7 @@ exports.getDashboardTopOffers = async (req, res) => {
         });
         // END GET DATA BY GEO)
     } else {
-        console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=campaign_status&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=campaign_payout&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
-
-        await axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=campaign_status&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=campaign_payout&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
+        axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=campaign_status&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=campaign_payout&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
             if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
 
                 var reportData = [];
@@ -4754,9 +4752,6 @@ exports.getDashboardTopOffers = async (req, res) => {
                                 impression = 0;
                             }
                         }
-
-
-
                         reportData.push({
                             "campaign_name": offer_name,
                             "campaign_id": advTrkData.campaign_id,
