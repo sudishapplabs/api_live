@@ -10,9 +10,21 @@ const fs = require('fs-extra');
 const path = require('path');
 const { url } = require("inspector");
 const { isArray } = require("util");
+const axios = require('axios');
 
 
 exports.getTotalCapOffers = async (req, res) => {
+
+
+  // create offer on trackier
+  const axios_header = {
+    headers: {
+      'x-api-key': process.env.API_KEY,
+      'Content-Type': 'application/json'
+    }
+  };
+
+
   const offerData = await getAllOffersByStatus();
 
   if (Array.isArray(offerData) && offerData.length > 0) {
