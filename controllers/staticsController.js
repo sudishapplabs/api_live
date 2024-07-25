@@ -3312,36 +3312,12 @@ exports.dashboardTopHeader = async (req, res) => {
             res.status(200).send(response);
             return;
           } else {
-            let result2 = [];
-            const dataExist = false;
-            const grossClicksPercentageData = 0;
-            const grossConversionsPercentageData = 0;
-            const grossRevenuePercentageData = 0;
-            const converionCRPercentageData = 0;
-            const grossInstallPercentageData = 0;
-            const activePercentageData = 0;
-            result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
-            result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-            result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-            const resMsg = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
+            const resMsg = { "success": false, "message": "No records found" };
             res.status(200).send(resMsg);
             return;
           }
         } else {
-          let result2 = [];
-          const dataExist = false;
-          const grossClicksPercentageData = 0;
-          const grossConversionsPercentageData = 0;
-          const grossRevenuePercentageData = 0;
-          const converionCRPercentageData = 0;
-          const grossInstallPercentageData = 0;
-          const activePercentageData = 0;
-          result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
-          result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-          result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-          const resMsg = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
+          const resMsg = { "success": false, "message": "No records found" };
           res.status(200).send(resMsg);
           return;
         }
@@ -3355,19 +3331,7 @@ exports.dashboardTopHeader = async (req, res) => {
       // End PERFOMANCE FIRST
 
     } else {
-      let result2 = [];
-      const dataExist = false;
-      const grossClicksPercentageData = 0;
-      const grossConversionsPercentageData = 0;
-      const grossRevenuePercentageData = 0;
-      const converionCRPercentageData = 0;
-      const grossInstallPercentageData = 0;
-      const activePercentageData = 0;
-      result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
-      result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
-      result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
-
-      const resMsg = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
+      const resMsg = { "success": false, "message": "No records found" };
       res.status(200).send(resMsg);
       return;
     }
@@ -3379,6 +3343,214 @@ exports.dashboardTopHeader = async (req, res) => {
     return;
   });
 }
+
+exports.dashboardTopCreatives = async (req, res) => {
+  // check body key
+  const paramSchema = { 1: 'offer_id', 2: 'adv_id', 3: 'start', 4: 'end' };
+  var new_array = [];
+  for (var key in paramSchema) {
+    if (!req.body.hasOwnProperty(paramSchema[key])) {
+      new_array.push(paramSchema[key]);
+    }
+  }
+
+  if (new_array.length !== 0) {
+    let text = new_array.toString();
+    const response = { "status": false, "message": `${text} is missing!` };
+    res.status(200).send(response);
+    return;
+  }
+  const { offer_id, adv_id, start, end } = req.body;
+
+  // Validate request
+  if (!start || !end) {
+    var requestVal = "";
+    if (!start) {
+      var requestVal = "start date";
+    } else if (!end) {
+      var requestVal = "end date";
+    }
+    // console.log(requestVal);
+    const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": requestVal + " is not allowed to be empty" } };
+    res.status(400).send(reMsg);
+    return;
+  }
+
+  // create offer on trackier
+  const axios_header = {
+    headers: {
+      'x-api-key': process.env.API_KEY,
+      'Content-Type': 'application/json'
+    }
+  };
+  var newQueryString = querystring.stringify(req.body);
+  const endpoint = "reports/custom";
+
+
+  var adv_str = "";
+  if (Array.isArray(offer_id) && offer_id.length > 0) {
+    newQueryString = newQueryString.replace("adv_id=&", "");
+    newQueryString = newQueryString.replaceAll("offer_id", "camp_ids[]");
+  } else {
+    if (adv_id) {
+      newQueryString = newQueryString.replaceAll("adv_id", "adv_ids[]");
+    } else {
+      newQueryString = newQueryString.replace("adv_id=&", "");
+      await Advertiser.find().sort({ _id: 1 }).exec().then((advertisers) => {
+        if (advertisers) {
+          for (let i = 0; i < advertisers.length; i++) {
+            let adv = advertisers[i];
+            if (adv.tid > 0) {
+              adv_str += ("adv_ids[]=" + adv.tid + "&");
+            }
+          }
+        }
+      }).catch(error => {
+        console.error(error);
+      });
+    }
+  }
+
+  // console.log(adv_str);
+  // console.log(newQueryString);
+  // process.exit();
+
+  var adv_array = {};
+  var CTR_array = {}
+  // get all advertisers
+  Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
+    if (all_adv) {
+      for (let k = 0; k < all_adv.length; k++) {
+        let adv = all_adv[k];
+        adv_array[adv.tid] = ucfirst(adv.organization);
+      }
+    }
+  }).catch(error => {
+    console.error(error);
+  });
+
+  var impression = '';
+  // get creative CTR
+  await CreativeCtrModel.find({}).sort({ _id: 1 }).exec().then((all_CreativeCTR) => {
+    if (all_CreativeCTR) {
+      for (let n = 0; n < all_CreativeCTR.length; n++) {
+        let CTR = all_CreativeCTR[n];
+        CTR_array[CTR.creative_name] = CTR.creative_ctr;
+      }
+    }
+  }).catch(error => {
+    console.error(error);
+  })
+
+
+  //console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
+
+  axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
+    if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
+
+      var reportData = [];
+      if (Array.isArray(staticsRes.data.records) && staticsRes.data.records.length > 0) {
+        const advArrData = staticsRes.data.records;
+        for (let j = 0; j < advArrData.length; j++) {
+          let advTrkData = advArrData[j];
+
+
+          let offer_name = advTrkData.campaign_name.replace("AL-", "");
+
+          if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+            var advertiser_name = adv_array[advTrkData.advertiser_id];
+          } else {
+            var advertiser_name = advTrkData.advertiser;
+          }
+
+          impression = 0;
+          if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+            let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+            impression = Math.round(cretiveImpC);
+          } else {
+            impression = 0;
+          }
+
+
+          reportData.push({
+            "campaign_name": offer_name,
+            "campaign_id": advTrkData.campaign_id,
+            "advertiser": advertiser_name,
+            "advertiser_id": advTrkData.advertiser_id,
+            "cr_name": advTrkData.cr_name,
+            impression,
+            "grossClicks": advTrkData.grossClicks,
+            "grossConversions": advTrkData.grossConversions,
+            "grossRevenue": advTrkData.grossRevenue,
+            "converionCR": 0,
+            "grossInstall": 0
+          });
+
+
+        }
+      }
+
+      var newData = {};
+      for (let i = 0; i < reportData.length; i++) {
+        let r = reportData[i];
+
+        var superKey = "";
+        if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+          superKey += r.campaign_name;
+        }
+        if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+          superKey += r.advertiser;
+        }
+        if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+          superKey += r.advertiser_id;
+        }
+        if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+          superKey += r.campaign_status;
+        }
+        if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+          superKey += r.app_name;
+        }
+        superKey += i + 1;
+
+        if (newData[superKey]) {
+          newData[superKey]['grossClicks'] += r.grossClicks;
+          newData[superKey]['grossConversions'] += r.grossConversions;
+          newData[superKey]['grossRevenue'] += r.grossRevenue;
+        } else {
+          newData[superKey] = r;
+        }
+        if (r.grossClicks == 0) {
+          newData[superKey]['converionCR'] += 0;
+        } else {
+          let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
+          newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
+        }
+        newData[superKey]['grossInstall'] += r.grossConversions;
+      }
+
+      const data_obj_to_arr = Object.values(newData);
+      const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice(0, 10);
+      const objFilterDataTopsourceApp = newArrDataByClick;
+
+      const response = { 'success': true, 'topsourceapp': objFilterDataTopsourceApp };
+      res.status(200).send(response);
+      return
+
+    } else {
+      const resMsg = { "success": false, "message": "No records found" };
+      res.status(200).send(resMsg);
+      return;
+    }
+
+  }).catch(err => {
+    console.log(err);
+    const errMsg = { "success": false, "errors": err.response.data.errors };
+    res.status(400).send(errMsg);
+    return;
+  });
+}
+
+
 
 // request.body Add Preset
 exports.addPreset = async (req, res) => {
