@@ -194,6 +194,7 @@ exports.deleteCreativeById = async (req, res) => {
         }
         // Incase of isViewIcon exist We can push icon on a creative
         if (typeof isViewIcon !== 'undefined' && isViewIcon !== "") {
+          final_creative_list_mod.push(isViewIcon);
           const aData = new CreativeCtrModel({
             trackier_adv_id: trackier_adv_id,
             trackier_camp_id: trackier_camp_id,
@@ -205,7 +206,7 @@ exports.deleteCreativeById = async (req, res) => {
           }).catch(err => {
             console.error(err);
           });
-          final_creative_list_mod.push(isViewIcon);
+
         }
         // END INSERT DATA INTO DB WITH CREATIVE CTR              
         const creativeData = { "creativeNames": final_creative_list_mod };
