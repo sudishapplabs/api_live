@@ -2081,7 +2081,7 @@ exports.addOffer = async (req, res) => {
 
                                 //console.log(creative_data);
                                 // Save Creative in the database
-                                creative_data.save(creative_data).then(data_c => {
+                                await creative_data.save(creative_data).then(data_c => {
                                     console.log('Creative ok');
                                 }).catch(err => {
                                     console.error(err);
@@ -2133,7 +2133,7 @@ exports.addOffer = async (req, res) => {
                                             creative_ctr_exist_arr.push(creative_c.creative_name);
                                         }
                                         if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                                            aData.save(aData).then(ctr_data => {
+                                            await aData.save(aData).then(ctr_data => {
                                                 console.log('Creative ads ctr ok');
                                             }).catch(err => {
                                                 console.error(err);
@@ -2152,7 +2152,7 @@ exports.addOffer = async (req, res) => {
                                     creative_name: creativeIconName[0],
                                     creative_ctr: 1.4514,
                                 });
-                                aData.save(aData).then(ctr_data => {
+                                await aData.save(aData).then(ctr_data => {
                                     console.log('Creative icon ctr ok');
                                 }).catch(err => {
                                     console.error(err);
@@ -11443,7 +11443,7 @@ exports.updateOffer = async (req, res) => {
 
             //console.log(creative_data);
             // Save Creative in the database
-            creative_data.save(creative_data).then(data_c => {
+            await creative_data.save(creative_data).then(data_c => {
                 console.log('Creative ok');
             }).catch(err => {
                 console.error(err);
@@ -11503,7 +11503,7 @@ exports.updateOffer = async (req, res) => {
                         creative_ctr_exist_arr.push(creative_c.creative_name);
                     }
                     if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                        aData.save(aData).then(ctr_data => {
+                        await aData.save(aData).then(ctr_data => {
                             console.log('Creative ctr ok');
                         }).catch(err => {
                             console.error(err);
@@ -11520,7 +11520,7 @@ exports.updateOffer = async (req, res) => {
                 creative_name: isViewIcon,
                 creative_ctr: 1.4514,
             });
-            aData.save(aData).then(ctr_data => {
+            await aData.save(aData).then(ctr_data => {
                 console.log('Creative icon ctr ok');
             }).catch(err => {
                 console.error(err);
