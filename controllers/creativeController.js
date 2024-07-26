@@ -234,8 +234,8 @@ exports.deleteCreativeById = async (req, res) => {
               offer_id: trackier_camp_id,
               offer_name: ucfirst(offer_name),
               type: "Ads",
-              old_value: creativeNameNewString,
-              new_value: creativeNameOldString,
+              old_value: creativeNameOldString,
+              new_value: creativeNameNewString,
               edited_by: ucfirst(advName.advertiserName)
             }
             // END INSERT DATA INTO Tileline
