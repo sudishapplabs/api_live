@@ -1,7 +1,7 @@
 const Creatives = require("../models/creativeModel");
 const CreativeCtrModel = require("../models/creativectrModel");
-const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, getCreativeNameLists } = require('../common/helper');
-const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, decodeHtml } = require("../common/common");
+const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, getCreativeNameLists, dateprint } = require('../common/helper');
+const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getOfferNameBy_ID, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, decodeHtml, addNotificationsData, addTimelineData } = require("../common/common");
 
 const { URL } = require('url');
 const querystring = require("querystring");
@@ -15,6 +15,10 @@ const { parse } = require('csv-parse');
 const { Readable } = require('stream');
 
 
+const ucfirst = require('ucfirst');
+const ucwords = require('ucwords');
+const sgMail = require('@sendgrid/mail');
+const handlebars = require('handlebars');
 // create offer on trackier
 const axios_header = {
   headers: {
@@ -103,7 +107,7 @@ exports.getAllCreativeByOfferId = (req, res) => {
   });
 }
 
-exports.deleteCreativeById = (req, res) => {
+exports.deleteCreativeById = async (req, res) => {
 
   // create offer on trackier
   const axios_header = {
@@ -114,6 +118,13 @@ exports.deleteCreativeById = (req, res) => {
   };
 
   const { trackier_adv_id, trackier_camp_id, campaign_id, ids } = req.body;
+  var oldCreativeName = [];
+  if (typeof campaign_id !== 'undefined' && campaign_id !== "") {
+    const creatives = await Creatives.find({ campaign_id: campaign_id }).sort({ _id: -1 }).exec();
+    for (let i = 0; i < creatives.length; i++) {
+      oldCreativeName.push(creatives[i].creative);
+    }
+  }
   // DELETE CREATIVE BY ID
   Creatives.deleteMany({ _id: { $in: ids } }).exec().then(async (resCreative) => {
     console.log('Delete craetive from collection Request');
@@ -185,8 +196,137 @@ exports.deleteCreativeById = (req, res) => {
         const creativeData = { "creativeNames": final_creative_list_mod };
         // // STEP-11 push app lists on trackier
         console.log('API push Cretive Push on trackier Request');
-        await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then((creativeUpload) => {
+        await axios.put(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/creative-names", creativeData, axios_header).then(async (creativeUpload) => {
           if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
+            // Send Mail to User
+            const advName = await getAdertiseDetailsByAdvId(parseInt(trackier_adv_id));
+            const offerName = await getOfferNameBy_ID(campaign_id);
+            const offer_name = offerName.name;
+
+            // INSERT DATA INTO NOTIFICATIONS
+            const notificationData = {
+              advertiser_id: parseInt(trackier_adv_id),
+              advertiser_name: ucfirst(advName.advertiserName),
+              company_name: ucfirst(advName.advName),
+              offer_id: trackier_camp_id,
+              offer_name: ucfirst(offer_name),
+              category: "Campaign",
+
+              subject_adv: 'Campaign ' + offer_name + ' has been edited',
+              message_adv: "<span class='text_primary'>Ads</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+
+              subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+              message_sa: "<span class='text_primary'>Ads</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+
+              read: 0,
+            }
+            // END INSERT DATA INTO NOTIFICATIONS
+            await addNotificationsData(notificationData);
+
+            const creativeNameNewString = creativeName.join(', ');
+            const creativeNameOldString = oldCreativeName.join(', ');
+
+
+            // INSERT DATA INTO Tileline
+            const timelineData = {
+              advertiser_id: parseInt(trackier_adv_id),
+              advertiser_name: ucfirst(advName.advertiserName),
+              offer_id: trackier_camp_id,
+              offer_name: ucfirst(offer_name),
+              type: "Ads",
+              old_value: creativeNameNewString,
+              new_value: creativeNameOldString,
+              edited_by: ucfirst(advName.advertiserName)
+            }
+            // END INSERT DATA INTO Tileline
+            await addTimelineData(timelineData);
+
+            if (advName.email_preferences == true) {
+              // Send Mail to Admin if status inactive/suspended
+              const bcc_mail = process.env.BCC_EMAILS.split(",");
+              var emailTemplateAdvertiser = fs.readFileSync(path.join("templates/offer_edit.handlebars"), "utf-8");
+
+
+              const templateAdvertiser = handlebars.compile(emailTemplateAdvertiser);
+              const messageBodyAdvetiser = (templateAdvertiser({
+                todayDate: dateprint(),
+                adv_id: trackier_adv_id,
+                offer_id: trackier_camp_id,
+                offer_name: offer_name,
+                adv_name: ucwords(advName.advName),
+                advertiserName: ucwords(advName.advertiserName),
+                edit_filed: "Ads",
+                old_value: creativeNameOldString,
+                new_value: creativeNameNewString,
+                edited_by: ucfirst(advName.advertiserName),
+                url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+                base_url: process.env.APPLABS_URL
+              }))
+              sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+              const msgAdvertiser = {
+                to: advName.email,
+                //to: 'sudish@applabs.ai',
+                from: {
+                  name: process.env.MAIL_FROM_NAME,
+                  email: process.env.MAIL_FROM_EMAIL,
+                },
+                bcc: bcc_mail,
+                subject: 'Applabs Alert - Camapign ' + offer_name + ' has been edited',
+                html: messageBodyAdvetiser
+              };
+              //ES6
+              sgMail.send(msgAdvertiser).then(() => { }, error => {
+                console.error(error);
+                if (error.response) {
+                  console.error(error.response.body)
+                }
+              }).catch((error) => {
+                const response = { 'success': false, 'message': error };
+                res.status(200).send(response);
+                return;
+              });
+            }
+
+            // Send Mail to Admin
+            const admin_mail = process.env.ADMIN_EMAILS.split(",");
+            const emailTemplateAdmin = fs.readFileSync(path.join("templates/offer_edit_admin.handlebars"), "utf-8");
+            const templateAdmin = handlebars.compile(emailTemplateAdmin);
+            const messageBodyAdmin = (templateAdmin({
+              todayDate: dateprint(),
+              adv_id: trackier_adv_id,
+              offer_id: trackier_camp_id,
+              offer_name: offer_name,
+              adv_name: ucwords(advName.advName),
+              advertiserName: ucwords(advName.advertiserName),
+              edit_filed: "Ads",
+              old_value: creativeNameOldString,
+              new_value: creativeNameNewString,
+              edited_by: ucfirst(advName.advertiserName),
+              url: process.env.APPLABS_URL + 'edit_offer/' + trackier_camp_id,
+              base_url: process.env.APPLABS_URL
+            }))
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            const msgAdmin = {
+              to: admin_mail,
+              from: {
+                name: process.env.MAIL_FROM_NAME,
+                email: process.env.MAIL_FROM_EMAIL,
+              },
+              //bcc: bcc_mail,
+              subject: 'Applabs Alert - ' + offer_name + '[' + trackier_camp_id + '] has been edited',
+              html: messageBodyAdmin
+            };
+            //ES6
+            sgMail.send(msgAdmin).then(() => { }, error => {
+              console.error(error);
+              if (error.response) {
+                console.error(error.response.body)
+              }
+            }).catch((error) => {
+              const response = { 'success': false, 'message': error };
+              console.error(response);
+            });
+            // End Send Mail to Admin
             console.log('API push Cretive Push on trackier Response');
             const response = { 'success': true, 'message': 'Creative deleted successfully' };
             res.status(200).send(response);
