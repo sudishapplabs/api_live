@@ -26,6 +26,7 @@ const { url } = require("inspector");
 
 // request.body
 exports.addOffer = async (req, res) => {
+
     const { req_from, user_type, user_name, user_email, advertiser, offer_name, source_type, campaign_type, premium_apps, audience_id, pubs, MMP, bundle_id, app_name, preview_url, icon, description, unique_tracker_id, appmetrica_tracking_id, singular_cta_tracking_link, singular_vta_tracking_link, mytracker_tracking_id, app_link, campaign_id, operating_system, kpi, cta_link, cta_redirect_link, af_redirect_link, vta_link, goal_budget_type, payable_event_name, total_budget, daily_budget, campaign_schedule, schedule_start_date, schedule_end_date, country, include_state_city, state, state_inc_and_exc, city, city_details, city_inc_and_exc, os_version_min, os_version_max, language, interest, age_group, payable_event_price, goal_budget, creatives } = req.body; var step1 = false; var step2 = false; var step3 = false; var step4 = false; var step5 = false; var step6 = false; var step7 = false;
     // console.log(RU_erid);
     // process.exit();
@@ -2080,7 +2081,7 @@ exports.addOffer = async (req, res) => {
 
                                 //console.log(creative_data);
                                 // Save Creative in the database
-                                await creative_data.save(creative_data).then(data_c => {
+                                creative_data.save(creative_data).then(data_c => {
                                     console.log('Creative ok');
                                 }).catch(err => {
                                     console.error(err);
@@ -2132,7 +2133,7 @@ exports.addOffer = async (req, res) => {
                                             creative_ctr_exist_arr.push(creative_c.creative_name);
                                         }
                                         if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                                            await aData.save(aData).then(ctr_data => {
+                                            aData.save(aData).then(ctr_data => {
                                                 console.log('Creative ads ctr ok');
                                             }).catch(err => {
                                                 console.error(err);
@@ -2141,6 +2142,25 @@ exports.addOffer = async (req, res) => {
                                     }
                                 }
                             }
+
+                            // Incase of DIRECT We can push icon as a creative
+                            if (typeof source_type !== 'undefined' && source_type == "DIRECT") {
+                                const creativeIconName = icon.split('.');
+                                const aData = new CreativeCtrModel({
+                                    trackier_adv_id: advertiser,
+                                    trackier_camp_id: trackier_camp_id,
+                                    creative_name: creativeIconName[0],
+                                    creative_ctr: 1.4514,
+                                });
+                                aData.save(aData).then(ctr_data => {
+                                    console.log('Creative icon ctr ok');
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                                final_creative_list_mod.push(creativeIconName[0]);
+                            }
+
+
                             // END INSERT DATA INTO DB WITH CREATIVE CTR              
                             const creativeData = { "creativeNames": final_creative_list_mod };
                             // // STEP-11 push app lists on trackier
@@ -5004,7 +5024,7 @@ function inArray(needle, haystack) {
 exports.updateOffer = async (req, res) => {
 
 
-    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_details, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status } = req.body;
+    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_details, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status, isViewIcon } = req.body;
 
     // Validate request
     if (!user_type || !user_name || !user_email || !trackier_adv_id || !trackier_camp_id || !offer_name || !pubs || !icon || !operating_system || !cta_link || !payable_event_name || !total_budget || !daily_budget || !country || !language || !interest || !age_group || !schedule_start_date || !bundle_id) {
@@ -11423,7 +11443,7 @@ exports.updateOffer = async (req, res) => {
 
             //console.log(creative_data);
             // Save Creative in the database
-            let saveUser = await creative_data.save(creative_data).then(data_c => {
+            creative_data.save(creative_data).then(data_c => {
                 console.log('Creative ok');
             }).catch(err => {
                 console.error(err);
@@ -11483,7 +11503,7 @@ exports.updateOffer = async (req, res) => {
                         creative_ctr_exist_arr.push(creative_c.creative_name);
                     }
                     if (Array.isArray(creative_ctr_exist_arr) && creative_ctr_exist_arr.length == 0) {
-                        await aData.save(aData).then(ctr_data => {
+                        aData.save(aData).then(ctr_data => {
                             console.log('Creative ctr ok');
                         }).catch(err => {
                             console.error(err);
@@ -11492,7 +11512,21 @@ exports.updateOffer = async (req, res) => {
                 }
             }
         }
-        console.log("Creative");
+        // Incase of isViewIcon exist We can push icon on a creative
+        if (typeof isViewIcon !== 'undefined' && isViewIcon !== "") {
+            const aData = new CreativeCtrModel({
+                trackier_adv_id: trackier_adv_id,
+                trackier_camp_id: trackier_camp_id,
+                creative_name: isViewIcon,
+                creative_ctr: 1.4514,
+            });
+            aData.save(aData).then(ctr_data => {
+                console.log('Creative icon ctr ok');
+            }).catch(err => {
+                console.error(err);
+            });
+            final_creative_list_mod.push(isViewIcon);
+        }
         // END INSERT DATA INTO DB WITH CREATIVE CTR              
         const creativeData = { "creativeNames": final_creative_list_mod };
 
