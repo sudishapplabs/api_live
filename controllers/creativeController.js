@@ -117,7 +117,7 @@ exports.deleteCreativeById = async (req, res) => {
     }
   };
 
-  const { trackier_adv_id, trackier_camp_id, campaign_id, ids } = req.body;
+  const { trackier_adv_id, trackier_camp_id, campaign_id, ids, isViewIcon } = req.body;
   var oldCreativeName = [];
   if (typeof campaign_id !== 'undefined' && campaign_id !== "") {
     const creatives = await Creatives.find({ campaign_id: campaign_id }).sort({ _id: -1 }).exec();
@@ -191,6 +191,23 @@ exports.deleteCreativeById = async (req, res) => {
               }
             }
           }
+        }
+
+        // Incase of isViewIcon exist We can push icon on a creative
+        if (typeof isViewIcon !== 'undefined' && isViewIcon !== "") {
+          final_creative_list_mod.push(isViewIcon);
+          const aData = new CreativeCtrModel({
+            trackier_adv_id: trackier_adv_id,
+            trackier_camp_id: trackier_camp_id,
+            creative_name: isViewIcon,
+            creative_ctr: 1.4514,
+          });
+          await aData.save(aData).then(ctr_data => {
+            console.log('Creative icon ctr ok');
+          }).catch(err => {
+            console.error(err);
+          });
+
         }
         // END INSERT DATA INTO DB WITH CREATIVE CTR              
         const creativeData = { "creativeNames": final_creative_list_mod };

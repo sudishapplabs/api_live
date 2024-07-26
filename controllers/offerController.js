@@ -2142,6 +2142,25 @@ exports.addOffer = async (req, res) => {
                                     }
                                 }
                             }
+
+                            // Incase of DIRECT We can push icon as a creative
+                            if (typeof source_type !== 'undefined' && source_type == "DIRECT") {
+                                const creativeIconName = icon.split('.');
+                                const aData = new CreativeCtrModel({
+                                    trackier_adv_id: advertiser,
+                                    trackier_camp_id: trackier_camp_id,
+                                    creative_name: creativeIconName[0],
+                                    creative_ctr: 1.4514,
+                                });
+                                await aData.save(aData).then(ctr_data => {
+                                    console.log('Creative icon ctr ok');
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                                if (creativeName.indexOf(creativeIconName[0]) == -1) {
+                                    final_creative_list_mod.push(creativeIconName[0]);
+                                }
+                            }
                             // END INSERT DATA INTO DB WITH CREATIVE CTR              
                             const creativeData = { "creativeNames": final_creative_list_mod };
                             // // STEP-11 push app lists on trackier
@@ -5011,7 +5030,7 @@ function inArray(needle, haystack) {
 exports.updateOffer = async (req, res) => {
 
 
-    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_details, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status } = req.body;
+    const { user_type, user_name, user_email, trackier_adv_id, trackier_camp_id, offer_name, source_type, pubs, campaign_schedule, include_state_city, premium_apps, audience_id, MMP, icon, operating_system, kpi, cta_link, af_redirect_link, cta_redirect_link, vta_link, goal_budget_type, payable_event_name, payable_event_price, goal_budget, total_budget, daily_budget, country, state, state_inc_and_exc, city, city_details, city_inc_and_exc, language, interest, age_group, creatives, schedule_start_date, schedule_end_date, bundle_id, publisher_status, isViewIcon } = req.body;
 
     // Validate request
     if (!user_type || !user_name || !user_email || !trackier_adv_id || !trackier_camp_id || !offer_name || !pubs || !icon || !operating_system || !cta_link || !payable_event_name || !total_budget || !daily_budget || !country || !language || !interest || !age_group || !schedule_start_date || !bundle_id) {
@@ -11521,7 +11540,22 @@ exports.updateOffer = async (req, res) => {
                 }
             }
         }
-        console.log("Creative");
+
+        // Incase of isViewIcon exist We can push icon on a creative
+        if (typeof isViewIcon !== 'undefined' && isViewIcon !== "") {
+            const aData = new CreativeCtrModel({
+                trackier_adv_id: trackier_adv_id,
+                trackier_camp_id: trackier_camp_id,
+                creative_name: isViewIcon,
+                creative_ctr: 1.4514,
+            });
+            await aData.save(aData).then(ctr_data => {
+                console.log('Creative icon ctr ok');
+            }).catch(err => {
+                console.error(err);
+            });
+            final_creative_list_mod.push(isViewIcon);
+        }
         // END INSERT DATA INTO DB WITH CREATIVE CTR              
         const creativeData = { "creativeNames": final_creative_list_mod };
 
