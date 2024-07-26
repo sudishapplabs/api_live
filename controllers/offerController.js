@@ -2157,7 +2157,9 @@ exports.addOffer = async (req, res) => {
                                 }).catch(err => {
                                     console.error(err);
                                 });
-                                final_creative_list_mod.push(creativeIconName[0]);
+                                if (creatives.indexOf(creativeIconName[0]) == -1) {
+                                    final_creative_list_mod.push(creativeIconName[0]);
+                                }
                             }
 
 
