@@ -10,9 +10,21 @@ const fs = require('fs-extra');
 const path = require('path');
 const { url } = require("inspector");
 const { isArray } = require("util");
+const axios = require('axios');
 
 
 exports.getTotalCapOffers = async (req, res) => {
+
+
+  // create offer on trackier
+  const axios_header = {
+    headers: {
+      'x-api-key': process.env.API_KEY,
+      'Content-Type': 'application/json'
+    }
+  };
+
+
   const offerData = await getAllOffersByStatus();
 
   if (Array.isArray(offerData) && offerData.length > 0) {
@@ -77,10 +89,10 @@ exports.getTotalCapOffers = async (req, res) => {
               category: "Campaign",
 
               subject_adv: 'Applabs Alert - New Campaign Disabled',
-              message_adv: "This is to inform you that your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been  <span class='text_primary'> disabled </span>",
+              message_adv: "This is to inform you that your campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been  <span class='text_primary'> disabled </span>",
 
               subject_sa: 'Applabs Alert - Campaign  ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Disabled',
-              message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been <span class='text_primary'> disabled </span> By <span class='text_primary'> Admin </span>",
+              message_sa: "Account <span class='text_primary'> " + ucfirst(advDt.advName) + "</span> campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been <span class='text_primary'> disabled </span> By <span class='text_primary'> Admin </span>",
 
               read: 0,
             }
@@ -101,19 +113,19 @@ exports.getTotalCapOffers = async (req, res) => {
                 offer_name: offDt.offer_name,
                 adv_name: advDt.advName,
                 advertiserName: ucwords(advDt.advertiserName),
-                url: process.env.APPLABS_URL + 'CampaignList',
+                url: process.env.APPLABS_URL + 'campaignList',
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
               const msg_adv = {
-                to: [user_data.email],
+                to: [advDt.email],
                 // to: ["sudish@applabs.ai"],
                 from: {
                   name: process.env.MAIL_FROM_NAME,
                   email: process.env.MAIL_FROM_EMAIL,
                 },
                 bcc: bcc_mail,
-                subject: 'Applabs Alert - New Campaign Disabled',
+                subject: 'Applabs Alert - New Offer Disabled',
                 html: messageBodyAdv
               };
               //ES6
@@ -144,7 +156,7 @@ exports.getTotalCapOffers = async (req, res) => {
               offer_name: offDt.offer_name,
               adv_name: advDt.advName,
               advertiserName: ucwords(advDt.advertiserName),
-              url: process.env.APPLABS_URL + 'CampaignList',
+              url: process.env.APPLABS_URL + 'campaignList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);

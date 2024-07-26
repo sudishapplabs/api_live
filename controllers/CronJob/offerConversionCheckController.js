@@ -78,7 +78,7 @@ exports.getOfferConversionData = async (req, res) => {
         category: "Campaign",
 
         subject_adv: 'Applabs Alert - Your campaign ' + ucfirst(offDt.offer_name) + ' is Paused',
-        message_adv: "During an automated content screening the system has found a few violations of our Terms & Conditions. As a preventive measure your campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> is paused.",
+        message_adv: "During an automated content screening the system has found a few violations of our Terms & Conditions. As a preventive measure your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> is paused.",
 
         subject_sa: 'Applabs Alert - Campaign ' + ucfirst(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Paused',
         message_sa: "Account <span class='text_primary'> " + ucfirst(advName.advName) + "</span> campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has been paused during the screening process.",
@@ -101,7 +101,7 @@ exports.getOfferConversionData = async (req, res) => {
           advertiserName: ucwords(advName.advertiserName),
           offer_id: offDt.trackier_camp_id,
           offer_name: offDt.offer_name,
-          url: process.env.APPLABS_URL + 'CampaignList',
+          url: process.env.APPLABS_URL + 'campaignList',
           base_url: process.env.APPLABS_URL
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -140,7 +140,7 @@ exports.getOfferConversionData = async (req, res) => {
         advertiserName: ucwords(advName.advertiserName),
         offer_id: offDt.trackier_camp_id,
         offer_name: offDt.offer_name,
-        url: process.env.APPLABS_URL + 'CampaignList',
+        url: process.env.APPLABS_URL + 'campaignList',
         base_url: process.env.APPLABS_URL
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);

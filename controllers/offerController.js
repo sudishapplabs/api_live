@@ -2369,7 +2369,7 @@ exports.addOffer = async (req, res) => {
                                             offer_id: trackier_camp_id,
                                             adv_name: ucfirst(advName),
                                             created_by: ucfirst(user_name),
-                                            url: process.env.APPLABS_URL + 'CampaignList',
+                                            url: process.env.APPLABS_URL + 'campaignList',
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3111,7 +3111,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         advertiserName: ucwords(advDetails.advName),
                                         offer_id: resStatus.trackier_camp_id,
                                         status: offerStatus,
-                                        url: process.env.APPLABS_URL + 'CampaignList',
+                                        url: process.env.APPLABS_URL + 'campaignList',
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3152,7 +3152,7 @@ exports.changeOfferStatus = async (req, res) => {
                                     status_by_user: approved_by,
                                     approved_by_email: approved_by_email,
                                     status: offerStatus,
-                                    url: process.env.APPLABS_URL + 'CampaignList',
+                                    url: process.env.APPLABS_URL + 'campaignList',
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

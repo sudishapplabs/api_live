@@ -1,4 +1,4 @@
-var { Offer } = require("../../models/offerModel");
+const  Offer  = require("../../models/offerModel");
 const Creative = require("../../models/creativeModel");
 const CreativeCtrModel = require("../../models/creativectrModel");
 const { getAllOffersByStatus, getAdertiseDetailsByAdvId, getAllCreativeByUpcommingDate, getAllCreativeByUpcommingDates, addNotificationsData } = require("../../common/common");
@@ -88,7 +88,7 @@ exports.getCreativeEndDate = async (req, res) => {
                   offer_id: offDt.trackier_camp_id,
                   offer_name: offDt.offer_name,
                   ad_name: crDt.creative,
-                  url: process.env.APPLABS_URL + 'CampaignList',
+                  url: process.env.APPLABS_URL + 'campaignList',
                   base_url: process.env.APPLABS_URL
                 }))
                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -128,7 +128,7 @@ exports.getCreativeEndDate = async (req, res) => {
                 offer_id: offDt.trackier_camp_id,
                 offer_name: offDt.offer_name,
                 ad_name: crDt.creative,
-                url: process.env.APPLABS_URL + 'CampaignList',
+                url: process.env.APPLABS_URL + 'campaignList',
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);

@@ -66,12 +66,12 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
               offer_name: offDt.offer_name,
               adv_name: advDt.advName,
               advertiserName: ucwords(advDt.advertiserName),
-              url: process.env.APPLABS_URL + 'CampaignList',
+              url: process.env.APPLABS_URL + 'campaignList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg_adv = {
-              to: [user_data.email],
+              to: [advDt.email],
               //to: ["sudish@applabs.ai"],
               from: {
                 name: process.env.MAIL_FROM_NAME,
@@ -108,7 +108,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
             offer_name: offDt.offer_name,
             adv_name: advDt.advName,
             advertiserName: ucwords(advDt.advertiserName),
-            url: process.env.APPLABS_URL + 'CampaignList',
+            url: process.env.APPLABS_URL + 'campaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);

@@ -85,7 +85,7 @@ exports.getOfferTrafficStart = async (req, res) => {
             advertiserName: ucwords(advName.advName),
             offer_id: offDt.trackier_camp_id,
             offer_name: ucwords(offDt.offer_name),
-            url: process.env.APPLABS_URL + 'CampaignListPage',
+            url: process.env.APPLABS_URL + 'campaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);

@@ -195,7 +195,7 @@ exports.addUser = async (req, res) => {
                 role: ucwords(userType),
                 designation: ucwords(designation),
                 name: ucwords(AdvertiserData.name),
-                url: process.env.APPLABS_URL + 'Dashboard',
+                url: process.env.APPLABS_URL + 'dashboard',
                 base_url: process.env.APPLABS_URL
               }))
               sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -234,7 +234,7 @@ exports.addUser = async (req, res) => {
                 role: ucwords(userType),
                 designation: ucwords(designation),
                 name: ucwords(AdvertiserData.name),
-                url: process.env.APPLABS_URL + 'Dashboard',
+                url: process.env.APPLABS_URL + 'dashboard',
                 base_url: process.env.APPLABS_URL
               }))
 
