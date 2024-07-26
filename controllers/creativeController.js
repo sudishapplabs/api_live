@@ -117,7 +117,7 @@ exports.deleteCreativeById = async (req, res) => {
     }
   };
 
-  const { trackier_adv_id, trackier_camp_id, campaign_id, ids } = req.body;
+  const { trackier_adv_id, trackier_camp_id, campaign_id, ids, isViewIcon } = req.body;
   var oldCreativeName = [];
   if (typeof campaign_id !== 'undefined' && campaign_id !== "") {
     const creatives = await Creatives.find({ campaign_id: campaign_id }).sort({ _id: -1 }).exec();
