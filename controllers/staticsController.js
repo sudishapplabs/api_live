@@ -2706,11 +2706,763 @@ exports.dashboardPerformanceEvent = async (req, res) => {
   });
 }
 
+async function fetchOfferDataAnd(filterCurretDatas2, filterCurretDatasRT2) {
+  try {
+    const [offStatusCurrentData2, offStatusCurrentDataRT2] = await Promise.all([
+      Offer.aggregate([
+        filterCurretDatas2,
+        {
+          '$group': {
+            '_id': '$status',
+            'sum': { '$sum': 1 }
+          }
+        }
+      ]).sort({ status: -1 }).exec(),
+      Offer.aggregate([
+        filterCurretDatasRT2,
+        {
+          '$group': {
+            '_id': '$status',
+            'sum': { '$sum': 1 }
+          }
+        }
+      ]).sort({ status: -1 }).exec()
+    ]);
+    return { offStatusCurrentData2, offStatusCurrentDataRT2 };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
+// exports.dashboardTopHeader = async (req, res) => {
+//   var adv_array = {};
+
+
+//   // check body key
+//   const paramSchema = { 1: 'offer_id', 2: 'adv_id', 3: 'start', 4: 'end' };
+//   var new_array = [];
+//   for (var key in paramSchema) {
+//     if (!req.body.hasOwnProperty(paramSchema[key])) {
+//       new_array.push(paramSchema[key]);
+//     }
+//   }
+
+//   if (new_array.length !== 0) {
+//     let text = new_array.toString();
+//     const response = { "status": false, "message": `${text} is missing!` };
+//     res.status(200).send(response);
+//     return;
+//   }
+//   const { offer_id, adv_id, start, end } = req.body;
+
+//   // Validate request
+//   if (!start || !end) {
+//     var requestVal = "";
+//     if (!start) {
+//       var requestVal = "start date";
+//     } else if (!end) {
+//       var requestVal = "end date";
+//     }
+//     // console.log(requestVal);
+//     const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": requestVal + " is not allowed to be empty" } };
+//     res.status(400).send(reMsg);
+//     return;
+//   }
+
+//   // create offer on trackier
+//   const axios_header = {
+//     headers: {
+//       'x-api-key': process.env.API_KEY,
+//       'Content-Type': 'application/json'
+//     }
+//   };
+
+//   const advertiserId = parseInt(req.query.advertiserId);
+//   var newQueryString = querystring.stringify(req.body);
+
+
+
+//   var dt_start = start;
+//   var dateSarray = dt_start.split("-");
+//   var startDate = `${dateSarray[2]}/${dateSarray[1]}/${dateSarray[0]}`;
+
+//   var dt_end = end;
+//   var dateEarray = dt_end.split("-");
+//   var endDate = `${dateEarray[2]}/${dateEarray[1]}/${dateEarray[0]}`;
+
+//   var one_day = 1000 * 60 * 60 * 24;
+//   var x = startDate.split("/");
+//   var y = endDate.split("/");
+//   var date1 = new Date(x[2], (x[1] - 1), x[0]);
+//   var date2 = new Date(y[2], (y[1] - 1), y[0])
+
+//   var _Diff = Math.ceil((date2.getTime() - date1.getTime()) / (one_day));
+
+//   recentPreviousDate = new Array(parseInt(_Diff + 2)).fill().map((_, index) => {
+//     return new Date(new Date(start).setDate(new Date(start).getDate() - index))
+//       .toISOString()
+//   });
+//   let endPreviousDate = recentPreviousDate[1];
+//   let endPreviousDateR = endPreviousDate.replace("T00:00:00.000Z", "");
+
+//   let startPreviousDate = recentPreviousDate.pop();
+//   let startPreviousDateR = startPreviousDate.replace("T00:00:00.000Z", "");
+
+//   const datePData = `start=${startPreviousDateR}&end=${endPreviousDateR}&`
+
+//   delete req.body.start;
+//   delete req.body.end;
+//   var newQueryStrings = querystring.stringify(req.body);
+
+
+//   const endpoint = "reports/custom";
+
+//   var adv_str = "";
+//   if (advertiserId) {
+//     adv_str += "adv_ids[]=" + advertiserId + "&";
+//     if (Array.isArray(offer_id) && offer_id.length > 0) {
+//       newQueryString = newQueryString.replaceAll("offer_id", "camp_ids[]");
+//       newQueryStrings = newQueryStrings.replaceAll("offer_id", "camp_ids[]");
+//     }
+//   } else {
+//     if (Array.isArray(offer_id) && offer_id.length > 0) {
+//       newQueryString = newQueryString.replaceAll("offer_id", "camp_ids[]");
+//       newQueryStrings = newQueryStrings.replaceAll("offer_id", "camp_ids[]");
+//       if (Array.isArray(adv_id) && adv_id.length > 0) {
+//         newQueryString = newQueryString.replaceAll("adv_id", "adv_ids[]");
+//         newQueryStrings = newQueryStrings.replaceAll("adv_id", "adv_ids[]");
+//       }
+//     } else {
+//       if (Array.isArray(adv_id) && adv_id.length > 0) {
+//         newQueryString = newQueryString.replaceAll("adv_id", "adv_ids[]");
+//         newQueryStrings = newQueryStrings.replaceAll("adv_id", "adv_ids[]");
+//       } else {
+//         await Advertiser.find().sort({ _id: 1 }).exec().then((advertisers) => {
+//           if (advertisers) {
+//             for (let i = 0; i < advertisers.length; i++) {
+//               let adv = advertisers[i];
+//               if (adv.tid > 0) {
+//                 adv_str += ("adv_ids[]=" + adv.tid + "&");
+//               }
+//             }
+//           }
+//         }).catch(error => {
+//           console.error(error);
+//         });
+//       }
+//     }
+//   }
+
+//   // get all advertisers
+//   await Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
+//     if (all_adv) {
+//       for (let k = 0; k < all_adv.length; k++) {
+//         let adv = all_adv[k];
+//         adv_array[adv.tid] = ucfirst(adv.organization);
+//       }
+//     }
+//   }).catch(error => {
+//     console.error(error);
+//   });
+
+
+//   // GET DATA BY TOP OFFER STATUS TOTAL ACTIVE PENDING ETC
+
+//   if (process.env.TIMESTAMP_DIGITS == 10) {
+//     const currentDateStart = new Date(start + "T23:59:59.053Z");
+//     const currentDateEnd = new Date(end + "T23:59:59.053Z");
+
+//     var currentDateStartVal = parseInt(currentDateStart.getTime() / 1000);
+//     var currentDateEndVal = parseInt(currentDateEnd.getTime() / 1000);
+
+
+//     const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
+//     const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+
+
+//     var newDatesPrevStartVal = parseInt(newDatesPrevStart.getTime() / 1000);
+//     var newDatesPrevPEndVal = parseInt(newDatesPrevPEnd.getTime() / 1000);
+//   } else {
+
+//     const currentDateStart = new Date(start + "T23:59:59.053Z");
+//     const currentDateEnd = new Date(end + "T23:59:59.053Z");
+
+
+//     var currentDateStartVal = currentDateStart.getTime();
+//     var currentDateEndVal = currentDateEnd.getTime();
+
+
+//     const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
+//     const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
+
+
+//     var newDatesPrevStartVal = newDatesPrevStart.getTime();
+//     var newDatesPrevPEndVal = newDatesPrevPEnd.getTime();
+//   }
+
+
+
+
+//   var totalOffers = 0;
+//   if (advertiserId) {
+
+//     // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+//     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] } };
+
+
+//     // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+//     try {
+//       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] }).exec();
+//       totalOffers = parseInt(result.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+
+//   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
+
+//     // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+//     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] } };
+
+//     // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+//     try {
+//       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] }).exec();
+//       totalOffers = parseInt(result.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   } else if (Array.isArray(offer_id) && offer_id.length > 0) {
+//     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_camp_id: { $in: offer_id } }] } };
+//     try {
+//       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_camp_id: { $in: offer_id } }] }).exec();
+//       totalOffers = parseInt(result.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   } else {
+//     // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+//     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }] } };
+
+
+//     // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+//     try {
+//       let result = await Offer.find({ 'trackier_camp_id': { '$ne': 0 } }).exec();
+//       //console.log(result);
+//       totalOffers = parseInt(result.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }
+
+
+//   const totalActiveCurrentOffer = 0;
+
+//   // const offStatusCurrentData = await Offer.aggregate([
+//   //   filterCurretDatas,
+//   //   {
+//   //     '$group': {
+//   //       '_id': '$status',
+//   //       'sum': { '$sum': 1 }
+//   //     }
+//   //   }
+//   // ]).sort({ status: -1 }).exec();
+//   // var totalActiveCurrentOffer = 0;
+//   // if (Array.isArray(offStatusCurrentData) && offStatusCurrentData.length > 0) {
+//   //   for (let i = 0; i < offStatusCurrentData.length; i++) {
+//   //     if (offStatusCurrentData[i]._id == "active") {
+//   //       var totalActiveCurrentOffer = offStatusCurrentData[i].sum;
+//   //     }
+//   //   }
+//   // }
+
+//   // COUNT ALL ACTIVE OFFER
+//   const offStatusCurrentData2 = await Offer.aggregate([
+//     filterCurretDatas2,
+//     {
+//       '$group': {
+//         '_id': '$status',
+//         'sum': { '$sum': 1 }
+//       }
+//     }
+//   ]).sort({ status: -1 }).exec();
+//   var totalActiveCurrentOffer2 = 0;
+//   if (Array.isArray(offStatusCurrentData2) && offStatusCurrentData2.length > 0) {
+//     for (let i = 0; i < offStatusCurrentData2.length; i++) {
+//       if (offStatusCurrentData2[i]._id == "active") {
+//         var totalActiveCurrentOffer2 = offStatusCurrentData2[i].sum;
+//       }
+//     }
+//   }
+
+//   // console.log("totalActiveCurrentOffer2=== " + totalActiveCurrentOffer2);
+
+//   // console.log("totalOffers=== " + totalOffers);
+//   const totalActivePreviousOffer = 0;
+//   // const offStatusPreviousData = await Offer.aggregate([
+//   //   filterPreviousDatas,
+//   //   {
+//   //     '$group': {
+//   //       '_id': '$status',
+//   //       'sum': { '$sum': 1 }
+//   //     }
+//   //   }
+//   // ]).sort({ status: -1 }).exec();
+//   // var totalActivePreviousOffer = 0;
+//   // if (Array.isArray(offStatusPreviousData) && offStatusPreviousData.length > 0) {
+//   //   for (let i = 0; i < offStatusPreviousData.length; i++) {
+//   //     if (offStatusPreviousData[i]._id == "active") {
+//   //       var totalActivePreviousOffer = offStatusPreviousData[i].sum;
+//   //     }
+//   //   }
+//   // }
+
+//   // RETARGETING CAMPAING START
+//   var totalOffersRT = 0;
+//   if (advertiserId) {
+
+//     // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+//     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] } };
+
+//     // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+//     try {
+//       let resultRT = Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
+//       totalOffersRT = parseInt(resultRT.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+
+//   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
+
+//     // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+//     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] } };
+
+//     // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+//     try {
+//       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
+//       totalOffersRT = parseInt(resultRT.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   } else if (Array.isArray(offer_id) && offer_id.length > 0) {
+//     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_camp_id: { $in: offer_id } }] } };
+//     try {
+//       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_camp_id: { $in: offer_id } }] }).exec();
+//       totalOffersRT = parseInt(resultRT.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   } else {
+//     // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
+
+//     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }] } };
+
+//     // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
+//     try {
+//       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { '$ne': 0 } }, { 'campaign_type': 'RETARGETING' }] }).exec();
+//       //console.log(resultRT);
+//       totalOffersRT = parseInt(resultRT.length);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }
+
+//   const totalActiveCurrentOfferRT = 0;
+//   // const offStatusCurrentDataRT = await Offer.aggregate([
+//   //   filterCurretDatasRT,
+//   //   {
+//   //     '$group': {
+//   //       '_id': '$status',
+//   //       'sum': { '$sum': 1 }
+//   //     }
+//   //   }
+//   // ]).sort({ status: -1 }).exec();
+//   // var totalActiveCurrentOfferRT = 0;
+//   // if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
+//   //   for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
+//   //     if (offStatusCurrentDataRT[i]._id == "active") {
+//   //       var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
+//   //     }
+//   //   }
+//   // }
+
+//   // COUNT ALL TOTAL RE-TARGETING ACTIVE OFFER
+//   const offStatusCurrentDataRT2 = await Offer.aggregate([
+//     filterCurretDatasRT2,
+//     {
+//       '$group': {
+//         '_id': '$status',
+//         'sum': { '$sum': 1 }
+//       }
+//     }
+//   ]).sort({ status: -1 }).exec();
+//   var totalActiveCurrentOfferRT2 = 0;
+//   if (Array.isArray(offStatusCurrentDataRT2) && offStatusCurrentDataRT2.length > 0) {
+//     for (let i = 0; i < offStatusCurrentDataRT2.length; i++) {
+//       if (offStatusCurrentDataRT2[i]._id == "active") {
+//         var totalActiveCurrentOfferRT2 = offStatusCurrentDataRT2[i].sum;
+//       }
+//     }
+//   }
+
+//   const totalActivePreviousOfferRT = 0;
+
+//   // const offStatusPreviousDataRT = await Offer.aggregate([
+//   //   filterPreviousDatasRT,
+//   //   {
+//   //     '$group': {
+//   //       '_id': '$status',
+//   //       'sum': { '$sum': 1 }
+//   //     }
+//   //   }
+//   // ]).sort({ status: -1 }).exec();
+//   // var totalActivePreviousOfferRT = 0;
+//   // if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
+//   //   for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
+//   //     if (offStatusPreviousDataRT[i]._id == "active") {
+//   //       var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
+//   //     }
+//   //   }
+//   // }
+//   // RETARGETING END
+
+//   // console.log(JSON.stringify(filterCurretDatas));
+//   // console.log(JSON.stringify(filterPreviousDatas));
+//   //process.exit();
+
+//   // console.log("SUDISH");
+//   // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + datePData + "zone=Asia/Kolkata");
+
+//   axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + "&" + datePData + "zone=Asia/Kolkata", axios_header).then((staticsPRes) => {
+//     if (typeof staticsPRes.statusText !== 'undefined' && staticsPRes.statusText == "OK") {
+
+//       var reportPData = [];
+//       if (Array.isArray(staticsPRes.data.records) && staticsPRes.data.records.length > 0) {
+//         const arrPData = staticsPRes.data.records;
+//         for (let j = 0; j < arrPData.length; j++) {
+//           let advTrkPData = arrPData[j];
+
+//           reportPData.push({
+//             "goal_name": advTrkPData.goal_name,
+//             "grossClicks": advTrkPData.grossClicks,
+//             "grossConversions": advTrkPData.grossConversions,
+//             "grossRevenue": advTrkPData.grossRevenue,
+//             "converionCR": 0,
+//             "grossInstall": 0
+//           });
+//         }
+//       }
+
+//       var newpData = {};
+
+//       for (let i = 0; i < reportPData.length; i++) {
+//         let r = reportPData[i];
+
+
+//         var superPKey = "";
+//         if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//           superPKey += r.campaign_name;
+//         }
+//         if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//           superPKey += r.advertiser;
+//         }
+//         if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//           superPKey += r.advertiser_id;
+//         }
+//         if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//           superPKey += r.campaign_status;
+//         }
+//         if (typeof r.date !== 'undefined' && r.date !== "") {
+//           superPKey += r.date;
+//         }
+//         superPKey += i + 1;
+
+//         if (newpData[superPKey]) {
+//           newpData[superPKey]['grossClicks'] += r.grossClicks;
+//           newpData[superPKey]['grossConversions'] += r.grossConversions;
+//           newpData[superPKey]['grossRevenue'] += r.grossRevenue;
+//         } else {
+//           newpData[superPKey] = r;
+//         }
+//         if (r.grossClicks == 0) {
+//           newpData[superPKey]['converionCR'] += 0;
+//         } else {
+//           let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
+//           newpData[superPKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
+//         }
+
+//         if (r.goal_name == 'install') {
+//           newpData[superPKey]['grossInstall'] += r.grossConversions;
+//         } else {
+//           newpData[superPKey]['grossInstall'] += 0;
+//         }
+//       }
+
+//       const data_obj_p_to_arr = Object.values(newpData);
+//       const newArrPDataByClick = data_obj_p_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+//       const objFilterPData = newArrPDataByClick;
+
+
+//       // console.log("MOHAN");
+
+//       // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&group[]=goal_name&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
+
+//       axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&kpi[]=grossClicks&group[]=goal_name&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then(async (staticsRes) => {
+//         if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
+//           if (Array.isArray(staticsRes.data.records) && staticsRes.data.records.length > 0) {
+//             var reportData = [];
+//             const advArrData = staticsRes.data.records;
+//             for (let j = 0; j < advArrData.length; j++) {
+//               let advTrkData = advArrData[j];
+//               reportData.push({
+//                 "goal_name": advTrkData.goal_name,
+//                 "grossClicks": advTrkData.grossClicks,
+//                 "grossConversions": advTrkData.grossConversions,
+//                 "grossRevenue": advTrkData.grossRevenue,
+//                 "converionCR": 0,
+//                 "grossInstall": 0
+//               });
+//             }
+
+
+//             var newData = {};
+
+//             for (let i = 0; i < reportData.length; i++) {
+//               let r = reportData[i];
+
+
+//               var superKey = "";
+//               if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//                 superKey += r.campaign_name;
+//               }
+//               if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//                 superKey += r.advertiser;
+//               }
+//               if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//                 superKey += r.advertiser_id;
+//               }
+//               if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//                 superKey += r.campaign_status;
+//               }
+//               if (typeof r.date !== 'undefined' && r.date !== "") {
+//                 superKey += r.date;
+//               }
+//               superKey += i + 1;
+
+//               if (newData[superKey]) {
+//                 newData[superKey]['grossClicks'] += r.grossClicks;
+//                 newData[superKey]['grossConversions'] += r.grossConversions;
+//                 newData[superKey]['grossRevenue'] += r.grossRevenue;
+//               } else {
+//                 newData[superKey] = r;
+//               }
+//               if (r.grossClicks == 0) {
+//                 newData[superKey]['converionCR'] += 0;
+//               } else {
+//                 let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
+//                 newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
+//               }
+//               if (r.goal_name == 'install') {
+//                 newData[superKey]['grossInstall'] += r.grossConversions;
+//               } else {
+//                 newData[superKey]['grossInstall'] += 0;
+//               }
+//             }
+
+//             const data_obj_to_arr = Object.values(newData);
+//             const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+//             const objFilterDataPerformance = newArrDataByClick;
+
+
+
+//             let array1 = objFilterPData,
+//               result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
+//                 a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
+//                 a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
+//                 a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
+//                 a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
+//                 a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
+//                 a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
+//                 return a;
+//               }, {}));
+
+//             //console.log(result1);
+
+//             let array2 = objFilterDataPerformance,
+//               result2 = Object.values(array2.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
+//                 a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
+//                 a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
+//                 a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
+//                 a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
+//                 a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
+//                 a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
+//                 return a;
+//               }, {}));
+//             //console.log(result2);
+
+//             if (Array.isArray(result1) && result1.length > 0) {
+
+//               const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
+//               if (result1[0].grossClicks > 0) {
+//                 var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
+//               } else {
+//                 var grossClicksPercentageData = 0;
+//               }
+
+//               const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
+//               if (result1[0].grossConversions > 0) {
+//                 var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
+//               } else {
+//                 var grossConversionsPercentageData = 0;
+//               }
+
+
+//               const grossRevenueDiff = (parseInt(result2[0].grossRevenue) - parseInt(result1[0].grossRevenue));
+//               if (result1[0].grossRevenue > 0) {
+//                 var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
+//               } else {
+//                 var grossRevenuePercentageData = 0;
+//               }
+
+
+//               const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
+//               if (result1[0].converionCR > 0) {
+//                 var converionCRPercentageData = (converionCRPDiff * 100) / parseInt(result1[0].converionCR);
+//               } else {
+//                 var converionCRPercentageData = 0;
+//               }
+
+//               const grossInstallDiff = (parseInt(result2[0].grossInstall) - parseInt(result1[0].grossInstall));
+//               if (result1[0].grossInstall > 0) {
+//                 var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
+//               } else {
+//                 var grossInstallPercentageData = 0;
+//               }
+
+//               const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
+//               if (totalActivePreviousOffer > 0) {
+//                 var activePercentageData = (activePercentageDiff * 100) / parseInt(totalActivePreviousOffer);
+//               } else {
+//                 var activePercentageData = 0;
+//               }
+
+//               const activePercentageDiffRT = (parseInt(totalActiveCurrentOfferRT) - parseInt(totalActivePreviousOfferRT));
+//               if (totalActivePreviousOfferRT > 0) {
+//                 var activePercentageDataRT = (activePercentageDiffRT * 100) / parseInt(totalActivePreviousOfferRT);
+//               } else {
+//                 var activePercentageDataRT = 0;
+//               }
+
+
+//               var dataExist = true;
+//             } else {
+//               var dataExist = false;
+//               var grossClicksPercentageData = 0;
+//               var grossConversionsPercentageData = 0;
+//               var grossRevenuePercentageData = 0;
+//               var converionCRPercentageData = 0;
+//               var grossInstallPercentageData = 0;
+//               var activePercentageData = 0;
+//               result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
+//             }
+
+
+//             result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
+//             result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
+
+//             const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
+//             res.status(200).send(response);
+//             return;
+//           } else {
+
+//             let dashboardData = [
+//               {
+//                 "grossClicks": 0,
+//                 "grossConversions": 0,
+//                 "grossRevenue": 0,
+//                 "converionCR": 0,
+//                 "grossInstall": 0
+//               },
+//               {
+//                 "grossClicksPercentage": 0,
+//                 "grossConversionsPercentage": 0,
+//                 "grossRevenuePercentage": 0,
+//                 "converionCRPercentage": 0,
+//                 "grossInstallPercentage": 0
+//               },
+//               { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
+//             ];
+//             const resMsg = { 'success': true, 'dataExist': true, dashboardData };
+//             res.status(200).send(resMsg);
+//             return;
+//           }
+//         } else {
+//           let dashboardData = [
+//             {
+//               "grossClicks": 0,
+//               "grossConversions": 0,
+//               "grossRevenue": 0,
+//               "converionCR": 0,
+//               "grossInstall": 0
+//             },
+//             {
+//               "grossClicksPercentage": 0,
+//               "grossConversionsPercentage": 0,
+//               "grossRevenuePercentage": 0,
+//               "converionCRPercentage": 0,
+//               "grossInstallPercentage": 0
+//             },
+//             { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
+//           ];
+//           const resMsg = { 'success': true, 'dataExist': true, dashboardData };
+//           res.status(200).send(resMsg);
+//           return;
+//         }
+
+//       }).catch(err => {
+//         console.log(err);
+//         const errMsg = { "success": false, "errors": err };
+//         res.status(400).send(errMsg);
+//         return;
+//       });
+//       // End PERFOMANCE FIRST
+
+//     } else {
+//       let dashboardData = [
+//         {
+//           "grossClicks": 0,
+//           "grossConversions": 0,
+//           "grossRevenue": 0,
+//           "converionCR": 0,
+//           "grossInstall": 0
+//         },
+//         {
+//           "grossClicksPercentage": 0,
+//           "grossConversionsPercentage": 0,
+//           "grossRevenuePercentage": 0,
+//           "converionCRPercentage": 0,
+//           "grossInstallPercentage": 0
+//         },
+//         { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
+//       ];
+//       const resMsg = { 'success': true, 'dataExist': true, dashboardData };
+//       res.status(200).send(resMsg);
+//       return;
+//     }
+
+//   }).catch(err => {
+//     console.log(err);
+//     const errMsg = { "success": false, "errors": err };
+//     res.status(400).send(errMsg);
+//     return;
+//   });
+// }
 
 exports.dashboardTopHeader = async (req, res) => {
-  var adv_array = {};
-
-
   // check body key
   const paramSchema = { 1: 'offer_id', 2: 'adv_id', 3: 'start', 4: 'end' };
   var new_array = [];
@@ -2826,65 +3578,27 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-  // get all advertisers
-  await Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
-    if (all_adv) {
-      for (let k = 0; k < all_adv.length; k++) {
-        let adv = all_adv[k];
-        adv_array[adv.tid] = ucfirst(adv.organization);
-      }
-    }
-  }).catch(error => {
-    console.error(error);
-  });
-
-
   // GET DATA BY TOP OFFER STATUS TOTAL ACTIVE PENDING ETC
-
   if (process.env.TIMESTAMP_DIGITS == 10) {
     const currentDateStart = new Date(start + "T23:59:59.053Z");
     const currentDateEnd = new Date(end + "T23:59:59.053Z");
 
-    var currentDateStartVal = parseInt(currentDateStart.getTime() / 1000);
-    var currentDateEndVal = parseInt(currentDateEnd.getTime() / 1000);
-
-
     const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
     const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
-
-
-    var newDatesPrevStartVal = parseInt(newDatesPrevStart.getTime() / 1000);
-    var newDatesPrevPEndVal = parseInt(newDatesPrevPEnd.getTime() / 1000);
   } else {
 
     const currentDateStart = new Date(start + "T23:59:59.053Z");
     const currentDateEnd = new Date(end + "T23:59:59.053Z");
 
-
-    var currentDateStartVal = currentDateStart.getTime();
-    var currentDateEndVal = currentDateEnd.getTime();
-
-
     const newDatesPrevStart = new Date(startPreviousDateR + "T23:59:59.053Z");
     const newDatesPrevPEnd = new Date(endPreviousDateR + "T23:59:59.053Z");
 
-
-    var newDatesPrevStartVal = newDatesPrevStart.getTime();
-    var newDatesPrevPEndVal = newDatesPrevPEnd.getTime();
   }
-
-
 
 
   var totalOffers = 0;
   if (advertiserId) {
-
-    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
-
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] } };
-
-
-    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffers = parseInt(result.length);
@@ -2893,12 +3607,7 @@ exports.dashboardTopHeader = async (req, res) => {
     }
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
-
-    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
-
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] } };
-
-    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffers = parseInt(result.length);
@@ -2914,12 +3623,7 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    // var filterCurretDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
-
     var filterCurretDatas2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }] } };
-
-
-    // var filterPreviousDatas = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let result = await Offer.find({ 'trackier_camp_id': { '$ne': 0 } }).exec();
       //console.log(result);
@@ -2929,77 +3633,10 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
-
-  const totalActiveCurrentOffer = 0;
-
-  // const offStatusCurrentData = await Offer.aggregate([
-  //   filterCurretDatas,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActiveCurrentOffer = 0;
-  // if (Array.isArray(offStatusCurrentData) && offStatusCurrentData.length > 0) {
-  //   for (let i = 0; i < offStatusCurrentData.length; i++) {
-  //     if (offStatusCurrentData[i]._id == "active") {
-  //       var totalActiveCurrentOffer = offStatusCurrentData[i].sum;
-  //     }
-  //   }
-  // }
-
-  // COUNT ALL ACTIVE OFFER
-  const offStatusCurrentData2 = await Offer.aggregate([
-    filterCurretDatas2,
-    {
-      '$group': {
-        '_id': '$status',
-        'sum': { '$sum': 1 }
-      }
-    }
-  ]).sort({ status: -1 }).exec();
-  var totalActiveCurrentOffer2 = 0;
-  if (Array.isArray(offStatusCurrentData2) && offStatusCurrentData2.length > 0) {
-    for (let i = 0; i < offStatusCurrentData2.length; i++) {
-      if (offStatusCurrentData2[i]._id == "active") {
-        var totalActiveCurrentOffer2 = offStatusCurrentData2[i].sum;
-      }
-    }
-  }
-
-  // console.log("totalActiveCurrentOffer2=== " + totalActiveCurrentOffer2);
-
-  // console.log("totalOffers=== " + totalOffers);
-  const totalActivePreviousOffer = 0;
-  // const offStatusPreviousData = await Offer.aggregate([
-  //   filterPreviousDatas,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActivePreviousOffer = 0;
-  // if (Array.isArray(offStatusPreviousData) && offStatusPreviousData.length > 0) {
-  //   for (let i = 0; i < offStatusPreviousData.length; i++) {
-  //     if (offStatusPreviousData[i]._id == "active") {
-  //       var totalActivePreviousOffer = offStatusPreviousData[i].sum;
-  //     }
-  //   }
-  // }
-
   // RETARGETING CAMPAING START
   var totalOffersRT = 0;
   if (advertiserId) {
-
-    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
-
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] } };
-
-    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { 'trackier_adv_id': advertiserId }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -3008,12 +3645,7 @@ exports.dashboardTopHeader = async (req, res) => {
     }
 
   } else if (Array.isArray(adv_id) && adv_id.length > 0) {
-
-    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
-
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] } };
-
-    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { trackier_adv_id: { $in: adv_id } }] }).exec();
       totalOffersRT = parseInt(resultRT.length);
@@ -3029,11 +3661,7 @@ exports.dashboardTopHeader = async (req, res) => {
       console.log(err);
     }
   } else {
-    // var filterCurretDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: currentDateStartVal, $lte: currentDateEndVal } }] } };
-
     var filterCurretDatasRT2 = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }] } };
-
-    // var filterPreviousDatasRT = { '$match': { '$and': [{ 'trackier_camp_id': { $ne: 0 } }, { 'campaign_type': 'RETARGETING' }, { "created_on": { $gte: newDatesPrevStartVal, $lte: newDatesPrevPEndVal } }] } };
     try {
       let resultRT = await Offer.find({ '$and': [{ 'trackier_camp_id': { '$ne': 0 } }, { 'campaign_type': 'RETARGETING' }] }).exec();
       //console.log(resultRT);
@@ -3043,71 +3671,31 @@ exports.dashboardTopHeader = async (req, res) => {
     }
   }
 
+  const totalActiveCurrentOffer = 0;
+  const totalActivePreviousOffer = 0;
   const totalActiveCurrentOfferRT = 0;
-  // const offStatusCurrentDataRT = await Offer.aggregate([
-  //   filterCurretDatasRT,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActiveCurrentOfferRT = 0;
-  // if (Array.isArray(offStatusCurrentDataRT) && offStatusCurrentDataRT.length > 0) {
-  //   for (let i = 0; i < offStatusCurrentDataRT.length; i++) {
-  //     if (offStatusCurrentDataRT[i]._id == "active") {
-  //       var totalActiveCurrentOfferRT = offStatusCurrentDataRT[i].sum;
-  //     }
-  //   }
-  // }
-
-  // COUNT ALL TOTAL RE-TARGETING ACTIVE OFFER
-  const offStatusCurrentDataRT2 = await Offer.aggregate([
-    filterCurretDatasRT2,
-    {
-      '$group': {
-        '_id': '$status',
-        'sum': { '$sum': 1 }
-      }
-    }
-  ]).sort({ status: -1 }).exec();
-  var totalActiveCurrentOfferRT2 = 0;
-  if (Array.isArray(offStatusCurrentDataRT2) && offStatusCurrentDataRT2.length > 0) {
-    for (let i = 0; i < offStatusCurrentDataRT2.length; i++) {
-      if (offStatusCurrentDataRT2[i]._id == "active") {
-        var totalActiveCurrentOfferRT2 = offStatusCurrentDataRT2[i].sum;
-      }
-    }
-  }
-
   const totalActivePreviousOfferRT = 0;
-
-  // const offStatusPreviousDataRT = await Offer.aggregate([
-  //   filterPreviousDatasRT,
-  //   {
-  //     '$group': {
-  //       '_id': '$status',
-  //       'sum': { '$sum': 1 }
-  //     }
-  //   }
-  // ]).sort({ status: -1 }).exec();
-  // var totalActivePreviousOfferRT = 0;
-  // if (Array.isArray(offStatusPreviousDataRT) && offStatusPreviousDataRT.length > 0) {
-  //   for (let i = 0; i < offStatusPreviousDataRT.length; i++) {
-  //     if (offStatusPreviousDataRT[i]._id == "active") {
-  //       var totalActivePreviousOfferRT = offStatusPreviousDataRT[i].sum;
-  //     }
-  //   }
-  // }
-  // RETARGETING END
-
-  // console.log(JSON.stringify(filterCurretDatas));
-  // console.log(JSON.stringify(filterPreviousDatas));
-  //process.exit();
-
-  // console.log("SUDISH");
-  // console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + datePData + "zone=Asia/Kolkata");
+  let totalActiveCurrentOffer2 = 0;
+  let totalActiveCurrentOfferRT2 = 0;
+  try {
+    const data = await fetchOfferDataAnd(filterCurretDatas2, filterCurretDatasRT2);
+    if (Array.isArray(data.offStatusCurrentData2) && data.offStatusCurrentData2.length > 0) {
+      for (let i = 0; i < data.offStatusCurrentData2.length; i++) {
+        if (data.offStatusCurrentData2[i]._id == "active") {
+          totalActiveCurrentOffer2 = data.offStatusCurrentData2[i].sum;
+        }
+      }
+    }
+    if (Array.isArray(data.offStatusCurrentDataRT2) && data.offStatusCurrentDataRT2.length > 0) {
+      for (let i = 0; i < data.offStatusCurrentDataRT2.length; i++) {
+        if (data.offStatusCurrentDataRT2[i]._id == "active") {
+          totalActiveCurrentOfferRT2 = data.offStatusCurrentDataRT2[i].sum;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
 
   axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryStrings + "&" + adv_str + "&" + datePData + "zone=Asia/Kolkata", axios_header).then((staticsPRes) => {
     if (typeof staticsPRes.statusText !== 'undefined' && staticsPRes.statusText == "OK") {

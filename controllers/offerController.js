@@ -3272,6 +3272,1732 @@ exports.getDashboardOfferStatus = (req, res) => {
     })
 }
 
+async function fetchOfferData() {
+    try {
+        const [offDt, all_adv, all_pub, all_Applist] = await Promise.all([
+
+            Offer.find({}).sort({ _id: 1 }).exec(),
+            Advertiser.find({}).sort({ _id: 1 }).exec(),
+            Publishers.find({}).sort({ _id: 1 }).exec(),
+            Applist.find({}).sort({ _id: 1 }).exec(),
+        ]);
+        return { offDt, all_adv, all_pub, all_Applist };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+}
+
+// exports.getDashboardTopOffers = async (req, res) => {
+
+//     var pub_array = {};
+//     var adv_str = "";
+//     var adv_array = {};
+//     var off_total_budget_array = {};
+//     var off_icon_array = {};
+//     var pub_icon_array = {};
+//     var off_geo_array = {};
+//     var SDK_array = {};
+//     var DIRECT_array = {};
+//     var app_array = {};
+
+//     // check body key
+//     const paramSchema = { 1: 'start', 2: 'end', 3: 'camp_ids', 4: 'adv_ids' };
+//     var new_array = [];
+//     for (var key in paramSchema) {
+//         if (!req.body.hasOwnProperty(paramSchema[key])) {
+//             new_array.push(paramSchema[key]);
+//         }
+//     }
+
+//     if (new_array.length !== 0) {
+//         let text = new_array.toString();
+//         const response = { "status": false, "message": `${text} is missing!` };
+//         res.status(200).send(response);
+//         return;
+//     }
+//     const { source, camp_ids, adv_ids, start, end } = req.body;
+
+//     // Validate request
+//     if (!start || !end) {
+//         var requestVal = "";
+//         if (!start) {
+//             var requestVal = "start date";
+//         } else if (!end) {
+//             var requestVal = "end date";
+//         }
+//         // console.log(requestVal);
+//         const reMsg = { "success": false, "errors": { "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": requestVal + " is not allowed to be empty" } };
+//         res.status(400).send(reMsg);
+//         return;
+//     }
+
+//     // create offer on trackier
+//     const axios_header = {
+//         headers: {
+//             'x-api-key': process.env.API_KEY,
+//             'Content-Type': 'application/json'
+//         }
+//     };
+
+//     delete req.body.source;
+//     const advertiserId = parseInt(req.query.advertiserId);
+//     let newQueryString = querystring.stringify(req.body);
+//     let checqueryString = newQueryString.replace("&", " ");
+//     var endpoint = "reports/custom"
+
+//     var cmpsIds = camp_ids;
+//     delete req.body.camp_ids;
+//     var newQueryStrings = querystring.stringify(req.body);
+//     var newQueryAppStrings = querystring.stringify(req.body);
+
+
+//     var adv_str = "";
+//     if (advertiserId) {
+//         adv_str += "adv_ids[]=" + advertiserId + "&";
+//         if (Array.isArray(camp_ids) && camp_ids.length > 0) {
+//             newQueryString = newQueryString.replaceAll("camp_ids", "camp_ids[]");
+//         }
+//     } else {
+//         if (Array.isArray(camp_ids) && camp_ids.length > 0) {
+//             newQueryString = newQueryString.replaceAll("camp_ids", "camp_ids[]");
+//             if (Array.isArray(adv_ids) && adv_ids.length > 0) {
+//                 newQueryString = newQueryString.replaceAll("adv_ids", "adv_ids[]");
+//             }
+//         } else {
+//             if (Array.isArray(adv_ids) && adv_ids.length > 0) {
+//                 newQueryString = newQueryString.replaceAll("adv_ids", "adv_ids[]");
+//             } else {
+//                 await Advertiser.find().sort({ _id: 1 }).exec().then((advertisers) => {
+//                     if (advertisers) {
+//                         for (let i = 0; i < advertisers.length; i++) {
+//                             let adv = advertisers[i];
+//                             if (adv.tid > 0) {
+//                                 adv_str += ("adv_ids[]=" + adv.tid + "&");
+//                             }
+//                         }
+//                     }
+//                 }).catch(error => {
+//                     console.error(error);
+//                 });
+//             }
+//         }
+//     }
+
+
+//     // for SDK APPLIST 
+//     var sdk_str = "";
+//     if (advertiserId) {
+//         try {
+//             const all_SDK = await Offer.find({ '$and': [{ 'trackier_adv_id': advertiserId }, { 'source_type': "SDK" }, { 'trackier_camp_id': { '$ne': 0 } }] }).sort({ created_on: -1 }).exec();
+//             if (all_SDK) {
+//                 for (let p = 0; p < all_SDK.length; p++) {
+//                     let SDK = all_SDK[p];
+//                     SDK_array[SDK.trackier_camp_id] = SDK.trackier_camp_id;
+//                     if (cmpsIds.includes(SDK.trackier_camp_id)) {
+//                         sdk_str += ("camp_ids[]=" + SDK.trackier_camp_id + "&");
+//                     }
+//                 }
+//             }
+//         } catch (error) {
+//             console.error(error);
+//         }
+//         newQueryAppStrings += "&" + sdk_str;
+//     } else {
+//         try {
+//             const all_SDK = await Offer.find({ '$and': [{ 'source_type': "SDK" }, { 'trackier_camp_id': { '$ne': 0 } }] }).sort({ created_on: -1 }).exec();
+//             if (all_SDK) {
+//                 for (let p = 0; p < all_SDK.length; p++) {
+//                     let SDK = all_SDK[p];
+//                     SDK_array[SDK.trackier_camp_id] = SDK.trackier_camp_id;
+//                     if (cmpsIds.includes(SDK.trackier_camp_id)) {
+//                         sdk_str += ("camp_ids[]=" + SDK.trackier_camp_id + "&");
+//                     }
+//                 }
+//             }
+//         } catch (error) {
+//             console.error(error);
+//         }
+//         newQueryAppStrings += "&" + sdk_str;
+//     }
+
+//     // FOR DIRECT OFFER TOP SOURCE 
+//     var direct_str = "";
+//     if (advertiserId) {
+//         try {
+//             const all_DIRECT = await Offer.find({ '$and': [{ 'trackier_adv_id': advertiserId }, { 'source_type': "DIRECT" }, { 'trackier_camp_id': { '$ne': 0 } }] }).sort({ created_on: -1 }).exec();
+//             if (all_DIRECT) {
+//                 for (let p = 0; p < all_DIRECT.length; p++) {
+//                     let DIRECT = all_DIRECT[p];
+//                     DIRECT_array[DIRECT.trackier_camp_id] = DIRECT.trackier_camp_id;
+//                     if (cmpsIds.includes(DIRECT.trackier_camp_id)) {
+//                         direct_str += ("camp_ids[]=" + DIRECT.trackier_camp_id + "&");
+//                     }
+//                 }
+//             }
+//         } catch (error) {
+//             console.error(error);
+//         }
+//         newQueryStrings += "&" + direct_str;
+//     } else {
+//         try {
+//             const all_DIRECT = await Offer.find({ '$and': [{ 'source_type': "DIRECT" }, { 'trackier_camp_id': { '$ne': 0 } }] }).sort({ created_on: -1 }).exec();
+//             if (all_DIRECT) {
+//                 for (let p = 0; p < all_DIRECT.length; p++) {
+//                     let DIRECT = all_DIRECT[p];
+//                     DIRECT_array[DIRECT.trackier_camp_id] = DIRECT.trackier_camp_id;
+//                     if (cmpsIds.includes(DIRECT.trackier_camp_id)) {
+//                         direct_str += ("camp_ids[]=" + DIRECT.trackier_camp_id + "&");
+//                     }
+//                 }
+//             }
+//         } catch (error) {
+//             console.error(error);
+//         }
+//         newQueryStrings += "&" + direct_str;
+//     }
+//     // END FOR DIRECT OFFER TOP SOURCE
+
+//     // get offer data
+//     await Offer.find({}).sort({ _id: 1 }).exec().then((offDt) => {
+//         if (offDt) {
+//             for (let k = 0; k < offDt.length; k++) {
+//                 let off_icon = offDt[k];
+//                 off_icon_array[off_icon.trackier_camp_id] = off_icon.icon;
+//                 let off_geo = offDt[k];
+//                 off_geo_array[off_geo.trackier_camp_id] = ucfirst(off_geo.country);
+//                 off_total_budget_array[off_icon.trackier_camp_id] = off_icon.total_budget;
+//             }
+//         }
+//     }).catch(error => {
+//         console.error(error);
+//     });
+
+
+//     // get all advertisers
+//     await Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
+//         if (all_adv) {
+//             for (let k = 0; k < all_adv.length; k++) {
+//                 let adv = all_adv[k];
+//                 adv_array[adv.tid] = ucfirst(adv.organization);
+//             }
+//         }
+//     }).catch(error => {
+//         console.error(error);
+//     });
+
+//     // get all publishers
+//     await Publishers.find({}).sort({ _id: 1 }).exec().then((all_pub) => {
+//         if (all_pub) {
+//             for (let k = 0; k < all_pub.length; k++) {
+//                 let pub = all_pub[k];
+//                 pub_icon_array[pub.pub_id] = pub.icon;
+//                 pub_array[pub.pub_id] = ucfirst(pub.pub_name);
+//             }
+//         }
+//     }).catch(error => {
+//         console.error(error);
+//     });
+
+
+//     // get all app name
+//     await Applist.find({}).sort({ _id: 1 }).exec().then((all_Applist) => {
+//         if (all_Applist) {
+//             for (let m = 0; m < all_Applist.length; m++) {
+//                 let app = all_Applist[m];
+//                 app_array[app.AppBundle] = app.App_Name + "||" + app.Category + "||" + app.CTR;
+//             }
+//         }
+//     }).catch(error => {
+//         console.error(error);
+//     })
+
+
+//     if (source == 'publishers') {
+//         console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=publisher_id&" + newQueryStrings + "zone=Asia/Kolkata");
+
+//         axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=publisher_id&" + newQueryStrings + "zone=Asia/Kolkata", axios_header).then(async (staticsPubRes) => {
+
+
+//             if (typeof staticsPubRes.statusText !== 'undefined' && staticsPubRes.statusText == "OK") {
+
+//                 var reportData = [];
+//                 if (Array.isArray(staticsPubRes.data.records) && staticsPubRes.data.records.length > 0) {
+//                     const advArrData = staticsPubRes.data.records;
+//                     for (let j = 0; j < advArrData.length; j++) {
+//                         let advTrkData = advArrData[j];
+
+
+//                         let offer_name = advTrkData.campaign_name.replace("AL-", "");
+
+//                         //console.log(adv_array[advTrkData.advertiser_id]);
+//                         // console.log(adv_array);
+
+//                         if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+//                             var advertiser_name = adv_array[advTrkData.advertiser_id];
+//                         } else {
+//                             var advertiser_name = advTrkData.advertiser;
+//                         }
+
+
+//                         if ((checqueryString.indexOf("app_id") !== -1)) {
+//                             var app_id = advTrkData.app_name;
+//                         } else {
+//                             var app_id = "";
+//                         }
+
+
+//                         if ((checqueryString.indexOf("placement") !== -1)) {
+//                             var source = advTrkData.source;
+//                         } else {
+//                             var source = "";
+//                         }
+
+//                         if (pub_array.hasOwnProperty(advTrkData.publisher_id)) {
+//                             var publisher_name = pub_array[advTrkData.publisher_id];
+//                         } else {
+//                             var publisher_name = "";
+//                         }
+
+
+//                         var app_name = "";
+//                         if ((checqueryString.indexOf("app_name") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 app_name = appNameSplit[0];
+//                             } else {
+//                                 app_name = advTrkData.app_name;
+//                             }
+//                         }
+
+
+//                         var audienc_interest = "";
+//                         if ((checqueryString.indexOf("audienc_int") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 var audienc_interest = appNameSplit[1];
+//                             } else {
+//                                 var audienc_interest = "";
+//                             }
+//                         }
+
+//                         var impression = '';
+//                         if (((checqueryString.indexOf("app_id") !== -1) || (checqueryString.indexOf("app_name") !== -1)) && (checqueryString.indexOf("cr_name") == -1)) {
+//                             impression = 0;
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 let clickImpC = (advTrkData.grossClicks / parseFloat(appNameSplit[2])) * 100;
+//                                 impression = Math.round(clickImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+//                         if ((checqueryString.indexOf("app_id") == -1) && (checqueryString.indexOf("app_name") == -1) && (checqueryString.indexOf("cr_name") !== -1)) {
+//                             impression = 0;
+//                             if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+//                                 let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+//                                 impression = Math.round(cretiveImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+
+//                         reportData.push({
+//                             "campaign_name": offer_name,
+//                             "campaign_id": advTrkData.campaign_id,
+//                             "campaign_status": advTrkData.campaign_status,
+//                             "campaign_type": "",
+//                             "campaign_geo": "",
+//                             "camp_icon": "",
+//                             "campaign_os": "Android",
+//                             "advertiser": advertiser_name,
+//                             "advertiser_id": advTrkData.advertiser_id,
+//                             "goal_name": advTrkData.goal_name,
+//                             app_id,
+//                             source,
+//                             "publisher_id": advTrkData.publisher_id,
+//                             publisher_name,
+//                             app_name,
+//                             "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+//                             impression,
+//                             audienc_interest,
+//                             "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+//                             "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+//                             "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+//                             "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+//                             "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+//                             "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+//                             "currency": advTrkData.currency,
+//                             "campaign_payout": advTrkData.campaign_payout,
+//                             "grossClicks": advTrkData.grossClicks,
+//                             "grossConversions": advTrkData.grossConversions,
+//                             "grossRevenue": advTrkData.grossRevenue,
+//                             "grossPayableConversions": 0,
+//                             "grossInstall": 0,
+//                             "total_budget": 0
+//                         });
+//                     }
+//                 }
+
+//                 var newData = {};
+//                 var uniqGoalNames = [];
+//                 var n_uniqGoalNames = [];
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     for (let i = 0; i < reportData.length; i++) {
+//                         var r = reportData[i];
+//                         if ((uniqGoalNames.indexOf(r.goal_name) == -1)) {
+//                             uniqGoalNames.push(r.goal_name);
+//                         }
+//                     }
+//                 }
+
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     uniqGoalNames.unshift('install');
+//                     //uniqGoalNames = array_unique($uniqGoalNames);
+//                     for (var i = 0; i < uniqGoalNames.length; i++) {
+//                         if (n_uniqGoalNames.indexOf(uniqGoalNames[i]) == -1) n_uniqGoalNames.push(uniqGoalNames[i]);
+//                     }
+//                 }
+
+
+//                 for (let i = 0; i < reportData.length; i++) {
+//                     let r = reportData[i];
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.source = 'NA';
+//                     }
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.publisher_id = 'NA';
+//                     }
+
+//                     if (DIRECT_array.hasOwnProperty(r.campaign_id)) {
+//                         r.app_name = 'NA';
+//                     }
+
+//                     if ((checqueryString.indexOf("goal_name") !== -1)) {
+
+//                         for (let q = 0; q < n_uniqGoalNames.length; q++) {
+//                             let gname = n_uniqGoalNames[q];
+//                             if (r.goal_name != gname) {
+//                                 r[gname] = 0;
+//                             } else {
+//                                 r[gname] = r.grossConversions;
+//                             }
+//                         }
+//                     }
+
+//                     var superKey = "";
+//                     if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//                         superKey += r.campaign_name;
+//                     }
+//                     if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//                         superKey += r.advertiser;
+//                     }
+//                     if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//                         superKey += r.advertiser_id;
+//                     }
+//                     if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//                         superKey += r.campaign_status;
+//                     }
+//                     if (typeof r.publisher_id !== 'undefined' && r.publisher_id !== "") {
+//                         superKey += r.publisher_id;
+//                     }
+//                     if (typeof r.source !== 'undefined' && r.source !== "") {
+//                         superKey += r.source;
+//                     }
+//                     if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+//                         superKey += r.app_name;
+//                     }
+//                     if (typeof r.cr_name !== 'undefined' && r.cr_name !== "") {
+//                         superKey += r.cr_name;
+//                     }
+//                     if (typeof r.goal_id !== 'undefined' && r.goal_id !== "") {
+//                         superKey += r.goal_id;
+//                     }
+//                     if (typeof r.country !== 'undefined' && r.country !== "") {
+//                         superKey += r.country;
+//                     }
+//                     if (typeof r.region !== 'undefined' && r.region !== "") {
+//                         superKey += r.region;
+//                     }
+//                     if (typeof r.city !== 'undefined' && r.city !== "") {
+//                         superKey += r.city;
+//                     }
+//                     if (typeof r.month !== 'undefined' && r.month !== "") {
+//                         superKey += r.month;
+//                     }
+//                     if (typeof r.created !== 'undefined' && r.created !== "") {
+//                         superKey += r.created;
+//                     }
+//                     if (typeof r.hour !== 'undefined' && r.hour !== "") {
+//                         superKey += r.hour;
+//                     }
+
+//                     if (newData[superKey]) {
+//                         newData[superKey]['grossClicks'] += r.grossClicks;
+//                         newData[superKey]['grossConversions'] += r.grossConversions;
+//                         newData[superKey]['grossRevenue'] += r.grossRevenue;
+
+//                         for (let s = 0; s < n_uniqGoalNames.length; s++) {
+//                             let gname = n_uniqGoalNames[s];
+//                             if (r.goal_name === gname) {
+//                                 if (r.grossConversions > 0) {
+//                                     newData[superKey][gname] += r.grossConversions;
+//                                 } else {
+//                                     newData[superKey][gname] += 0;
+//                                 }
+//                             }
+//                         }
+//                     } else {
+//                         newData[superKey] = r;
+//                         if (checqueryString.indexOf("audienc_int") !== -1) {
+//                             newData[superKey]['audienc_int'] = r.app_name;
+//                         }
+//                     }
+//                     if (r.grossRevenue > 0) {
+//                         newData[superKey]['grossPayableConversions'] += r.grossConversions;
+//                     }
+//                     if (r.goal_name == 'install') {
+//                         newData[superKey]['grossInstall'] += r.grossConversions;
+//                     } else {
+//                         newData[superKey]['grossInstall'] += 0;
+//                     }
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_type'] = "SDK";
+//                     } else {
+//                         newData[superKey]['campaign_type'] = "DIRECT";
+//                     }
+
+//                     if (off_geo_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_geo'] = off_geo_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['campaign_geo'] = "";
+//                     }
+
+//                     if (off_total_budget_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['total_budget'] = off_total_budget_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['total_budget'] = "";
+//                     }
+//                     const regex = /camp_ids\[\]=/;
+//                     const exists = regex.test(newQueryStrings);
+//                     if (exists) {
+
+//                         if (off_icon_array.hasOwnProperty(r.campaign_id)) {
+//                             newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+//                         } else {
+//                             newData[superKey]['camp_icon'] = "";
+//                         }
+//                     }
+//                 }
+
+//                 const data_obj_to_pub_arr = Object.values(newData);
+//                 const newArrDataByPubClick = data_obj_to_pub_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+
+//                 if (direct_str !== "") {
+//                     var objFilterDataTopsource = newArrDataByPubClick;
+//                 } else {
+//                     var objFilterDataTopsource = [];
+//                 }
+
+
+//                 console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=app_name&" + newQueryAppStrings + "zone=Asia/Kolkata");
+
+//                 axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=app_name&" + newQueryAppStrings + "zone=Asia/Kolkata", axios_header).then(async (staticsAppRes) => {
+//                     if (typeof staticsAppRes.statusText !== 'undefined' && staticsAppRes.statusText == "OK") {
+
+//                         var reportAppData = [];
+//                         if (Array.isArray(staticsAppRes.data.records) && staticsAppRes.data.records.length > 0) {
+//                             const advArrData = staticsAppRes.data.records;
+//                             for (let j = 0; j < advArrData.length; j++) {
+//                                 let advTrkData = advArrData[j];
+
+
+//                                 let offer_name = advTrkData.campaign_name.replace("AL-", "");
+
+//                                 //console.log(adv_array[advTrkData.advertiser_id]);
+//                                 // console.log(adv_array);
+
+//                                 if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+//                                     var advertiser_name = adv_array[advTrkData.advertiser_id];
+//                                 } else {
+//                                     var advertiser_name = advTrkData.advertiser;
+//                                 }
+
+
+//                                 if ((checqueryString.indexOf("app_id") !== -1)) {
+//                                     var app_id = advTrkData.app_name;
+//                                 } else {
+//                                     var app_id = "";
+//                                 }
+
+
+//                                 if ((checqueryString.indexOf("placement") !== -1)) {
+//                                     var source = advTrkData.source;
+//                                 } else {
+//                                     var source = "";
+//                                 }
+
+//                                 if (pub_array.hasOwnProperty(advTrkData.publisher_id)) {
+//                                     var publisher_name = pub_array[advTrkData.publisher_id];
+//                                 } else {
+//                                     var publisher_name = "";
+//                                 }
+
+
+//                                 var app_name = "";
+//                                 if ((checqueryString.indexOf("app_name") !== -1)) {
+//                                     if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                         let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                         app_name = appNameSplit[0];
+//                                     } else {
+//                                         app_name = advTrkData.app_name;
+//                                     }
+//                                 }
+
+
+//                                 var audienc_interest = "";
+//                                 if ((checqueryString.indexOf("audienc_int") !== -1)) {
+//                                     if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                         let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                         var audienc_interest = appNameSplit[1];
+//                                     } else {
+//                                         var audienc_interest = "";
+//                                     }
+//                                 }
+
+//                                 var impression = '';
+//                                 if (((checqueryString.indexOf("app_id") !== -1) || (checqueryString.indexOf("app_name") !== -1)) && (checqueryString.indexOf("cr_name") == -1)) {
+//                                     impression = 0;
+//                                     if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                         let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                         let clickImpC = (advTrkData.grossClicks / parseFloat(appNameSplit[2])) * 100;
+//                                         impression = Math.round(clickImpC);
+//                                     } else {
+//                                         impression = 0;
+//                                     }
+//                                 }
+
+//                                 if ((checqueryString.indexOf("app_id") == -1) && (checqueryString.indexOf("app_name") == -1) && (checqueryString.indexOf("cr_name") !== -1)) {
+//                                     impression = 0;
+//                                     if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+//                                         let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+//                                         impression = Math.round(cretiveImpC);
+//                                     } else {
+//                                         impression = 0;
+//                                     }
+//                                 }
+
+//                                 reportAppData.push({
+//                                     "campaign_name": offer_name,
+//                                     "campaign_id": advTrkData.campaign_id,
+//                                     "campaign_status": advTrkData.campaign_status,
+//                                     "campaign_type": "",
+//                                     "campaign_geo": "",
+//                                     "camp_icon": "",
+//                                     "campaign_os": "Android",
+//                                     "advertiser": advertiser_name,
+//                                     "advertiser_id": advTrkData.advertiser_id,
+//                                     "goal_name": advTrkData.goal_name,
+//                                     app_id,
+//                                     source,
+//                                     "publisher_id": advTrkData.publisher_id,
+//                                     publisher_name,
+//                                     app_name,
+//                                     "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+//                                     impression,
+//                                     audienc_interest,
+//                                     "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+//                                     "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+//                                     "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+//                                     "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+//                                     "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+//                                     "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+//                                     "currency": advTrkData.currency,
+//                                     "campaign_payout": advTrkData.campaign_payout,
+//                                     "grossClicks": advTrkData.grossClicks,
+//                                     "grossConversions": advTrkData.grossConversions,
+//                                     "grossRevenue": advTrkData.grossRevenue,
+//                                     "grossPayableConversions": 0,
+//                                     "grossInstall": 0,
+//                                     "total_budget": 0
+//                                 });
+//                             }
+//                         }
+
+//                         var newAppData = {};
+//                         var uniqGoalNames = [];
+//                         var n_uniqGoalNames = [];
+//                         if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                             for (let i = 0; i < reportAppData.length; i++) {
+//                                 var r = reportAppData[i];
+//                                 if ((uniqGoalNames.indexOf(r.goal_name) == -1)) {
+//                                     uniqGoalNames.push(r.goal_name);
+//                                 }
+//                             }
+//                         }
+
+//                         if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                             uniqGoalNames.unshift('install');
+//                             //uniqGoalNames = array_unique($uniqGoalNames);
+//                             for (var i = 0; i < uniqGoalNames.length; i++) {
+//                                 if (n_uniqGoalNames.indexOf(uniqGoalNames[i]) == -1) n_uniqGoalNames.push(uniqGoalNames[i]);
+//                             }
+//                         }
+
+
+//                         for (let i = 0; i < reportAppData.length; i++) {
+//                             let r = reportAppData[i];
+
+//                             if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                                 r.source = 'NA';
+//                             }
+//                             if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                                 r.publisher_id = 'NA';
+//                             }
+
+//                             if (DIRECT_array.hasOwnProperty(r.campaign_id)) {
+//                                 r.app_name = 'NA';
+//                             }
+
+//                             if ((checqueryString.indexOf("goal_name") !== -1)) {
+
+//                                 for (let q = 0; q < n_uniqGoalNames.length; q++) {
+//                                     let gname = n_uniqGoalNames[q];
+//                                     if (r.goal_name != gname) {
+//                                         r[gname] = 0;
+//                                     } else {
+//                                         r[gname] = r.grossConversions;
+//                                     }
+//                                 }
+//                             }
+
+//                             var superKey = "";
+//                             if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//                                 superKey += r.campaign_name;
+//                             }
+//                             if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//                                 superKey += r.advertiser;
+//                             }
+//                             if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//                                 superKey += r.advertiser_id;
+//                             }
+//                             if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//                                 superKey += r.campaign_status;
+//                             }
+//                             if (typeof r.publisher_id !== 'undefined' && r.publisher_id !== "") {
+//                                 superKey += r.publisher_id;
+//                             }
+//                             if (typeof r.source !== 'undefined' && r.source !== "") {
+//                                 superKey += r.source;
+//                             }
+//                             if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+//                                 superKey += r.app_name;
+//                             }
+//                             if (typeof r.cr_name !== 'undefined' && r.cr_name !== "") {
+//                                 superKey += r.cr_name;
+//                             }
+//                             if (typeof r.goal_id !== 'undefined' && r.goal_id !== "") {
+//                                 superKey += r.goal_id;
+//                             }
+//                             if (typeof r.country !== 'undefined' && r.country !== "") {
+//                                 superKey += r.country;
+//                             }
+//                             if (typeof r.region !== 'undefined' && r.region !== "") {
+//                                 superKey += r.region;
+//                             }
+//                             if (typeof r.city !== 'undefined' && r.city !== "") {
+//                                 superKey += r.city;
+//                             }
+//                             if (typeof r.month !== 'undefined' && r.month !== "") {
+//                                 superKey += r.month;
+//                             }
+//                             if (typeof r.created !== 'undefined' && r.created !== "") {
+//                                 superKey += r.created;
+//                             }
+//                             if (typeof r.hour !== 'undefined' && r.hour !== "") {
+//                                 superKey += r.hour;
+//                             }
+
+//                             if (newAppData[superKey]) {
+//                                 newAppData[superKey]['grossClicks'] += r.grossClicks;
+//                                 newAppData[superKey]['grossConversions'] += r.grossConversions;
+//                                 newAppData[superKey]['grossRevenue'] += r.grossRevenue;
+
+//                                 for (let s = 0; s < n_uniqGoalNames.length; s++) {
+//                                     let gname = n_uniqGoalNames[s];
+//                                     if (r.goal_name === gname) {
+//                                         if (r.grossConversions > 0) {
+//                                             newAppData[superKey][gname] += r.grossConversions;
+//                                         } else {
+//                                             newAppData[superKey][gname] += 0;
+//                                         }
+//                                     }
+//                                 }
+//                             } else {
+//                                 newAppData[superKey] = r;
+//                                 if (checqueryString.indexOf("audienc_int") !== -1) {
+//                                     newAppData[superKey]['audienc_int'] = r.app_name;
+//                                 }
+//                             }
+//                             if (r.grossRevenue > 0) {
+//                                 newAppData[superKey]['grossPayableConversions'] += r.grossConversions;
+//                             }
+//                             if (r.goal_name == 'install') {
+//                                 newAppData[superKey]['grossInstall'] += r.grossConversions;
+//                             } else {
+//                                 newAppData[superKey]['grossInstall'] += 0;
+//                             }
+
+//                             if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                                 newAppData[superKey]['campaign_type'] = "SDK";
+//                             } else {
+//                                 newAppData[superKey]['campaign_type'] = "DIRECT";
+//                             }
+
+//                             if (off_geo_array.hasOwnProperty(r.campaign_id)) {
+//                                 newAppData[superKey]['campaign_geo'] = off_geo_array[r.campaign_id];
+//                             } else {
+//                                 newAppData[superKey]['campaign_geo'] = "";
+//                             }
+
+//                             if (off_total_budget_array.hasOwnProperty(r.campaign_id)) {
+//                                 newAppData[superKey]['total_budget'] = off_total_budget_array[r.campaign_id];
+//                             } else {
+//                                 newAppData[superKey]['total_budget'] = "";
+//                             }
+//                             const regex = /camp_ids\[\]=/;
+//                             const exists = regex.test(newQueryAppStrings);
+//                             if (exists) {
+//                                 if (off_icon_array.hasOwnProperty(r.campaign_id)) {
+//                                     newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+//                                 } else {
+//                                     newData[superKey]['camp_icon'] = "";
+//                                 }
+//                             }
+//                         }
+
+//                         const data_obj_to_app_arr = Object.values(newAppData);
+//                         const newArrDataByAppClick = data_obj_to_app_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+
+//                         if (sdk_str !== "") {
+//                             var objFilterDataAppsource = newArrDataByAppClick;
+//                         } else {
+//                             var objFilterDataAppsource = [];
+//                         }
+
+//                         const response = { 'success': true, 'topOffers': objFilterDataTopsource, 'topsourceapp': objFilterDataAppsource };
+//                         res.status(200).send(response);
+//                         return;
+
+//                     } else {
+//                         const resMsg = { "success": false, "message": "No records found" };
+//                         res.status(200).send(resMsg);
+//                         return;
+//                     }
+//                 }).catch(err => {
+//                     console.log(err);
+//                     const errMsg = { "success": false, "errors": err.response.data.errors };
+//                     res.status(400).send(errMsg);
+//                     return;
+//                 });
+
+//             } else {
+//                 const resMsg = { "success": false, "message": "No records found" };
+//                 res.status(200).send(resMsg);
+//                 return;
+//             }
+//         }).catch(err => {
+//             console.log(err);
+//             const errMsg = { "success": false, "errors": err.response.data.errors };
+//             res.status(400).send(errMsg);
+//             return;
+//         });
+//         // END GET DATA BY GEO
+//         // END GET DATA BY Publisher
+//     } else if (source == 'geo') {
+//         // START GET DATA BY GEO
+//         console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=country&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
+
+//         axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=country&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsResByGeo) => {
+//             if (typeof staticsResByGeo.statusText !== 'undefined' && staticsResByGeo.statusText == "OK") {
+
+//                 var reportData = [];
+//                 if (Array.isArray(staticsResByGeo.data.records) && staticsResByGeo.data.records.length > 0) {
+//                     const advArrData = staticsResByGeo.data.records;
+//                     for (let j = 0; j < advArrData.length; j++) {
+//                         let advTrkData = advArrData[j];
+
+
+//                         let offer_name = advTrkData.campaign_name.replace("AL-", "");
+
+//                         //console.log(adv_array[advTrkData.advertiser_id]);
+//                         // console.log(adv_array);
+
+//                         if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+//                             var advertiser_name = adv_array[advTrkData.advertiser_id];
+//                         } else {
+//                             var advertiser_name = advTrkData.advertiser;
+//                         }
+
+
+//                         if ((checqueryString.indexOf("app_id") !== -1)) {
+//                             var app_id = advTrkData.app_name;
+//                         } else {
+//                             var app_id = "";
+//                         }
+
+
+//                         if ((checqueryString.indexOf("placement") !== -1)) {
+//                             var source = advTrkData.source;
+//                         } else {
+//                             var source = "";
+//                         }
+
+//                         if (pub_array.hasOwnProperty(advTrkData.publisher_id)) {
+//                             var publisher_name = pub_array[advTrkData.publisher_id];
+//                         } else {
+//                             var publisher_name = "";
+//                         }
+
+
+//                         var app_name = "";
+//                         if ((checqueryString.indexOf("app_name") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 app_name = appNameSplit[0];
+//                             } else {
+//                                 app_name = advTrkData.app_name;
+//                             }
+//                         }
+
+
+//                         var audienc_interest = "";
+//                         if ((checqueryString.indexOf("audienc_int") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 var audienc_interest = appNameSplit[1];
+//                             } else {
+//                                 var audienc_interest = "";
+//                             }
+//                         }
+
+//                         var impression = '';
+//                         if (((checqueryString.indexOf("app_id") !== -1) || (checqueryString.indexOf("app_name") !== -1)) && (checqueryString.indexOf("cr_name") == -1)) {
+//                             impression = 0;
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 let clickImpC = (advTrkData.grossClicks / parseFloat(appNameSplit[2])) * 100;
+//                                 impression = Math.round(clickImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+//                         if ((checqueryString.indexOf("app_id") == -1) && (checqueryString.indexOf("app_name") == -1) && (checqueryString.indexOf("cr_name") !== -1)) {
+//                             impression = 0;
+//                             if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+//                                 let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+//                                 impression = Math.round(cretiveImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+
+//                         reportData.push({
+//                             "campaign_name": offer_name,
+//                             "campaign_id": advTrkData.campaign_id,
+//                             "campaign_status": advTrkData.campaign_status,
+//                             "campaign_type": "",
+//                             "campaign_geo": "",
+//                             "camp_icon": "",
+//                             "campaign_os": "Android",
+//                             "advertiser": advertiser_name,
+//                             "advertiser_id": advTrkData.advertiser_id,
+//                             "goal_name": advTrkData.goal_name,
+//                             app_id,
+//                             source,
+//                             "publisher_id": advTrkData.publisher_id,
+//                             publisher_name,
+//                             app_name,
+//                             "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+//                             impression,
+//                             audienc_interest,
+//                             "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+//                             "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+//                             "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+//                             "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+//                             "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+//                             "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+//                             "currency": advTrkData.currency,
+//                             "campaign_payout": advTrkData.campaign_payout,
+//                             "grossClicks": advTrkData.grossClicks,
+//                             "grossConversions": advTrkData.grossConversions,
+//                             "grossRevenue": advTrkData.grossRevenue,
+//                             "grossPayableConversions": 0,
+//                             "grossInstall": 0,
+//                             "total_budget": 0
+//                         });
+//                     }
+//                 }
+
+//                 var newData = {};
+//                 var uniqGoalNames = [];
+//                 var n_uniqGoalNames = [];
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     for (let i = 0; i < reportData.length; i++) {
+//                         var r = reportData[i];
+//                         if ((uniqGoalNames.indexOf(r.goal_name) == -1)) {
+//                             uniqGoalNames.push(r.goal_name);
+//                         }
+//                     }
+//                 }
+
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     uniqGoalNames.unshift('install');
+//                     //uniqGoalNames = array_unique($uniqGoalNames);
+//                     for (var i = 0; i < uniqGoalNames.length; i++) {
+//                         if (n_uniqGoalNames.indexOf(uniqGoalNames[i]) == -1) n_uniqGoalNames.push(uniqGoalNames[i]);
+//                     }
+//                 }
+
+
+//                 for (let i = 0; i < reportData.length; i++) {
+//                     let r = reportData[i];
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.source = 'NA';
+//                     }
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.publisher_id = 'NA';
+//                     }
+
+//                     if (DIRECT_array.hasOwnProperty(r.campaign_id)) {
+//                         r.app_name = 'NA';
+//                     }
+
+//                     if ((checqueryString.indexOf("goal_name") !== -1)) {
+
+//                         for (let q = 0; q < n_uniqGoalNames.length; q++) {
+//                             let gname = n_uniqGoalNames[q];
+//                             if (r.goal_name != gname) {
+//                                 r[gname] = 0;
+//                             } else {
+//                                 r[gname] = r.grossConversions;
+//                             }
+//                         }
+//                     }
+
+//                     var superKey = "";
+//                     if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//                         superKey += r.campaign_name;
+//                     }
+//                     if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//                         superKey += r.advertiser;
+//                     }
+//                     if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//                         superKey += r.advertiser_id;
+//                     }
+//                     if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//                         superKey += r.campaign_status;
+//                     }
+//                     if (typeof r.publisher_id !== 'undefined' && r.publisher_id !== "") {
+//                         superKey += r.publisher_id;
+//                     }
+//                     if (typeof r.source !== 'undefined' && r.source !== "") {
+//                         superKey += r.source;
+//                     }
+//                     if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+//                         superKey += r.app_name;
+//                     }
+//                     if (typeof r.cr_name !== 'undefined' && r.cr_name !== "") {
+//                         superKey += r.cr_name;
+//                     }
+//                     if (typeof r.goal_id !== 'undefined' && r.goal_id !== "") {
+//                         superKey += r.goal_id;
+//                     }
+//                     if (typeof r.country !== 'undefined' && r.country !== "") {
+//                         superKey += r.country;
+//                     }
+//                     if (typeof r.region !== 'undefined' && r.region !== "") {
+//                         superKey += r.region;
+//                     }
+//                     if (typeof r.city !== 'undefined' && r.city !== "") {
+//                         superKey += r.city;
+//                     }
+//                     if (typeof r.month !== 'undefined' && r.month !== "") {
+//                         superKey += r.month;
+//                     }
+//                     if (typeof r.created !== 'undefined' && r.created !== "") {
+//                         superKey += r.created;
+//                     }
+//                     if (typeof r.hour !== 'undefined' && r.hour !== "") {
+//                         superKey += r.hour;
+//                     }
+
+//                     if (newData[superKey]) {
+//                         newData[superKey]['grossClicks'] += r.grossClicks;
+//                         newData[superKey]['grossConversions'] += r.grossConversions;
+//                         newData[superKey]['grossRevenue'] += r.grossRevenue;
+
+//                         for (let s = 0; s < n_uniqGoalNames.length; s++) {
+//                             let gname = n_uniqGoalNames[s];
+//                             if (r.goal_name === gname) {
+//                                 if (r.grossConversions > 0) {
+//                                     newData[superKey][gname] += r.grossConversions;
+//                                 } else {
+//                                     newData[superKey][gname] += 0;
+//                                 }
+//                             }
+//                         }
+//                     } else {
+//                         newData[superKey] = r;
+//                         if (checqueryString.indexOf("audienc_int") !== -1) {
+//                             newData[superKey]['audienc_int'] = r.app_name;
+//                         }
+//                     }
+//                     if (r.grossRevenue > 0) {
+//                         newData[superKey]['grossPayableConversions'] += r.grossConversions;
+//                     }
+//                     if (r.goal_name == 'install') {
+//                         newData[superKey]['grossInstall'] += r.grossConversions;
+//                     } else {
+//                         newData[superKey]['grossInstall'] += 0;
+//                     }
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_type'] = "SDK";
+//                     } else {
+//                         newData[superKey]['campaign_type'] = "DIRECT";
+//                     }
+
+//                     if (off_geo_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_geo'] = off_geo_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['campaign_geo'] = "";
+//                     }
+
+//                     if (off_total_budget_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['total_budget'] = off_total_budget_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['total_budget'] = "";
+//                     }
+//                     if (off_icon_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['camp_icon'] = "";
+//                     }
+//                 }
+//                 const data_obj_to_arr_geo = Object.values(newData);
+//                 const newArrDataByClickGeo = data_obj_to_arr_geo.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+//                 const objFilterDataTopGeo = newArrDataByClickGeo
+
+//                 const response = { 'success': true, 'topOffers': objFilterDataTopGeo, 'topsourceapp': [] };
+//                 res.status(200).send(response);
+//                 return;
+
+//             } else {
+//                 const resMsg = { "success": false, "message": "No records found" };
+//                 res.status(200).send(resMsg);
+//                 return;
+//             }
+//         }).catch(err => {
+//             console.log(err);
+//             const errMsg = { "success": false, "errors": err.response.data.errors };
+//             res.status(400).send(errMsg);
+//             return;
+//         });
+//         // END GET DATA BY GEO)
+//     } else if (source == 'cr_name') {
+//         // START GET DATA BY GEO
+//         console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=campaign_status&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
+
+//         axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=campaign_status&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=cr_name&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsResByGeo) => {
+//             if (typeof staticsResByGeo.statusText !== 'undefined' && staticsResByGeo.statusText == "OK") {
+
+//                 var reportData = [];
+//                 if (Array.isArray(staticsResByGeo.data.records) && staticsResByGeo.data.records.length > 0) {
+//                     const advArrData = staticsResByGeo.data.records;
+//                     for (let j = 0; j < advArrData.length; j++) {
+//                         let advTrkData = advArrData[j];
+
+
+//                         let offer_name = advTrkData.campaign_name.replace("AL-", "");
+
+//                         //console.log(adv_array[advTrkData.advertiser_id]);
+//                         // console.log(adv_array);
+
+//                         if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+//                             var advertiser_name = adv_array[advTrkData.advertiser_id];
+//                         } else {
+//                             var advertiser_name = advTrkData.advertiser;
+//                         }
+
+
+//                         if ((checqueryString.indexOf("app_id") !== -1)) {
+//                             var app_id = advTrkData.app_name;
+//                         } else {
+//                             var app_id = "";
+//                         }
+
+
+//                         if ((checqueryString.indexOf("placement") !== -1)) {
+//                             var source = advTrkData.source;
+//                         } else {
+//                             var source = "";
+//                         }
+
+//                         if (pub_array.hasOwnProperty(advTrkData.publisher_id)) {
+//                             var publisher_name = pub_array[advTrkData.publisher_id];
+//                         } else {
+//                             var publisher_name = "";
+//                         }
+
+
+//                         var app_name = "";
+//                         if ((checqueryString.indexOf("app_name") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 app_name = appNameSplit[0];
+//                             } else {
+//                                 app_name = advTrkData.app_name;
+//                             }
+//                         }
+
+
+//                         var audienc_interest = "";
+//                         if ((checqueryString.indexOf("audienc_int") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 var audienc_interest = appNameSplit[1];
+//                             } else {
+//                                 var audienc_interest = "";
+//                             }
+//                         }
+
+//                         var impression = '';
+//                         if (((checqueryString.indexOf("app_id") !== -1) || (checqueryString.indexOf("app_name") !== -1)) && (checqueryString.indexOf("cr_name") == -1)) {
+//                             impression = 0;
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 let clickImpC = (advTrkData.grossClicks / parseFloat(appNameSplit[2])) * 100;
+//                                 impression = Math.round(clickImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+//                         if ((checqueryString.indexOf("app_id") == -1) && (checqueryString.indexOf("app_name") == -1) && (checqueryString.indexOf("cr_name") !== -1)) {
+//                             impression = 0;
+//                             if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+//                                 let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+//                                 impression = Math.round(cretiveImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+//                         reportData.push({
+//                             "campaign_name": offer_name,
+//                             "campaign_id": advTrkData.campaign_id,
+//                             "campaign_status": advTrkData.campaign_status,
+//                             "campaign_type": "",
+//                             "campaign_geo": "",
+//                             "camp_icon": "",
+//                             "campaign_os": "Android",
+//                             "advertiser": advertiser_name,
+//                             "advertiser_id": advTrkData.advertiser_id,
+//                             "goal_name": advTrkData.goal_name,
+//                             app_id,
+//                             source,
+//                             "publisher_id": advTrkData.publisher_id,
+//                             publisher_name,
+//                             app_name,
+//                             "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+//                             impression,
+//                             audienc_interest,
+//                             "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+//                             "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+//                             "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+//                             "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+//                             "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+//                             "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+//                             "currency": advTrkData.currency,
+//                             "campaign_payout": advTrkData.campaign_payout,
+//                             "grossClicks": advTrkData.grossClicks,
+//                             "grossConversions": advTrkData.grossConversions,
+//                             "grossRevenue": advTrkData.grossRevenue,
+//                             "grossPayableConversions": 0,
+//                             "grossInstall": 0,
+//                             "total_budget": 0
+//                         });
+//                     }
+//                 }
+
+//                 var newData = {};
+//                 var uniqGoalNames = [];
+//                 var n_uniqGoalNames = [];
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     for (let i = 0; i < reportData.length; i++) {
+//                         var r = reportData[i];
+//                         if ((uniqGoalNames.indexOf(r.goal_name) == -1)) {
+//                             uniqGoalNames.push(r.goal_name);
+//                         }
+//                     }
+//                 }
+
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     uniqGoalNames.unshift('install');
+//                     //uniqGoalNames = array_unique($uniqGoalNames);
+//                     for (var i = 0; i < uniqGoalNames.length; i++) {
+//                         if (n_uniqGoalNames.indexOf(uniqGoalNames[i]) == -1) n_uniqGoalNames.push(uniqGoalNames[i]);
+//                     }
+//                 }
+
+
+//                 for (let i = 0; i < reportData.length; i++) {
+//                     let r = reportData[i];
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.source = 'NA';
+//                     }
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.publisher_id = 'NA';
+//                     }
+
+//                     if (DIRECT_array.hasOwnProperty(r.campaign_id)) {
+//                         r.app_name = 'NA';
+//                     }
+
+//                     if ((checqueryString.indexOf("goal_name") !== -1)) {
+
+//                         for (let q = 0; q < n_uniqGoalNames.length; q++) {
+//                             let gname = n_uniqGoalNames[q];
+//                             if (r.goal_name != gname) {
+//                                 r[gname] = 0;
+//                             } else {
+//                                 r[gname] = r.grossConversions;
+//                             }
+//                         }
+//                     }
+
+//                     var superKey = "";
+//                     if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//                         superKey += r.campaign_name;
+//                     }
+//                     if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//                         superKey += r.advertiser;
+//                     }
+//                     if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//                         superKey += r.advertiser_id;
+//                     }
+//                     if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//                         superKey += r.campaign_status;
+//                     }
+//                     if (typeof r.publisher_id !== 'undefined' && r.publisher_id !== "") {
+//                         superKey += r.publisher_id;
+//                     }
+//                     if (typeof r.source !== 'undefined' && r.source !== "") {
+//                         superKey += r.source;
+//                     }
+//                     if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+//                         superKey += r.app_name;
+//                     }
+//                     if (typeof r.cr_name !== 'undefined' && r.cr_name !== "") {
+//                         superKey += r.cr_name;
+//                     }
+//                     if (typeof r.goal_id !== 'undefined' && r.goal_id !== "") {
+//                         superKey += r.goal_id;
+//                     }
+//                     if (typeof r.country !== 'undefined' && r.country !== "") {
+//                         superKey += r.country;
+//                     }
+//                     if (typeof r.region !== 'undefined' && r.region !== "") {
+//                         superKey += r.region;
+//                     }
+//                     if (typeof r.city !== 'undefined' && r.city !== "") {
+//                         superKey += r.city;
+//                     }
+//                     if (typeof r.month !== 'undefined' && r.month !== "") {
+//                         superKey += r.month;
+//                     }
+//                     if (typeof r.created !== 'undefined' && r.created !== "") {
+//                         superKey += r.created;
+//                     }
+//                     if (typeof r.hour !== 'undefined' && r.hour !== "") {
+//                         superKey += r.hour;
+//                     }
+
+//                     if (newData[superKey]) {
+//                         newData[superKey]['grossClicks'] += r.grossClicks;
+//                         newData[superKey]['grossConversions'] += r.grossConversions;
+//                         newData[superKey]['grossRevenue'] += r.grossRevenue;
+
+//                         for (let s = 0; s < n_uniqGoalNames.length; s++) {
+//                             let gname = n_uniqGoalNames[s];
+//                             if (r.goal_name === gname) {
+//                                 if (r.grossConversions > 0) {
+//                                     newData[superKey][gname] += r.grossConversions;
+//                                 } else {
+//                                     newData[superKey][gname] += 0;
+//                                 }
+//                             }
+//                         }
+//                     } else {
+//                         newData[superKey] = r;
+//                         if (checqueryString.indexOf("audienc_int") !== -1) {
+//                             newData[superKey]['audienc_int'] = r.app_name;
+//                         }
+//                     }
+//                     if (r.grossRevenue > 0) {
+//                         newData[superKey]['grossPayableConversions'] += r.grossConversions;
+//                     }
+//                     if (r.goal_name == 'install') {
+//                         newData[superKey]['grossInstall'] += r.grossConversions;
+//                     } else {
+//                         newData[superKey]['grossInstall'] += 0;
+//                     }
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_type'] = "SDK";
+//                     } else {
+//                         newData[superKey]['campaign_type'] = "DIRECT";
+//                     }
+
+//                     if (off_geo_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_geo'] = off_geo_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['campaign_geo'] = "";
+//                     }
+
+//                     if (off_total_budget_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['total_budget'] = off_total_budget_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['total_budget'] = "";
+//                     }
+//                     if (off_icon_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['camp_icon'] = "";
+//                     }
+//                 }
+//                 const data_obj_to_arr_geo = Object.values(newData);
+//                 const newArrDataByClickGeo = data_obj_to_arr_geo.sort((a, b) => b.grossClicks - a.grossClicks).slice();
+//                 const objFilterDataTopGeo = newArrDataByClickGeo
+
+//                 const response = { 'success': true, 'topOffers': objFilterDataTopGeo, 'topsourceapp': [] };
+//                 res.status(200).send(response);
+//                 return;
+
+//             } else {
+//                 const resMsg = { "success": false, "message": "No records found" };
+//                 res.status(200).send(resMsg);
+//                 return;
+//             }
+//         }).catch(err => {
+//             console.log(err);
+//             const errMsg = { "success": false, "errors": err.response.data.errors };
+//             res.status(400).send(errMsg);
+//             return;
+//         });
+//         // END GET DATA BY GEO)
+//     } else {
+//         axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=campaign_status&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=campaign_payout&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
+//             if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
+
+//                 var reportData = [];
+//                 if (Array.isArray(staticsRes.data.records) && staticsRes.data.records.length > 0) {
+//                     const advArrData = staticsRes.data.records;
+//                     for (let j = 0; j < advArrData.length; j++) {
+//                         let advTrkData = advArrData[j];
+
+
+//                         let offer_name = advTrkData.campaign_name.replace("AL-", "");
+
+//                         //console.log(adv_array[advTrkData.advertiser_id]);
+//                         // console.log(adv_array);
+
+//                         if (adv_array.hasOwnProperty(advTrkData.advertiser_id)) {
+//                             var advertiser_name = adv_array[advTrkData.advertiser_id];
+//                         } else {
+//                             var advertiser_name = advTrkData.advertiser;
+//                         }
+
+
+//                         if ((checqueryString.indexOf("app_id") !== -1)) {
+//                             var app_id = advTrkData.app_name;
+//                         } else {
+//                             var app_id = "";
+//                         }
+
+
+//                         if ((checqueryString.indexOf("placement") !== -1)) {
+//                             var source = advTrkData.source;
+//                         } else {
+//                             var source = "";
+//                         }
+
+//                         if (pub_array.hasOwnProperty(advTrkData.publisher_id)) {
+//                             var publisher_name = pub_array[advTrkData.publisher_id];
+//                         } else {
+//                             var publisher_name = "";
+//                         }
+
+
+//                         var app_name = "";
+//                         if ((checqueryString.indexOf("app_name") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 app_name = appNameSplit[0];
+//                             } else {
+//                                 app_name = advTrkData.app_name;
+//                             }
+//                         }
+
+
+//                         var audienc_interest = "";
+//                         if ((checqueryString.indexOf("audienc_int") !== -1)) {
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 var audienc_interest = appNameSplit[1];
+//                             } else {
+//                                 var audienc_interest = "";
+//                             }
+//                         }
+
+//                         var impression = '';
+//                         if (((checqueryString.indexOf("app_id") !== -1) || (checqueryString.indexOf("app_name") !== -1)) && (checqueryString.indexOf("cr_name") == -1)) {
+//                             impression = 0;
+//                             if (app_array.hasOwnProperty(advTrkData.app_name)) {
+//                                 let appNameSplit = app_array[advTrkData.app_name].split("||");
+//                                 let clickImpC = (advTrkData.grossClicks / parseFloat(appNameSplit[2])) * 100;
+//                                 impression = Math.round(clickImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+
+//                         if ((checqueryString.indexOf("app_id") == -1) && (checqueryString.indexOf("app_name") == -1) && (checqueryString.indexOf("cr_name") !== -1)) {
+//                             impression = 0;
+//                             if (CTR_array.hasOwnProperty(advTrkData.cr_name)) {
+//                                 let cretiveImpC = (advTrkData.grossClicks / parseFloat(CTR_array[advTrkData.cr_name])) * 100;
+//                                 impression = Math.round(cretiveImpC);
+//                             } else {
+//                                 impression = 0;
+//                             }
+//                         }
+//                         reportData.push({
+//                             "campaign_name": offer_name,
+//                             "campaign_id": advTrkData.campaign_id,
+//                             "campaign_status": advTrkData.campaign_status,
+//                             "campaign_type": "",
+//                             "campaign_geo": "",
+//                             "camp_icon": "",
+//                             "campaign_os": "Android",
+//                             "advertiser": advertiser_name,
+//                             "advertiser_id": advTrkData.advertiser_id,
+//                             "goal_name": advTrkData.goal_name,
+//                             app_id,
+//                             source,
+//                             "publisher_id": advTrkData.publisher_id,
+//                             publisher_name,
+//                             app_name,
+//                             "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+//                             impression,
+//                             audienc_interest,
+//                             "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+//                             "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+//                             "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+//                             "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+//                             "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+//                             "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+//                             "currency": advTrkData.currency,
+//                             "campaign_payout": advTrkData.campaign_payout,
+//                             "grossClicks": advTrkData.grossClicks,
+//                             "grossConversions": advTrkData.grossConversions,
+//                             "grossRevenue": advTrkData.grossRevenue,
+//                             "grossPayableConversions": 0,
+//                             "custInstall": 0,
+//                             "total_budget": 0
+//                         });
+
+//                     }
+//                 }
+
+//                 var newData = {};
+//                 var uniqGoalNames = [];
+//                 var n_uniqGoalNames = [];
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     for (let i = 0; i < reportData.length; i++) {
+//                         var r = reportData[i];
+//                         if ((uniqGoalNames.indexOf(r.goal_name) == -1)) {
+//                             uniqGoalNames.push(r.goal_name);
+//                         }
+//                     }
+//                 }
+
+//                 if ((checqueryString.indexOf("goal_name") !== -1)) {
+//                     uniqGoalNames.unshift('install');
+//                     //uniqGoalNames = array_unique($uniqGoalNames);
+//                     for (var i = 0; i < uniqGoalNames.length; i++) {
+//                         if (n_uniqGoalNames.indexOf(uniqGoalNames[i]) == -1) n_uniqGoalNames.push(uniqGoalNames[i]);
+//                     }
+//                 }
+
+
+//                 for (let i = 0; i < reportData.length; i++) {
+//                     let r = reportData[i];
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.source = 'NA';
+//                     }
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         r.publisher_id = 'NA';
+//                     }
+
+//                     if (DIRECT_array.hasOwnProperty(r.campaign_id)) {
+//                         r.app_name = 'NA';
+//                     }
+
+//                     if ((checqueryString.indexOf("goal_name") !== -1)) {
+
+//                         for (let q = 0; q < n_uniqGoalNames.length; q++) {
+//                             let gname = n_uniqGoalNames[q];
+//                             if (r.goal_name != gname) {
+//                                 r[gname] = 0;
+//                             } else {
+//                                 r[gname] = r.grossConversions;
+//                             }
+//                         }
+//                     }
+
+//                     var superKey = "";
+//                     if (typeof r.campaign_id !== 'undefined' && r.campaign_id !== "") {
+//                         superKey += r.campaign_name;
+//                     }
+//                     if (typeof r.advertiser !== 'undefined' && r.advertiser !== "") {
+//                         superKey += r.advertiser;
+//                     }
+//                     if (typeof r.advertiser_id !== 'undefined' && r.advertiser_id !== "") {
+//                         superKey += r.advertiser_id;
+//                     }
+//                     if (typeof r.campaign_status !== 'undefined' && r.campaign_status !== "") {
+//                         superKey += r.campaign_status;
+//                     }
+//                     if (typeof r.publisher_id !== 'undefined' && r.publisher_id !== "") {
+//                         superKey += r.publisher_id;
+//                     }
+//                     if (typeof r.source !== 'undefined' && r.source !== "") {
+//                         superKey += r.source;
+//                     }
+//                     if (typeof r.app_name !== 'undefined' && r.app_name !== "") {
+//                         superKey += r.app_name;
+//                     }
+//                     if (typeof r.cr_name !== 'undefined' && r.cr_name !== "") {
+//                         superKey += r.cr_name;
+//                     }
+//                     if (typeof r.goal_id !== 'undefined' && r.goal_id !== "") {
+//                         superKey += r.goal_id;
+//                     }
+//                     if (typeof r.country !== 'undefined' && r.country !== "") {
+//                         superKey += r.country;
+//                     }
+//                     if (typeof r.region !== 'undefined' && r.region !== "") {
+//                         superKey += r.region;
+//                     }
+//                     if (typeof r.city !== 'undefined' && r.city !== "") {
+//                         superKey += r.city;
+//                     }
+//                     if (typeof r.month !== 'undefined' && r.month !== "") {
+//                         superKey += r.month;
+//                     }
+//                     if (typeof r.created !== 'undefined' && r.created !== "") {
+//                         superKey += r.created;
+//                     }
+//                     if (typeof r.hour !== 'undefined' && r.hour !== "") {
+//                         superKey += r.hour;
+//                     }
+
+//                     if (newData[superKey]) {
+//                         newData[superKey]['grossClicks'] += r.grossClicks;
+//                         newData[superKey]['grossConversions'] += r.grossConversions;
+//                         newData[superKey]['grossRevenue'] += r.grossRevenue;
+
+//                         for (let s = 0; s < n_uniqGoalNames.length; s++) {
+//                             let gname = n_uniqGoalNames[s];
+//                             if (r.goal_name === gname) {
+//                                 if (r.grossConversions > 0) {
+//                                     newData[superKey][gname] += r.grossConversions;
+//                                 } else {
+//                                     newData[superKey][gname] += 0;
+//                                 }
+//                             }
+//                         }
+//                     } else {
+//                         newData[superKey] = r;
+//                         if (checqueryString.indexOf("audienc_int") !== -1) {
+//                             newData[superKey]['audienc_int'] = r.app_name;
+//                         }
+//                     }
+//                     if (r.grossRevenue > 0) {
+//                         newData[superKey]['grossPayableConversions'] += r.grossConversions;
+//                     }
+//                     if (r.goal_name == 'install') {
+//                         newData[superKey]['custInstall'] += r.grossConversions;
+//                     } else {
+//                         newData[superKey]['custInstall'] += 0;
+//                     }
+
+//                     if (SDK_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_type'] = "SDK";
+//                     } else {
+//                         newData[superKey]['campaign_type'] = "DIRECT";
+//                     }
+
+//                     if (off_geo_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['campaign_geo'] = off_geo_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['campaign_geo'] = "";
+//                     }
+
+//                     if (off_total_budget_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['total_budget'] = off_total_budget_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['total_budget'] = "";
+//                     }
+
+//                     if (off_icon_array.hasOwnProperty(r.campaign_id)) {
+//                         newData[superKey]['camp_icon'] = off_icon_array[r.campaign_id];
+//                     } else {
+//                         newData[superKey]['camp_icon'] = "";
+//                     }
+//                 }
+//                 const data_obj_to_arr = Object.values(newData);
+//                 const newArrDataByClick = data_obj_to_arr.sort((a, b) => b.grossClicks - a.grossClicks).slice(0, 10);
+
+//                 const response = { 'success': true, 'topOffers': newArrDataByClick, 'topsourceapp': [] };
+//                 res.status(200).send(response);
+//                 return;
+//             } else {
+//                 const resMsg = { "success": false, "message": "No records found" };
+//                 res.status(200).send(resMsg);
+//                 return;
+//             }
+
+//         }).catch(err => {
+//             console.log(err);
+//             const errMsg = { "success": false, "errors": err.response.data.errors };
+//             res.status(400).send(errMsg);
+//             return;
+//         });
+//     }
+
+// }
+
 exports.getDashboardTopOffers = async (req, res) => {
 
     var pub_array = {};
@@ -3442,59 +5168,102 @@ exports.getDashboardTopOffers = async (req, res) => {
     }
     // END FOR DIRECT OFFER TOP SOURCE
 
-    // get offer data
-    await Offer.find({}).sort({ _id: 1 }).exec().then((offDt) => {
-        if (offDt) {
-            for (let k = 0; k < offDt.length; k++) {
-                let off_icon = offDt[k];
+    try {
+        const dataOdt = await fetchOfferData();
+        if (Array.isArray(dataOdt.offDt) && dataOdt.offDt.length > 0) {
+            for (let k = 0; k < dataOdt.offDt.length; k++) {
+                let off_icon = dataOdt.offDt[k];
                 off_icon_array[off_icon.trackier_camp_id] = off_icon.icon;
-                let off_geo = offDt[k];
+                let off_geo = dataOdt.offDt[k];
                 off_geo_array[off_geo.trackier_camp_id] = ucfirst(off_geo.country);
                 off_total_budget_array[off_icon.trackier_camp_id] = off_icon.total_budget;
             }
         }
-    }).catch(error => {
-        console.error(error);
-    });
-
-
-    // get all advertisers
-    await Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
-        if (all_adv) {
-            for (let k = 0; k < all_adv.length; k++) {
-                let adv = all_adv[k];
+        if (Array.isArray(dataOdt.all_adv) && dataOdt.all_adv.length > 0) {
+            for (let k = 0; k < dataOdt.all_adv.length; k++) {
+                let adv = dataOdt.all_adv[k];
                 adv_array[adv.tid] = ucfirst(adv.organization);
             }
         }
-    }).catch(error => {
-        console.error(error);
-    });
+        if (Array.isArray(dataOdt.all_adv) && dataOdt.all_adv.length > 0) {
+            for (let k = 0; k < dataOdt.all_adv.length; k++) {
+                let adv = dataOdt.all_adv[k];
+                adv_array[adv.tid] = ucfirst(adv.organization);
+            }
+        }
 
-    // get all publishers
-    await Publishers.find({}).sort({ _id: 1 }).exec().then((all_pub) => {
-        if (all_pub) {
-            for (let k = 0; k < all_pub.length; k++) {
-                let pub = all_pub[k];
+        if (Array.isArray(dataOdt.all_pub) && dataOdt.all_pub.length > 0) {
+            for (let k = 0; k < dataOdt.all_pub.length; k++) {
+                let pub = dataOdt.all_pub[k];
                 pub_icon_array[pub.pub_id] = pub.icon;
                 pub_array[pub.pub_id] = ucfirst(pub.pub_name);
             }
         }
-    }).catch(error => {
-        console.error(error);
-    });
 
-
-    // get all app name
-    await Applist.find({}).sort({ _id: 1 }).exec().then((all_Applist) => {
-        if (all_Applist) {
-            for (let m = 0; m < all_Applist.length; m++) {
-                let app = all_Applist[m];
+        if (Array.isArray(dataOdt.all_Applist) && dataOdt.all_Applist.length > 0) {
+            for (let m = 0; m < dataOdt.all_Applist.length; m++) {
+                let app = dataOdt.all_Applist[m];
                 app_array[app.AppBundle] = app.App_Name + "||" + app.Category + "||" + app.CTR;
             }
         }
-    }).catch(error => {
-        console.error(error);
-    })
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+    // get offer data
+    // await Offer.find({}).sort({ _id: 1 }).exec().then((offDt) => {
+    //   if (offDt) {
+    //     for (let k = 0; k < offDt.length; k++) {
+    //       let off_icon = offDt[k];
+    //       off_icon_array[off_icon.trackier_camp_id] = off_icon.icon;
+    //       let off_geo = offDt[k];
+    //       off_geo_array[off_geo.trackier_camp_id] = ucfirst(off_geo.country);
+    //       off_total_budget_array[off_icon.trackier_camp_id] = off_icon.total_budget;
+    //     }
+    //   }
+    // }).catch(error => {
+    //   console.error(error);
+    // });
+
+
+    // get all advertisers
+    // await Advertiser.find({}).sort({ _id: 1 }).exec().then((all_adv) => {
+    //   if (all_adv) {
+    //     for (let k = 0; k < all_adv.length; k++) {
+    //       let adv = all_adv[k];
+    //       adv_array[adv.tid] = ucfirst(adv.organization);
+    //     }
+    //   }
+    // }).catch(error => {
+    //   console.error(error);
+    // });
+
+    // get all publishers
+    // await Publishers.find({}).sort({ _id: 1 }).exec().then((all_pub) => {
+    //   if (all_pub) {
+    //     for (let k = 0; k < all_pub.length; k++) {
+    //       let pub = all_pub[k];
+    //       pub_icon_array[pub.pub_id] = pub.icon;
+    //       pub_array[pub.pub_id] = ucfirst(pub.pub_name);
+    //     }
+    //   }
+    // }).catch(error => {
+    //   console.error(error);
+    // });
+
+
+    // get all app name
+    // await Applist.find({}).sort({ _id: 1 }).exec().then((all_Applist) => {
+    //   if (all_Applist) {
+    //     for (let m = 0; m < all_Applist.length; m++) {
+    //       let app = all_Applist[m];
+    //       app_array[app.AppBundle] = app.App_Name + "||" + app.Category + "||" + app.CTR;
+    //     }
+    //   }
+    // }).catch(error => {
+    //   console.error(error);
+    // })
+
 
 
     if (source == 'publishers') {
@@ -4979,7 +6748,6 @@ exports.getDashboardTopOffers = async (req, res) => {
             return;
         });
     }
-
 }
 
 
