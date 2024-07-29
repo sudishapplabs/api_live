@@ -62,7 +62,7 @@ exports.getTotalCapOffers = async (req, res) => {
             // STATUS DISABLED ON TRACKIER WHEN TOTAL BALANCE IS 1
             const campaignStatus = { "status": 'disabled' };
             console.log('API Update Status  on trackier Request');
-            await axios.put(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id, campaignStatus, axios_header).then((creativeUpload) => {
+            await axios.post(process.env.API_BASE_URL + "campaigns/" + offDt.trackier_camp_id, campaignStatus, axios_header).then((creativeUpload) => {
               if (typeof creativeUpload.data.success !== 'undefined' && creativeUpload.data.success == true) {
                 console.log('API Update Status on trackier Response');
               } else {
