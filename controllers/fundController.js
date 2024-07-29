@@ -83,8 +83,8 @@ exports.addFund = async (req, res) => {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://43.204.202.161:5003/v2/fund/success?tid=" + tid + "&amount=" + amount + "&added_by_name=" + encodeURI(added_by_name) + "&added_by_email=" + added_by_email,
-        "cancel_url": "http://43.204.202.161:5003/v2/fund/cancel?tid=" + tid + "&amount=" + amount + "&added_by_name=" + encodeURI(added_by_name) + "&added_by_email=" + added_by_email
+        "return_url": "https://api-beta.applabs.ai/v2/fund/success?tid=" + tid + "&amount=" + amount + "&added_by_name=" + encodeURI(added_by_name) + "&added_by_email=" + added_by_email,
+        "cancel_url": "https://api-beta.applabs.ai/v2/fund/cancel?tid=" + tid + "&amount=" + amount + "&added_by_name=" + encodeURI(added_by_name) + "&added_by_email=" + added_by_email
       },
       "transactions": [{
         "item_list": {
