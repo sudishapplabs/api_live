@@ -193,7 +193,7 @@ exports.addAudience = async (req, res) => {
       audience_name: ucfirst(DBdata.audience_name),
       adv_name: advDt.advName.toUpperCase(),
       //added_by: ucwords(added_by),
-      url: process.env.APPLABS_URL + 'CreateAudience',
+      url: process.env.APPLABS_URL + 'createAudience',
       base_url: process.env.APPLABS_URL
     }))
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -586,7 +586,7 @@ exports.updateAudience = (req, res) => {
         audience_name: ucfirst(audience_name),
         adv_name: advDt.advName.toUpperCase(),
         //added_by: ucwords(added_by),
-        url: process.env.APPLABS_URL + 'CreateAudience',
+        url: process.env.APPLABS_URL + 'createAudience',
         base_url: process.env.APPLABS_URL
       }))
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
