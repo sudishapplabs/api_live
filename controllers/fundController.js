@@ -302,31 +302,31 @@ exports.successPage = async (req, res) => {
                 // res.render('success');
 
 
-                res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+                res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
               } else {
                 const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
                 //res.status(200).send(resMsg);
                 //return;
-                res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+                res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
               }
             }).catch((error) => {
               const resMsg = { "status": false, "message": error.message };
               /*res.status(400).send(resMsg);
               return;*/
-              res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+              res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
             });
           } else {
             const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
             /*res.status(200).send(resMsg);
             return;*/
-            res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+            res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
           }
 
         }).catch((error) => {
           const resMsg = { "status": false, "message": error.message };
           /*res.status(400).send(resMsg);
           return;*/
-          res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+          res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
         });
       }
     });
@@ -353,18 +353,18 @@ exports.cancelPage = async (req, res) => {
         const resMsg = { 'success': true, 'message': 'Payment failed' };
         //res.status(200).send(resMsg);
         //return;
-        res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+        res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
       } else {
         const resMsg = { "success": false, "message": "Something went wrong please try again!!" };
         //res.status(200).send(resMsg);
         //return;
-        res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+        res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
       }
     }).catch((error) => {
       const resMsg = { "status": false, "message": error.message };
       //res.status(400).send(resMsg);
       //return;
-      res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+      res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
     });
     // res.render('cancel');
   } catch (error) {
@@ -372,7 +372,7 @@ exports.cancelPage = async (req, res) => {
     const resMsg = { "status": false, "message": error.message };
     //res.status(400).send(resMsg);
     //return;
-    res.status(200).redirect("https://beta.applabs.ai/FundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
+    res.status(200).redirect("https://console.applabs.ai/fundList?data=" + encodeURIComponent(JSON.stringify(resMsg)));
   }
 }
 
@@ -956,7 +956,7 @@ exports.addAdminFund = async (req, res) => {
               offer_name: "",
               category: "Fund",
 
-              subject_adv: 'Account ' + ucwords(updateBalance.organization) + ' Balance Low to run Offer',
+              subject_adv: 'Account ' + ucwords(updateBalance.organization) + ' Balance Low to run Campaign',
               message_adv: "Low Balance Alert! The current balance USD  <span class='text_primary'> " + parseFloat(curr_bal) + "</span>  in your Account  <span class='text_primary'> " + ucwords(updateBalance.organization) + "</span>  is lower than the minimum funds required to run your offers.",
 
               subject_sa: 'Account ' + ucwords(updateBalance.organization) + ' Balance Low',
@@ -995,7 +995,7 @@ exports.addAdminFund = async (req, res) => {
                   email: process.env.MAIL_FROM_EMAIL,
                 },
                 bcc: bcc_mail,
-                subject: 'Applabs Alert - Account ' + ucwords(updateBalance.organization) + ' Balance Low to run Offer',
+                subject: 'Applabs Alert - Account ' + ucwords(updateBalance.organization) + ' Balance Low to run Campaign',
                 html: messageBodyUser
               };
               //ES6
