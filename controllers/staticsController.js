@@ -3310,79 +3310,69 @@ exports.dashboardTopHeader = async (req, res) => {
               }, {}));
 
 
-            if (Array.isArray(result1) && result1.length > 0) {
-
-              const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
-              if (result1[0].grossClicks > 0) {
-                var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
-              } else {
-                var grossClicksPercentageData = 0;
-              }
-
-              const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
-              if (result1[0].grossConversions > 0) {
-                var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
-              } else {
-                var grossConversionsPercentageData = 0;
-              }
-
-
-              const grossRevenueDiff = (parseInt(result2[0].grossRevenue) - parseInt(result1[0].grossRevenue));
-              if (result1[0].grossRevenue > 0) {
-                var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
-              } else {
-                var grossRevenuePercentageData = 0;
-              }
-
-
-              const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
-              if (result1[0].converionCR > 0) {
-                var converionCRPercentageData = (converionCRPDiff * 100) / parseInt(result1[0].converionCR);
-              } else {
-                var converionCRPercentageData = 0;
-              }
-
-              const grossInstallDiff = (parseInt(result2[0].grossInstall) - parseInt(result1[0].grossInstall));
-              if (result1[0].grossInstall > 0) {
-                var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
-              } else {
-                var grossInstallPercentageData = 0;
-              }
-
-              const grossEventDiff = (parseInt(result2[0].grossEvents) - parseInt(result1[0].grossEvents));
-              if (result1[0].grossEvents > 0) {
-                var grossEventPercentageData = (grossEventDiff * 100) / parseInt(result1[0].grossEvents);
-              } else {
-                var grossEventPercentageData = 0;
-              }
-              const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
-              if (totalActivePreviousOffer > 0) {
-                var activePercentageData = (activePercentageDiff * 100) / parseInt(totalActivePreviousOffer);
-              } else {
-                var activePercentageData = 0;
-              }
-
-              const activePercentageDiffRT = (parseInt(totalActiveCurrentOfferRT) - parseInt(totalActivePreviousOfferRT));
-              if (totalActivePreviousOfferRT > 0) {
-                var activePercentageDataRT = (activePercentageDiffRT * 100) / parseInt(totalActivePreviousOfferRT);
-              } else {
-                var activePercentageDataRT = 0;
-              }
-
-
-              var dataExist = true;
-            } else {
-              var dataExist = false;
-              var grossClicksPercentageData = 0;
-              var grossConversionsPercentageData = 0;
-              var grossRevenuePercentageData = 0;
-              var converionCRPercentageData = 0;
-              var grossInstallPercentageData = 0;
-              var grossEventPercentageData = 0;
-              var activePercentageData = 0;
-              result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0, 'grossEvents': 0 });
+            if (Array.isArray(result1) && result1.length == 0) {
+              result1.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0, 'grossEvents': 0 });
             }
 
+            const grossClicksDiff = (parseInt(result2[0].grossClicks) - parseInt(result1[0].grossClicks));
+            if (result1[0].grossClicks > 0) {
+              var grossClicksPercentageData = (grossClicksDiff * 100) / parseInt(result1[0].grossClicks);
+            } else {
+              var grossClicksPercentageData = 100;
+            }
+
+            const grossConversionsDiff = (parseInt(result2[0].grossConversions) - parseInt(result1[0].grossConversions));
+            if (result1[0].grossConversions > 0) {
+              var grossConversionsPercentageData = (grossConversionsDiff * 100) / parseInt(result1[0].grossConversions);
+            } else {
+              var grossConversionsPercentageData = 100;
+            }
+
+
+            const grossRevenueDiff = (parseInt(result2[0].grossRevenue) - parseInt(result1[0].grossRevenue));
+            if (result1[0].grossRevenue > 0) {
+              var grossRevenuePercentageData = (grossRevenueDiff * 100) / parseInt(result1[0].grossRevenue);
+            } else {
+              var grossRevenuePercentageData = 100;
+            }
+
+
+            const converionCRPDiff = (parseInt(result2[0].converionCR) - parseInt(result1[0].converionCR));
+            if (result1[0].converionCR > 0) {
+              var converionCRPercentageData = (converionCRPDiff * 100) / parseInt(result1[0].converionCR);
+            } else {
+              var converionCRPercentageData = 100;
+            }
+
+            const grossInstallDiff = (parseInt(result2[0].grossInstall) - parseInt(result1[0].grossInstall));
+            if (result1[0].grossInstall > 0) {
+              var grossInstallPercentageData = (grossInstallDiff * 100) / parseInt(result1[0].grossInstall);
+            } else {
+              var grossInstallPercentageData = 100;
+            }
+
+            const grossEventDiff = (parseInt(result2[0].grossEvents) - parseInt(result1[0].grossEvents));
+            if (result1[0].grossEvents > 0) {
+              var grossEventPercentageData = (grossEventDiff * 100) / parseInt(result1[0].grossEvents);
+            } else {
+              var grossEventPercentageData = 100;
+            }
+            const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
+            if (totalActivePreviousOffer > 0) {
+              var activePercentageData = (activePercentageDiff * 100) / parseInt(totalActivePreviousOffer);
+            } else {
+              var activePercentageData = 100;
+            }
+
+            const activePercentageDiffRT = (parseInt(totalActiveCurrentOfferRT) - parseInt(totalActivePreviousOfferRT));
+            if (totalActivePreviousOfferRT > 0) {
+              var activePercentageDataRT = (activePercentageDiffRT * 100) / parseInt(totalActivePreviousOfferRT);
+            } else {
+              var activePercentageDataRT = 100;
+            }
+
+
+            var dataExist = true;
 
             result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData, 'grossEventPercentage': grossEventPercentageData });
             result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
