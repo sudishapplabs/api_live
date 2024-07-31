@@ -2279,6 +2279,36 @@ function groupBy(objectArray, property) {
   }, {});
 }
 
+// Function to format date as YYYY-MM-DD
+const formatDate = (date) => date.toISOString().split('T')[0];
+
+// Function to create a date range
+const createDateRange = (startDate, endDate) => {
+  let dateArray = [];
+  let currentDate = new Date(startDate);
+  const end = new Date(endDate);
+
+  while (currentDate <= end) {
+    dateArray.push(formatDate(new Date(currentDate)));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dateArray;
+};
+
+// Function to ensure each date has a corresponding object in the array
+const ensureDates = (data, startDate, endDate) => {
+  const dateRange = createDateRange(startDate, endDate);
+  const dataMap = new Map(data.map(item => [item.date, item]));
+
+  return dateRange.map(date => {
+    if (dataMap.has(date)) {
+      return dataMap.get(date);
+    } else {
+      return { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 };
+    }
+  });
+};
+
 
 exports.dashboardPerformanceEvent = async (req, res) => {
   var adv_array = {};
@@ -2484,7 +2514,7 @@ exports.dashboardPerformanceEvent = async (req, res) => {
 
       //console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=created&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
 
-      axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=created&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsRes) => {
+      axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&group[]=created&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then(async (staticsRes) => {
         if (typeof staticsRes.statusText !== 'undefined' && staticsRes.statusText == "OK") {
 
           var reportData = [];
@@ -2556,7 +2586,7 @@ exports.dashboardPerformanceEvent = async (req, res) => {
           //console.log(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata");
 
 
-          axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsResByEvent) => {
+          await axios.get(process.env.API_BASE_URL + endpoint + "?group[]=campaign_name&group[]=campaign_id&group[]=advertiser&group[]=advertiser_id&group[]=goal_name&kpi[]=grossClicks&kpi[]=grossConversions&kpi[]=grossRevenue&" + newQueryString + "&" + adv_str + "zone=Asia/Kolkata", axios_header).then((staticsResByEvent) => {
             if (typeof staticsResByEvent.statusText !== 'undefined' && staticsResByEvent.statusText == "OK") {
 
               var reportDataEvent = [];
@@ -2648,20 +2678,24 @@ exports.dashboardPerformanceEvent = async (req, res) => {
                 }, {}));
 
 
+              const updatedDataPrevious = ensureDates(result1, startPreviousDateR, endPreviousDateR);
+
+
               let array2 = objFilterDataPerformance,
-                result2 = Object.values(array2.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
-                  a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
-                  a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
-                  a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
-                  a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
-                  a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
-                  a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
-                  return a;
+                result2 = Object.values(array2.reduce((b, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
+                  b[date] = (b[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
+                  b[date].grossClicks = Number(b[date].grossClicks) + Number(grossClicks);
+                  b[date].grossConversions = Number(b[date].grossConversions) + Number(grossConversions);
+                  b[date].grossRevenue = Number(b[date].grossRevenue) + Number(grossRevenue);
+                  b[date].converionCR = Number(b[date].converionCR) + Number(converionCR);
+                  b[date].grossInstall = Number(b[date].grossInstall) + Number(grossInstall);
+                  return b;
                 }, {}));
 
+              const updatedDataCurrent = ensureDates(result2.sort(), start, end);
 
 
-              const response = { 'success': true, 'performancePast': result1, 'performance': result2.sort(), 'offerevent': objFilterDataTopEvent, 'goalWithOffers': groupedGolaName };
+              const response = { 'success': true, 'performancePast': updatedDataPrevious, 'performance': updatedDataCurrent, 'offerevent': objFilterDataTopEvent, 'goalWithOffers': groupedGolaName };
               res.status(200).send(response);
               return;
 
@@ -3110,6 +3144,7 @@ exports.dashboardTopHeader = async (req, res) => {
             "grossConversions": advTrkPData.grossConversions,
             "grossRevenue": advTrkPData.grossRevenue,
             "converionCR": 0,
+            "grossEvents": 0,
             "grossInstall": 0
           });
         }
@@ -3153,6 +3188,11 @@ exports.dashboardTopHeader = async (req, res) => {
           newpData[superPKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
         }
 
+        if (r.goal_name !== 'install') {
+          newpData[superPKey]['grossEvents'] += r.grossConversions;
+        } else {
+          newpData[superPKey]['grossEvents'] += 0;
+        }
         if (r.goal_name == 'install') {
           newpData[superPKey]['grossInstall'] += r.grossConversions;
         } else {
@@ -3182,6 +3222,7 @@ exports.dashboardTopHeader = async (req, res) => {
                 "grossConversions": advTrkData.grossConversions,
                 "grossRevenue": advTrkData.grossRevenue,
                 "converionCR": 0,
+                "grossEvents": 0,
                 "grossInstall": 0
               });
             }
@@ -3224,6 +3265,11 @@ exports.dashboardTopHeader = async (req, res) => {
                 let converionDataVal = (r.grossConversions * 100) / r.grossClicks;
                 newData[superKey]['converionCR'] += Math.round(converionDataVal * 100) / 100;
               }
+              if (r.goal_name !== 'install') {
+                newData[superKey]['grossEvents'] += r.grossConversions;
+              } else {
+                newData[superKey]['grossEvents'] += 0;
+              }
               if (r.goal_name == 'install') {
                 newData[superKey]['grossInstall'] += r.grossConversions;
               } else {
@@ -3238,29 +3284,31 @@ exports.dashboardTopHeader = async (req, res) => {
 
 
             let array1 = objFilterPData,
-              result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
-                a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
+              result1 = Object.values(array1.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall, grossEvents }) => {
+                a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0, grossEvents: 0 });
                 a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
                 a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
                 a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
                 a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
                 a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
+                a[date].grossEvents = Number(a[date].grossEvents) + Number(grossEvents);
                 return a;
               }, {}));
 
-            //console.log(result1);
+
 
             let array2 = objFilterDataPerformance,
-              result2 = Object.values(array2.reduce((a, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall }) => {
-                a[date] = (a[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0 });
-                a[date].grossClicks = Number(a[date].grossClicks) + Number(grossClicks);
-                a[date].grossConversions = Number(a[date].grossConversions) + Number(grossConversions);
-                a[date].grossRevenue = Number(a[date].grossRevenue) + Number(grossRevenue);
-                a[date].converionCR = Number(a[date].converionCR) + Number(converionCR);
-                a[date].grossInstall = Number(a[date].grossInstall) + Number(grossInstall);
-                return a;
+              result2 = Object.values(array2.reduce((b, { date, grossClicks, grossConversions, grossRevenue, converionCR, grossInstall, grossEvents }) => {
+                b[date] = (b[date] || { date, grossClicks: 0, grossConversions: 0, grossRevenue: 0, converionCR: 0, grossInstall: 0, grossEvents: 0 });
+                b[date].grossClicks = Number(b[date].grossClicks) + Number(grossClicks);
+                b[date].grossConversions = Number(b[date].grossConversions) + Number(grossConversions);
+                b[date].grossRevenue = Number(b[date].grossRevenue) + Number(grossRevenue);
+                b[date].converionCR = Number(b[date].converionCR) + Number(converionCR);
+                b[date].grossInstall = Number(b[date].grossInstall) + Number(grossInstall);
+                b[date].grossEvents = Number(b[date].grossEvents) + Number(grossEvents);
+                return b;
               }, {}));
-            //console.log(result2);
+
 
             if (Array.isArray(result1) && result1.length > 0) {
 
@@ -3301,6 +3349,12 @@ exports.dashboardTopHeader = async (req, res) => {
                 var grossInstallPercentageData = 0;
               }
 
+              const grossEventDiff = (parseInt(result2[0].grossEvents) - parseInt(result1[0].grossEvents));
+              if (result1[0].grossEvents > 0) {
+                var grossEventPercentageData = (grossEventDiff * 100) / parseInt(result1[0].grossEvents);
+              } else {
+                var grossEventPercentageData = 0;
+              }
               const activePercentageDiff = (parseInt(totalActiveCurrentOffer) - parseInt(totalActivePreviousOffer));
               if (totalActivePreviousOffer > 0) {
                 var activePercentageData = (activePercentageDiff * 100) / parseInt(totalActivePreviousOffer);
@@ -3324,12 +3378,13 @@ exports.dashboardTopHeader = async (req, res) => {
               var grossRevenuePercentageData = 0;
               var converionCRPercentageData = 0;
               var grossInstallPercentageData = 0;
+              var grossEventPercentageData = 0;
               var activePercentageData = 0;
-              result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0 });
+              result2.push({ 'grossClicks': 0, 'grossConversions': 0, 'grossRevenue': 0, 'converionCR': 0, 'grossInstall': 0, 'grossEvents': 0 });
             }
 
 
-            result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData });
+            result2.push({ 'grossClicksPercentage': grossClicksPercentageData, 'grossConversionsPercentage': grossConversionsPercentageData, 'grossRevenuePercentage': grossRevenuePercentageData, 'converionCRPercentage': converionCRPercentageData, 'grossInstallPercentage': grossInstallPercentageData, 'grossEventPercentage': grossEventPercentageData });
             result2.push({ 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': activePercentageData, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': activePercentageDataRT });
 
             const response = { 'success': true, 'dataExist': dataExist, 'dashboardData': result2 };
@@ -3343,14 +3398,16 @@ exports.dashboardTopHeader = async (req, res) => {
                 "grossConversions": 0,
                 "grossRevenue": 0,
                 "converionCR": 0,
-                "grossInstall": 0
+                "grossInstall": 0,
+                "grossEvents": 0
               },
               {
                 "grossClicksPercentage": 0,
                 "grossConversionsPercentage": 0,
                 "grossRevenuePercentage": 0,
                 "converionCRPercentage": 0,
-                "grossInstallPercentage": 0
+                "grossInstallPercentage": 0,
+                "grossEventPercentage": 0
               },
               { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
             ];
@@ -3365,14 +3422,16 @@ exports.dashboardTopHeader = async (req, res) => {
               "grossConversions": 0,
               "grossRevenue": 0,
               "converionCR": 0,
-              "grossInstall": 0
+              "grossInstall": 0,
+              "grossEvents": 0
             },
             {
               "grossClicksPercentage": 0,
               "grossConversionsPercentage": 0,
               "grossRevenuePercentage": 0,
               "converionCRPercentage": 0,
-              "grossInstallPercentage": 0
+              "grossInstallPercentage": 0,
+              "grossEventPercentage": 0
             },
             { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
           ];
@@ -3396,14 +3455,16 @@ exports.dashboardTopHeader = async (req, res) => {
           "grossConversions": 0,
           "grossRevenue": 0,
           "converionCR": 0,
-          "grossInstall": 0
+          "grossInstall": 0,
+          "grossEvents": 0
         },
         {
           "grossClicksPercentage": 0,
           "grossConversionsPercentage": 0,
           "grossRevenuePercentage": 0,
           "converionCRPercentage": 0,
-          "grossInstallPercentage": 0
+          "grossInstallPercentage": 0,
+          "grossEventPercentage": 0
         },
         { 'totalOffers': totalOffers, 'active': totalActiveCurrentOffer2, 'activePercentage': 0, 'activeRT': totalActiveCurrentOfferRT2, 'reTargeting': totalOffersRT, 'reTargetingPercentage': 0 }
       ];
