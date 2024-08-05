@@ -2355,7 +2355,7 @@ exports.addOffer = async (req, res) => {
                                             subject_adv: "",
                                             message_adv: "",
 
-                                            subject_sa: 'New Offer Set Up by Advertiser ' + ucfirst(advName),
+                                            subject_sa: 'New Campaign Set Up by Advertiser ' + ucfirst(advName),
                                             message_sa: "A new Campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>  has been created for the advertiser <span class= 'text_primary'> " + ucfirst(advName) + "</span> by <span class='text_primary'> " + ucfirst(user_name) + "  </span>.",
 
                                             read: 0
@@ -2390,7 +2390,7 @@ exports.addOffer = async (req, res) => {
                                             offer_id: trackier_camp_id,
                                             adv_name: ucfirst(advName),
                                             created_by: ucfirst(user_name),
-                                            url: process.env.APPLABS_URL + 'CampaignList',
+                                            url: process.env.APPLABS_URL + 'campaignList',
                                             base_url: process.env.APPLABS_URL
                                         }))
                                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3041,11 +3041,11 @@ exports.changeOfferStatus = async (req, res) => {
                                         offer_name: ucfirst(resStatus.offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
-                                        message_adv: " Congratulations! Your new offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> is approved and live.",
+                                        subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
+                                        message_adv: " Congratulations! Your new campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> is approved and live.",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3063,11 +3063,11 @@ exports.changeOfferStatus = async (req, res) => {
                                         offer_name: ucfirst(resStatus.offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
-                                        message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been created but is pending for approval.",
+                                        subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
+                                        message_adv: "This is to inform you that your campaign <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been created but is pending for approval.",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3086,11 +3086,11 @@ exports.changeOfferStatus = async (req, res) => {
                                         offer_name: ucfirst(resStatus.offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
-                                        message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
+                                        subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
+                                        message_adv: "This is to inform you that your campaign <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3108,11 +3108,11 @@ exports.changeOfferStatus = async (req, res) => {
                                         offer_name: ucfirst(resStatus.offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
-                                        message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
+                                        subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
+                                        message_adv: "This is to inform you that your campaign <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3132,7 +3132,7 @@ exports.changeOfferStatus = async (req, res) => {
                                         advertiserName: ucwords(advDetails.advName),
                                         offer_id: resStatus.trackier_camp_id,
                                         status: offerStatus,
-                                        url: process.env.APPLABS_URL + 'CampaignList',
+                                        url: process.env.APPLABS_URL + 'campaignList',
                                         base_url: process.env.APPLABS_URL
                                     }))
                                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -3144,7 +3144,7 @@ exports.changeOfferStatus = async (req, res) => {
                                             email: process.env.MAIL_FROM_EMAIL,
                                         },
                                         bcc: bcc_mail,
-                                        subject: 'Applabs Alert - New Offer ' + ucwords(offerStatus),
+                                        subject: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
                                         html: messageBodyAdvetiser
                                     };
                                     //ES6
@@ -3173,7 +3173,7 @@ exports.changeOfferStatus = async (req, res) => {
                                     status_by_user: approved_by,
                                     approved_by_email: approved_by_email,
                                     status: offerStatus,
-                                    url: process.env.APPLABS_URL + 'CampaignList',
+                                    url: process.env.APPLABS_URL + 'campaignList',
                                     base_url: process.env.APPLABS_URL
                                 }))
                                 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -4776,43 +4776,41 @@ exports.getDashboardTopOffers = async (req, res) => {
                             }
                         }
 
+                        reportData.push({
+                            "campaign_name": offer_name,
+                            "campaign_id": advTrkData.campaign_id,
+                            "campaign_status": advTrkData.campaign_status,
+                            "campaign_type": "",
+                            "campaign_geo": "",
+                            "camp_icon": "",
+                            "campaign_os": "Android",
+                            "advertiser": advertiser_name,
+                            "advertiser_id": advTrkData.advertiser_id,
+                            "goal_name": advTrkData.goal_name,
+                            app_id,
+                            source,
+                            "publisher_id": advTrkData.publisher_id,
+                            publisher_name,
+                            app_name,
+                            "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
+                            impression,
+                            audienc_interest,
+                            "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
+                            "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
+                            "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
+                            "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
+                            "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
+                            "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
+                            "currency": advTrkData.currency,
+                            "campaign_payout": advTrkData.campaign_payout,
+                            "grossClicks": advTrkData.grossClicks,
+                            "grossConversions": advTrkData.grossConversions,
+                            "grossRevenue": advTrkData.grossRevenue,
+                            "grossPayableConversions": 0,
+                            "custInstall": 0,
+                            "total_budget": 0
+                        });
 
-                        if (advTrkData.campaign_status == "active") {
-                            reportData.push({
-                                "campaign_name": offer_name,
-                                "campaign_id": advTrkData.campaign_id,
-                                "campaign_status": advTrkData.campaign_status,
-                                "campaign_type": "",
-                                "campaign_geo": "",
-                                "camp_icon": "",
-                                "campaign_os": "Android",
-                                "advertiser": advertiser_name,
-                                "advertiser_id": advTrkData.advertiser_id,
-                                "goal_name": advTrkData.goal_name,
-                                app_id,
-                                source,
-                                "publisher_id": advTrkData.publisher_id,
-                                publisher_name,
-                                app_name,
-                                "cr_name": (typeof advTrkData.cr_name !== 'undefined') ? advTrkData.cr_name : '',
-                                impression,
-                                audienc_interest,
-                                "country": (typeof advTrkData.country !== 'undefined') ? advTrkData.country : '',
-                                "region": (typeof advTrkData.region !== 'undefined') ? advTrkData.region : '',
-                                "city": (typeof advTrkData.city !== 'undefined') ? advTrkData.city : '',
-                                "month": (typeof advTrkData.month !== 'undefined') ? advTrkData.month : '',
-                                "created": (typeof advTrkData.created !== 'undefined') ? advTrkData.created : '',
-                                "hour": (typeof advTrkData.hour !== 'undefined') ? advTrkData.hour : '',
-                                "currency": advTrkData.currency,
-                                "campaign_payout": advTrkData.campaign_payout,
-                                "grossClicks": advTrkData.grossClicks,
-                                "grossConversions": advTrkData.grossConversions,
-                                "grossRevenue": advTrkData.grossRevenue,
-                                "grossPayableConversions": 0,
-                                "custInstall": 0,
-                                "total_budget": 0
-                            });
-                        }
                     }
                 }
 
@@ -5576,11 +5574,11 @@ exports.updateOffer = async (req, res) => {
                     offer_name: ucfirst(offer_name),
                     category: "Campaign",
 
-                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                    message_adv: "<span class='text_primary'>Audience</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Audience</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                    message_sa: "<span class='text_primary'>Audience</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Audience</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                     read: 0,
                 }
@@ -5872,11 +5870,11 @@ exports.updateOffer = async (req, res) => {
                     offer_name: ucfirst(offer_name),
                     category: "Campaign",
 
-                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                    message_adv: "<span class='text_primary'>City</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>City</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                    message_sa: "<span class='text_primary'>City</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>City</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                     read: 0,
                 }
@@ -6148,11 +6146,11 @@ exports.updateOffer = async (req, res) => {
                         offer_name: ucfirst(offer_name),
                         category: "Campaign",
 
-                        subject_adv: 'Offer ' + offer_name + ' has been edited',
-                        message_adv: "<span class='text_primary'>State</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                        subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                        message_adv: "<span class='text_primary'>State</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                        message_sa: "<span class='text_primary'>State</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                        subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                        message_sa: "<span class='text_primary'>State</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                         read: 0,
                     }
@@ -6308,11 +6306,11 @@ exports.updateOffer = async (req, res) => {
                             offer_name: ucfirst(offer_name),
                             category: "Campaign",
 
-                            subject_adv: 'Offer ' + offer_name + ' has been edited',
-                            message_adv: "<span class='text_primary'>Offer Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                            subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                            message_adv: "<span class='text_primary'>Campaign Name</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                            subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                            message_sa: "<span class='text_primary'>Offer Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                            subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                            message_sa: "<span class='text_primary'>Campaign Name</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                             read: 0,
                         }
@@ -6325,7 +6323,7 @@ exports.updateOffer = async (req, res) => {
                             advertiser_name: ucfirst(advName.advertiserName),
                             offer_id: trackier_camp_id,
                             offer_name: ucfirst(offer_name),
-                            type: "Offer Name",
+                            type: "Campaign Name",
                             old_value: differencesOld.offer_name,
                             new_value: differencesReq.offer_name,
                             edited_by: user_name
@@ -6349,7 +6347,7 @@ exports.updateOffer = async (req, res) => {
                                 offer_name: offer_name,
                                 adv_name: ucwords(advName.advName),
                                 advertiserName: ucwords(advName.advertiserName),
-                                edit_filed: "Offer Name",
+                                edit_filed: "Campaign Name",
                                 old_value: differencesOld.offer_name,
                                 new_value: differencesReq.offer_name,
                                 edited_by: user_name,
@@ -6502,11 +6500,11 @@ exports.updateOffer = async (req, res) => {
                         offer_name: ucfirst(offer_name),
                         category: "Campaign",
 
-                        subject_adv: 'Offer ' + offer_name + ' has been edited',
-                        message_adv: "<span class='text_primary'>Icon</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                        subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                        message_adv: "<span class='text_primary'>Icon</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                        message_sa: "<span class='text_primary'>Icon</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                        subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                        message_sa: "<span class='text_primary'>Icon</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                         read: 0,
                     }
@@ -7065,11 +7063,11 @@ exports.updateOffer = async (req, res) => {
                                     offer_name: ucfirst(offer_name),
                                     category: "Campaign",
 
-                                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                    message_adv: "<span class='text_primary'>CTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                    message_adv: "<span class='text_primary'>CTA Link</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                    message_sa: "<span class='text_primary'>CTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                    message_sa: "<span class='text_primary'>CTA Link</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                     read: 0
                                 }
@@ -7491,11 +7489,11 @@ exports.updateOffer = async (req, res) => {
                                         offer_name: ucfirst(offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                        message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                        subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                        message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                        message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                        subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                        message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                         read: 0,
                                     }
@@ -7913,11 +7911,11 @@ exports.updateOffer = async (req, res) => {
                                         offer_name: ucfirst(offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                        message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                        subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                        message_adv: "<span class='text_primary'>VTA Link</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                        message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                        subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                        message_sa: "<span class='text_primary'>VTA Link</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                         read: 0,
                                     }
@@ -8094,11 +8092,11 @@ exports.updateOffer = async (req, res) => {
                                                 offer_name: ucfirst(offer_name),
                                                 category: "Campaign",
 
-                                                subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                                message_adv: "<span class='text_primary'>Total Budget</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                                subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                                message_adv: "<span class='text_primary'>Total Budget</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                                message_sa: "<span class='text_primary'>Total Budget</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                                subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                message_sa: "<span class='text_primary'>Total Budget</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
                                                 read: 0
                                             }
                                             // END INSERT DATA INTO NOTIFICATIONS
@@ -8289,11 +8287,11 @@ exports.updateOffer = async (req, res) => {
                                         offer_name: ucfirst(offer_name),
                                         category: "Campaign",
 
-                                        subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                        message_adv: "<span class='text_primary'>Daily Budget</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                        subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                        message_adv: "<span class='text_primary'>Daily Budget</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                        subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                        message_sa: "<span class='text_primary'>Daily Budget</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                        subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                        message_sa: "<span class='text_primary'>Daily Budget</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                         read: 0
                                     }
@@ -8477,11 +8475,11 @@ exports.updateOffer = async (req, res) => {
                             offer_name: ucfirst(offer_name),
                             category: "Campaign",
 
-                            subject_adv: 'Offer ' + offer_name + ' has been edited',
-                            message_adv: "<span class='text_primary'>Start Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                            subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                            message_adv: "<span class='text_primary'>Start Date</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                            subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                            message_sa: "<span class='text_primary'>Start Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                            subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                            message_sa: "<span class='text_primary'>Start Date</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                             read: 0
                         }
@@ -8644,11 +8642,11 @@ exports.updateOffer = async (req, res) => {
                                 offer_name: ucfirst(offer_name),
                                 category: "Campaign",
 
-                                subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                 read: 0
                             }
@@ -8818,11 +8816,11 @@ exports.updateOffer = async (req, res) => {
                                 offer_name: ucfirst(offer_name),
                                 category: "Campaign",
 
-                                subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                message_adv: "<span class='text_primary'>End Date</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                message_sa: "<span class='text_primary'>End Date</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                 read: 0
                             }
@@ -10114,11 +10112,11 @@ exports.updateOffer = async (req, res) => {
                     offer_name: ucfirst(offer_name),
                     category: "Campaign",
 
-                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                    message_adv: "<span class='text_primary'>Country</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Country</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                    message_sa: "<span class='text_primary'>Country</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Country</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                     read: 0
                 }
@@ -10278,11 +10276,11 @@ exports.updateOffer = async (req, res) => {
                                     offer_name: ucfirst(offer_name),
                                     category: "Campaign",
 
-                                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                    message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                    message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                    message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                    message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                     read: 0
                                 }
@@ -10609,11 +10607,11 @@ exports.updateOffer = async (req, res) => {
                                                                             offer_name: ucfirst(offer_name),
                                                                             category: "Campaign",
 
-                                                                            subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                                                            message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                                                            subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                                                            message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                                                            subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                                                            message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                                                            subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                                            message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                                                             read: 0,
                                                                         }
@@ -10846,11 +10844,11 @@ exports.updateOffer = async (req, res) => {
                                                     offer_name: ucfirst(offer_name),
                                                     category: "Campaign",
 
-                                                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                                    message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                                    message_adv: "<span class='text_primary'>Event Name</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                                    message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                    message_sa: "<span class='text_primary'>Event Name</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                                     read: 0,
                                                 }
@@ -11067,11 +11065,11 @@ exports.updateOffer = async (req, res) => {
                                                 offer_name: ucfirst(offer_name),
                                                 category: "Campaign",
 
-                                                subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                                message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                                subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                                message_adv: "<span class='text_primary'>Price</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                                message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                                subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                                message_sa: "<span class='text_primary'>Price</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                                 read: 0,
                                             }
@@ -11309,11 +11307,11 @@ exports.updateOffer = async (req, res) => {
                                 offer_name: ucfirst(offer_name),
                                 category: "Campaign",
 
-                                subject_adv: 'Offer ' + offer_name + ' has been edited',
-                                message_adv: "<span class='text_primary'>Publisher</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                                subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                                message_adv: "<span class='text_primary'>Publisher</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                                subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                                message_sa: "<span class='text_primary'>Publisher</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                                subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                                message_sa: "<span class='text_primary'>Publisher</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                                 read: 0
                             }
@@ -11577,11 +11575,11 @@ exports.updateOffer = async (req, res) => {
                     offer_name: ucfirst(offer_name),
                     category: "Campaign",
 
-                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                    message_adv: "<span class='text_primary'>Ads</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Ads</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                    message_sa: "<span class='text_primary'>Ads</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Ads</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                     read: 0,
                 }
@@ -11748,11 +11746,11 @@ exports.updateOffer = async (req, res) => {
                     offer_name: ucfirst(offer_name),
                     category: "Campaign",
 
-                    subject_adv: 'Offer ' + offer_name + ' has been edited',
-                    message_adv: "<span class='text_primary'>Premium Partners</span>,  Changes have successfully been made to offer <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                    subject_adv: 'Campaign ' + offer_name + ' has been edited',
+                    message_adv: "<span class='text_primary'>Premium Partners</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
-                    subject_sa: 'Offer ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                    message_sa: "<span class='text_primary'>Premium Partners</span>,  Changes have been made to offer <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                    subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
+                    message_sa: "<span class='text_primary'>Premium Partners</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                     read: 0,
                 }

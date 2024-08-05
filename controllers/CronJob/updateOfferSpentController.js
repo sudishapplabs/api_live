@@ -127,7 +127,7 @@ exports.getOfferSpent = async (req, res) => {
 
           if (parseFloat(record.grossRevenue) > 0) {
 
-            console.log('today_spent for all offer === ' + record.campaign_id + " ======= " + record.grossRevenue);
+            //console.log('today_spent for all offer === ' + record.campaign_id + " ======= " + record.grossRevenue);
 
             const dataArr = { today_spent: parseFloat(record.grossRevenue), total_click: parseInt(record.grossClicks), today_click: parseInt(record.grossClicks), today_conversion: parseInt(record.grossConversions), today_install: parseInt(record.grossConversions) }
 
@@ -182,7 +182,7 @@ exports.getOfferSpent = async (req, res) => {
         const advArrData = responseRes.data.records;
         for (let k = 0; k < advArrData.length; k++) {
           let recordRes = advArrData[k];
-          console.log('TotalSpent last six month wale:' + recordRes.campaign_id + "--" + recordRes.grossRevenue);
+          //console.log('TotalSpent last six month wale:' + recordRes.campaign_id + "--" + recordRes.grossRevenue);
           const dataTotArr = { total_spent: parseFloat(recordRes.grossRevenue) }
           // UPDATE DB TOTAL SPENT
           await Offer.findOneAndUpdate({ trackier_camp_id: recordRes.campaign_id }, dataTotArr, { new: true }).exec().then((recRes) => {
@@ -294,7 +294,7 @@ exports.getOfferSpent = async (req, res) => {
       let subVal = Math.round(parseFloat(sum) * 100) / 100;
       const dataArr = { total_spent: subVal }
 
-      console.log('TotalSpent more than six  month wale:' + campaign_id + "--total_spent==== " + subVal);
+      //console.log('TotalSpent more than six  month wale:' + campaign_id + "--total_spent==== " + subVal);
       // UPDATE DB TODAY SPENT AND CONVERSION
       Offer.findOneAndUpdate({ trackier_camp_id: campaign_id }, dataArr, { new: true }).exec().then((recordRes) => {
         console.log('TotalSpent_for_six_months Update Request');

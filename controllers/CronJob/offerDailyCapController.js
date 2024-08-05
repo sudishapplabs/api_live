@@ -66,7 +66,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
               offer_name: offDt.offer_name,
               adv_name: advDt.advName,
               advertiserName: ucwords(advDt.advertiserName),
-              url: process.env.APPLABS_URL + 'CampaignList',
+              url: process.env.APPLABS_URL + 'campaignList',
               base_url: process.env.APPLABS_URL
             }))
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -108,7 +108,7 @@ exports.getAllOffersDailyLowBalance = async (req, res) => {
             offer_name: offDt.offer_name,
             adv_name: advDt.advName,
             advertiserName: ucwords(advDt.advertiserName),
-            url: process.env.APPLABS_URL + 'CampaignList',
+            url: process.env.APPLABS_URL + 'campaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);

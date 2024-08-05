@@ -40,7 +40,7 @@ exports.getOffersLowBalance = async (req, res) => {
           category: "Campaign",
 
           subject_adv: 'Applabs Alert - Campaign ' + offDt.offer_name + ' Limit Utilized 80%',
-          message_adv: "Your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> reached 80% of total caps. For an uninterrupted delivery please sign in to your account and review the offer.",
+          message_adv: "Your Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> reached 80% of total caps. For an uninterrupted delivery please sign in to your account and review the campaign.",
 
           subject_sa: 'Applabs Alert - Campaign ' + ucwords(offDt.offer_name) + '[' + offDt.trackier_camp_id + '] Balance',
           message_sa: "Campaign <span class='text_primary'> " + offDt.offer_name + "[" + offDt.trackier_camp_id + "]</span> has reached to 80% of total caps. The current balance is USD <span class='text_primary'> " + avBalance + "</span>",
@@ -65,7 +65,7 @@ exports.getOffersLowBalance = async (req, res) => {
             offer_name: offDt.offer_name,
             adv_name: advDt.advName,
             advertiserName: ucwords(advDt.advertiserName),
-            url: process.env.APPLABS_URL + 'CampaignList',
+            url: process.env.APPLABS_URL + 'campaignList',
             base_url: process.env.APPLABS_URL
           }))
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -108,7 +108,7 @@ exports.getOffersLowBalance = async (req, res) => {
           offer_name: offDt.offer_name,
           adv_name: advDt.advName,
           advertiserName: ucwords(advDt.advertiserName),
-          url: process.env.APPLABS_URL + 'CampaignList',
+          url: process.env.APPLABS_URL + 'campaignList',
           base_url: process.env.APPLABS_URL
         }))
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
