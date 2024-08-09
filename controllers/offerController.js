@@ -8058,7 +8058,7 @@ exports.updateOffer = async (req, res) => {
                 res.status(400).send(reMsg);
                 return;
             } else if (parseFloat(total_budget) > parseFloat(totalBudgets)) {
-                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount less than/equal to your Available Balance" }] };
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Your balance is (" + currBalance + ")!!. Please enter amount less than/equal to your Available Balance" }] };
                 res.status(400).send(reMsg);
                 return;
             } else if (parseFloat(total_budget) < parseFloat(expenses + 1)) {
@@ -8073,7 +8073,7 @@ exports.updateOffer = async (req, res) => {
         } else {
             const totalBudgets = (parseFloat(currBalance) + parseFloat(totalBudget) + parseFloat(totalSpent));
             if (parseFloat(total_budget) > parseFloat(totalBudgets)) {
-                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount less than/equal to your Available Balance" }] };
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Your balance is (" + currBalance + ")!!. Please enter amount less than/equal to your Available Balance" }] };
                 res.status(400).send(reMsg);
                 return;
             } else if (parseFloat(total_budget) < parseFloat(expenses + 1)) {
