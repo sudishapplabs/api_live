@@ -11,7 +11,7 @@ const axios = require('axios');
 const CreativeModel = require("../models/creativeModel");
 const CreativeCtrModel = require("../models/creativectrModel");
 const { stringIsAValidUrl, isNumeric, shuffle, generateRandomNumber, getCreativeLists, getCreativeNameLists, dateprint } = require('../common/helper');
-const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, getPublisherDataByPubId, decodeHtml, addNotificationsData, addTimelineData, } = require("../common/common");
+const { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getpublisherPayoutByPubandGeo, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getpublisherPayoutByPubId, getPublisherDataByPubId, decodeHtml, addNotificationsData, addTimelineData, getOfferDataByTrackierCampaignId } = require("../common/common");
 
 const Audience = require("../models/audienceModel");
 var { Timeline } = require("../models/commonModel");
@@ -3043,10 +3043,10 @@ exports.changeOfferStatus = async (req, res) => {
                                         category: "Campaign",
 
                                         subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
-                                        message_adv: " Congratulations! Your new offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> is approved and live.",
+                                        message_adv: " Congratulations! Your new campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> is approved and live.",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3065,10 +3065,10 @@ exports.changeOfferStatus = async (req, res) => {
                                         category: "Campaign",
 
                                         subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
-                                        message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been created but is pending for approval.",
+                                        message_adv: "This is to inform you that your campaign <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been created but is pending for approval.",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3088,10 +3088,10 @@ exports.changeOfferStatus = async (req, res) => {
                                         category: "Campaign",
 
                                         subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
-                                        message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
+                                        message_adv: "This is to inform you that your campaign <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  v <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -3110,10 +3110,10 @@ exports.changeOfferStatus = async (req, res) => {
                                         category: "Campaign",
 
                                         subject_adv: 'Applabs Alert - New Campaign ' + ucwords(offerStatus),
-                                        message_adv: "This is to inform you that your offer <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
+                                        message_adv: "This is to inform you that your campaign <span class='text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span> has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>",
 
                                         subject_sa: 'Applabs Alert - Campaign ' + resStatus.offer_name + " " + resStatus.trackier_camp_id + " " + ucwords(offerStatus),
-                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  offer <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
+                                        message_sa: "Account <span class= 'text_primary'> " + ucfirst(advDetails.advName) + "</span>  campaign <span class= 'text_primary'>  " + ucfirst(resStatus.offer_name) + "[" + resStatus.trackier_camp_id + "] </span>  has been <span class='text_primary'> " + ucfirst(offerStatus) + "  </span>  by <span class='text_primary'> " + ucfirst(approved_by) + "  </span>.",
 
                                         read: 0,
                                     }
@@ -6302,10 +6302,10 @@ exports.updateOffer = async (req, res) => {
                             category: "Campaign",
 
                             subject_adv: 'Campaign ' + offer_name + ' has been edited',
-                            message_adv: "<span class='text_primary'>Offer Name</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
+                            message_adv: "<span class='text_primary'>Campaign Name</span>,  Changes have successfully been made to campaign <span class='text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span>",
 
                             subject_sa: 'Campaign ' + ucfirst(offer_name) + '[' + trackier_camp_id + '] has been edited',
-                            message_sa: "<span class='text_primary'>Offer Name</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
+                            message_sa: "<span class='text_primary'>Campaign Name</span>,  Changes have been made to campaign <span class= 'text_primary'>  " + ucfirst(offer_name) + "[" + trackier_camp_id + "] </span> by the Advertiser <span class= 'text_primary'> " + ucfirst(advName.advName) + "</span>.",
 
                             read: 0,
                         }
@@ -6318,7 +6318,7 @@ exports.updateOffer = async (req, res) => {
                             advertiser_name: ucfirst(advName.advertiserName),
                             offer_id: trackier_camp_id,
                             offer_name: ucfirst(offer_name),
-                            type: "Offer Name",
+                            type: "Campaign Name",
                             old_value: differencesOld.offer_name,
                             new_value: differencesReq.offer_name,
                             edited_by: user_name
@@ -6342,7 +6342,7 @@ exports.updateOffer = async (req, res) => {
                                 offer_name: offer_name,
                                 adv_name: ucwords(advName.advName),
                                 advertiserName: ucwords(advName.advertiserName),
-                                edit_filed: "Offer Name",
+                                edit_filed: "Campaign Name",
                                 old_value: differencesOld.offer_name,
                                 new_value: differencesReq.offer_name,
                                 edited_by: user_name,
@@ -6388,7 +6388,7 @@ exports.updateOffer = async (req, res) => {
                             offer_name: offer_name,
                             adv_name: ucwords(advName.advName),
                             advertiserName: ucwords(advName.advertiserName),
-                            edit_filed: "Offer Name",
+                            edit_filed: "Campaign Name",
                             old_value: differencesOld.offer_name,
                             new_value: differencesReq.offer_name,
                             edited_by: user_name,
@@ -8031,6 +8031,61 @@ exports.updateOffer = async (req, res) => {
 
     // OFFER TOTAL BUDGET UPDATE
     if (typeof differencesReq.total_budget !== 'undefined' && differencesReq.total_budget !== "") {
+
+        let oldTotalBudget = 0;
+        let offTotSpent = 0;
+
+        const ofDts = await getOfferDataByTrackierCampaignId(trackier_camp_id);
+
+        if (ofDts.total_budget) {
+            oldTotalBudget = ofDts.total_budget;
+        }
+
+        if (ofDts.total_spent) {
+            offTotSpent = ofDts.total_spent;
+        }
+
+        const currBalance = await getAdvertiserBalByAdvId(trackier_adv_id);
+
+        const expenses = offTotSpent;
+        const totalBudget = parseFloat(oldTotalBudget) - parseFloat(offTotSpent);
+        const totalSpent = parseFloat(offTotSpent);
+
+        if (user_type != 'sa') {
+            const totalBudgets = (parseFloat(currBalance) + parseFloat(totalBudget) + parseFloat(totalSpent));
+            if (parseFloat(total_budget) < 100) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Total Budget must be greater or equal to 100" }] };
+                res.status(400).send(reMsg);
+                return;
+            } else if (parseFloat(total_budget) > parseFloat(totalBudgets)) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount less than/equal to your Available Balance" }] };
+                res.status(400).send(reMsg);
+                return;
+            } else if (parseFloat(total_budget) < parseFloat(expenses + 1)) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount greater than to your spent balance." }] };
+                res.status(400).send(reMsg);
+                return;
+            } else if (parseFloat(total_budget) < parseFloat(daily_budget)) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount greater than/equal to your daily budget." }] };
+                res.status(400).send(reMsg);
+                return;
+            }
+        } else {
+            const totalBudgets = (parseFloat(currBalance) + parseFloat(totalBudget) + parseFloat(totalSpent));
+            if (parseFloat(total_budget) > parseFloat(totalBudgets)) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount less than/equal to your Available Balance" }] };
+                res.status(400).send(reMsg);
+                return;
+            } else if (parseFloat(total_budget) < parseFloat(expenses + 1)) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount greater than to your spent balance." }] };
+                res.status(400).send(reMsg);
+                return;
+            } else if (parseFloat(total_budget) < parseFloat(daily_budget)) {
+                const reMsg = { "success": false, "errors": [{ "statusCode": 400, "codeMsg": "VALIDATION_ERROR", "message": "Please enter amount greater than/equal to your daily budget." }] };
+                res.status(400).send(reMsg);
+                return;
+            }
+        }
 
         // get campaign caps
         await axios.get(process.env.API_BASE_URL + "campaigns/" + trackier_camp_id + "/caps", axios_header).then(async (getCaps) => {
