@@ -22,6 +22,14 @@ const getAdvertiserBalByAdvId = async (advertiser) => {
         return 0;
     }
 }
+const getOfferDataByTrackierCampaignId = async (trackier_camp_id) => {
+    let offDts = await Offer.findOne({ trackier_camp_id: trackier_camp_id });
+    if (offDts) {
+        return offDts;
+    } else {
+        return {};
+    }
+}
 const getAdvertiserNameByAdvId = async (advertiser) => {
     let advName = await Advertiser.findOne({ tid: advertiser });
     if (advName) {
@@ -378,4 +386,4 @@ const addTimelineData = async (data) => {
 }
 
 
-module.exports = { getAdvertiserBalByAdvId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getOfferNameBy_ID, getpublisherPayoutByPubandGeo, getpublisherPayoutByPubId, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getAllofflineConversion, decodeHtml, getAllOffersByTodaySpent, getAllOffersByUpcommingDate, getAllOffersByTrafficStart, getAllOffersForSpent, getAllOffersByStatus, convertCampaignData, getPresetDataByFilterDate, getAllCreativeByUpcommingDate, getAllCreativeByUpcommingDates, getAllOffersByUpcommingDates, addNotificationsData, addTimelineData, getPublisherDataByPubId }
+module.exports = { getAdvertiserBalByAdvId, getOfferDataByTrackierCampaignId, getAdvertiserNameByAdvId, getAdertiseDetailsByAdvId, getOfferNameBy_ID, getpublisherPayoutByPubandGeo, getpublisherPayoutByPubId, getpublisherPayoutArr, getPublisherByPubId, getAdvertiserBasicDetailsByAdvId, getAllofflineConversion, decodeHtml, getAllOffersByTodaySpent, getAllOffersByUpcommingDate, getAllOffersByTrafficStart, getAllOffersForSpent, getAllOffersByStatus, convertCampaignData, getPresetDataByFilterDate, getAllCreativeByUpcommingDate, getAllCreativeByUpcommingDates, getAllOffersByUpcommingDates, addNotificationsData, addTimelineData, getPublisherDataByPubId }
